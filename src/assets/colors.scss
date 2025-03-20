@@ -1,0 +1,20 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+//$primary: #ad4f37d3;
+//$secondary: #797572;
+//$blue: rgb(71, 103, 245);
+
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "info": $info,
+  "light": $light,
+  "dark": $dark,
+  "warning": $warning,
+  "danger": $danger,
+  "white": $white,
+  "success": $success,
+  "blue": $blue
+);
