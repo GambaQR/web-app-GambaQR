@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import './assets/fonts';
+@import "tailwindcss";
+
+@theme{
+    --font-sans: 'Inter', sans-serif;
+    --font-logo: 'Press Start 2P', sans-serif;
+    --font-sans--font-feature-settings: 'ss01', 'ss03', 'cv05', 'cv06', 'cv07', 'cv08', 'cv11', 'cv12', 'cv13';
+    --color-main-light: oklch(91.24% 0.0356 281.29);
+    --color-main-light-hover: oklch(79.04% 0.1011 281.29);
+    --color-dark-main: oklch(21.98% 0.0356 281.288);
+    --color-dark-border: oklch(26.97% 0.0356 281.288);
+    --color-dark-component: oklch(22.78% 0.0356 281.288);
+    --color-dark-component-hover: oklch(24.78% 0.0356 281.288);
+}
+
+.logo-text {
+    @apply ms-3 text-xl font-bold text-center text-fuchsia-600 font-logo select-none;
+}
+
+button{
+    @apply cursor-pointer;
+}
