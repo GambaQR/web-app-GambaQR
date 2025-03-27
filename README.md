@@ -1,2 +1,3 @@
-# web-app-TFG
+# web-app-GambaQR
+
 Trabajo Final de Grado
