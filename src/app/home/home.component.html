@@ -1,23 +1,25 @@
 <div
-  class="p-8 flex flex-col items-center h-[calc(100vh-80px)] bg-light-main dark:bg-dark-main"
+  class="p-5 py-8 flex flex-col items-center h-[calc(100vh-62px)] bg-light-main dark:bg-dark-main"
 >
   <div
-    class="p-[5%] h-full w-full border-box rounded-xl grid grid-cols-1 lg:grid-cols-5 gap-8"
+    class="p-[5%] h-full w-full bg-light-component dark:bg-dark-component rounded-xl grid grid-cols-1 lg:grid-cols-5 gap-8 overflow-hidden"
   >
     <div class="col-span-3 h-full flex flex-col justify-center">
       <div class="">
-        <span class="lg:text-8xl text-6xl text-fuchsia-700 font-extrabold">Bienvenido!</span>
+        <span class="lg:text-8xl text-6xl text-fuchsia-700 font-extrabold">¡Bienvenido a GambaQR!</span>
       </div>
       <p class="dark:text-gray-300 font-extralight text-xl mt-5">
-        Este es un ejemplo de Angular con Tailwind CSS. 
+        Compra en tus restaurantes favoritos y obtén descuentos pagando en línea. 
       </p>
       <button
         class="mt-8 text-xl bg-fuchsia-700/60 hover:bg-fuchsia-700/80 text-white py-2 rounded-xl transition"
       >
-        Explorar
+        Empezar
       </button>
     </div>
 
-    <div class="col-span-2"></div>
+    <div class="col-span-2 relative h-full z-0">
+      <img src="qr-hero.svg" alt="QR Hero" class=" z-0 w-full min-w-5xl h-auto absolute top-1/4 -translate-y-1/6 left-1/2 -translate-x-1/2  lg:top-1/2 lg:-translate-y-1/2 lg:left-1/2 lg:-translate-x-1/4 opacity-80" />
+    </div>
   </div>
 </div>

@@ -12,17 +12,15 @@
   --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
     "cv08", "cv11", "cv12", "cv13";
   /* Light colors */
-  --color-light-main: oklch(91.24% 0.0356 300);
-  --color-main-light-hover: oklch(79.04% 0.1011 300);
+  --color-light-main: oklch(70% 0.1018 254.624);
+  --color-light-border: oklch(75% 0.1018 254.624);
+  --color-light-component: oklch(72% 0.1018 254.624);
+  --color-light-component-hover: oklch(70% 0.1018 254.624);
   /* Dark colors */
   --color-dark-main: oklch(21% 0.0356 300);
-  --color-dark-border: oklch(26.97% 0.0356 300);
+  --color-dark-border: oklch(27% 0.0356 300);
   --color-dark-component: oklch(22.5% 0.0356 300);
-  --color-dark-component-hover: oklch(25% 0.05 300);
-}
-
-.theme-transition {
-  transition: background-color 0.5s ease, color 0.5s ease;
+  --color-dark-component-hover: oklch(21% 0.0356 300);
 }
 
 .logo-text {
