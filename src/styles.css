@@ -11,16 +11,26 @@
   --font-logo: "Press Start 2P", sans-serif;
   --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
     "cv08", "cv11", "cv12", "cv13";
+
   /* Light colors */
-  --color-light-main: oklch(70% 0.1018 254.624);
-  --color-light-border: oklch(75% 0.1018 254.624);
-  --color-light-component: oklch(72% 0.1018 254.624);
-  --color-light-component-hover: oklch(70% 0.1018 254.624);
+  --color-light-main: oklch(95% 0.08 254.624);
+  --color-light-border: oklch(80% 0.1 254.624);
+  --color-light-component: oklch(72% 0.15 254.624);
+  --color-light-component-hover: oklch(70% 0.12 254.624);
+
   /* Dark colors */
-  --color-dark-main: oklch(21% 0.0356 300);
-  --color-dark-border: oklch(27% 0.0356 300);
-  --color-dark-component: oklch(22.5% 0.0356 300);
-  --color-dark-component-hover: oklch(21% 0.0356 300);
+  --color-dark-main: oklch(15% 0.08 300);
+  --color-dark-border: oklch(20% 0.08 300);
+  --color-dark-component: oklch(22.5% 0.12 300);
+  --color-dark-component-hover: oklch(21% 0.1 300);
+}
+
+.dark .bg-dark-hero {
+  @apply bg-gradient-to-t from-transparent to-dark-component;
+}
+
+.bg-light-hero {
+  @apply bg-gradient-to-t from-transparent to-light-component;
 }
 
 .logo-text {
