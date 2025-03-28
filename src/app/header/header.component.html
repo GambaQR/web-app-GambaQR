@@ -1,4 +1,6 @@
-<header class="sticky inset-0 z-10 mx-5 pt-5 bg-light-main dark:bg-dark-main rounded-b-xl">
+<header
+  class="sticky inset-0 z-10 mx-5 pt-5 bg-light-main dark:bg-dark-main rounded-b-xl"
+>
   <div class="bg-light-component dark:bg-dark-component rounded-xl sticky">
     <nav
       class="mx-auto flex items-center justify-between p-4 lg:px-8 h-full"
@@ -281,7 +283,6 @@
             </div>
           </div>
           <!-- Fin del flyout -->
-
         </div>
 
         <a
@@ -329,12 +330,12 @@
     <div
       *ngIf="isOpen"
       [@slideFromRight]
-      class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-blue-400 dark:bg-dark-main px-6 py-6 sm:max-w-sm"
+      class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-light-component dark:bg-dark-component px-6 py-6 sm:max-w-sm"
     >
       <div class="flex items-center justify-between">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">Your Company</span>
+        <a href="#" class="-m-1.5 p-1.5 flex items-center">
           <img class="h-8 w-auto" src="logo.svg" alt="" />
+          <span class="logo-text">GambaQR</span>
         </a>
         <button
           type="button"
