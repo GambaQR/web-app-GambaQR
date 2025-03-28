@@ -1,25 +1,29 @@
-<header class="bg-dark-main sticky inset-0 border-bottom border-1 border-dark-border">
+<header
+  class="bg-dark-main sticky inset-0 border-bottom border-1 border-dark-border"
+>
   <nav
     class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
     aria-label="Global"
   >
-    <div class="flex lg:flex-1 items-center">
-      <a href="#" class="-m-1.5 p-1.5">
-        <img class="h-8 w-auto" src="logo.svg" alt="" />
+    <!-- Logo -->
+    <div class="flex lg:flex-1 relative items-center">
+      <a href="#" class="-m-1.5 p-1.5 absolute inset-0" [routerLink]="['/']">
         <span class="sr-only">GambaQR</span>
       </a>
+      <img class="h-8 w-auto" src="logo.svg" alt="logo" />
       <span class="logo-text hidden md:block"> GambaQR </span>
     </div>
+
     <!-- Mobile menu toggle -->
     <div class="flex lg:hidden">
       <button
         type="button"
-        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
         (click)="toggleMenu()"
       >
         <span class="sr-only">Open main menu</span>
         <svg
-          class="size-6"
+          class="size-6 text-gray-400 hover:text-fuchsia-500/60 transition"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="1.5"
@@ -35,17 +39,18 @@
         </svg>
       </button>
     </div>
+
+    <!-- Navigation links -->
     <div class="hidden lg:flex lg:gap-x-12">
       <div class="relative">
         <button
           type="button"
-          class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-300"
-          aria-expanded="false"
+          class="group flex items-center gap-x-1 text-sm/6 font-semibold text-gray-100/40 hover:text-gray-100/80 transition"
           (click)="toggleNav('product')"
         >
           Product
           <svg
-            class="size-5 flex-none text-gray-300"
+            class="size-5 flex-none text-gray-100/40 group-hover:text-fuchsia-500/60 transition-color"
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
@@ -60,18 +65,19 @@
           </svg>
         </button>
         <div
-          class="absolute top-full -left-8 z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-dark-main border-1 border-dark-border ring-1 shadow-lg ring-gray-900/5"
+          class="absolute top-full -left-8 z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-dark-component shadow-md shadow-black-900/50"
+          [class.hidden]="!nav['product']"
           [@flyoutMenu]="nav['product'] ? 'visible' : 'hidden'"
         >
           <div class="p-4">
             <div
-              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover"
+              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover transition"
             >
               <div
-                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component"
+                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component transition"
               >
                 <svg
-                  class="size-6 text-gray-400 group-hover:text-indigo-600"
+                  class="size-6 text-gray-400 group-hover:text-fuchsia-500/60 transition"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -102,13 +108,13 @@
               </div>
             </div>
             <div
-              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover"
+              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover transition"
             >
               <div
-                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component"
+                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component transition"
               >
                 <svg
-                  class="size-6 text-gray-400 group-hover:text-indigo-600"
+                  class="size-6 text-gray-400 group-hover:text-fuchsia-500/60 transition"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -134,13 +140,13 @@
               </div>
             </div>
             <div
-              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover"
+              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover transition"
             >
               <div
-                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component"
+                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component transition"
               >
                 <svg
-                  class="size-6 text-gray-400 group-hover:text-indigo-600"
+                  class="size-6 text-gray-400 group-hover:text-fuchsia-500/60 transition"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -166,13 +172,13 @@
               </div>
             </div>
             <div
-              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover"
+              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover transition"
             >
               <div
-                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component"
+                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component transition"
               >
                 <svg
-                  class="size-6 text-gray-400 group-hover:text-indigo-600"
+                  class="size-6 text-gray-400 group-hover:text-fuchsia-500/60 transition"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -196,13 +202,13 @@
               </div>
             </div>
             <div
-              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover"
+              class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-dark-component-hover transition"
             >
               <div
-                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component"
+                class="flex size-11 flex-none items-center justify-center rounded-lg group-hover:bg-dark-component transition"
               >
                 <svg
-                  class="size-6 text-gray-400 group-hover:text-indigo-600"
+                  class="size-6 text-gray-400 group-hover:text-fuchsia-500/60 transition"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
@@ -228,10 +234,12 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-2 divide-x divide-dark-border/50 border-t border-dark-border">
+          <div
+            class="grid grid-cols-2 divide-x divide-dark-border/50 border-t border-dark-border"
+          >
             <a
               href="#"
-              class="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-300 hover:bg-dark-component-hover"
+              class="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
             >
               <svg
                 class="size-5 flex-none text-gray-300"
@@ -250,7 +258,7 @@
             </a>
             <a
               href="#"
-              class="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-300 hover:bg-dark-component-hover"
+              class="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
             >
               <svg
                 class="size-5 flex-none text-gray-300"
@@ -271,15 +279,42 @@
         </div>
       </div>
 
-      <a href="#" class="text-sm/6 font-semibold text-gray-300">Features</a>
-      <a href="#" class="text-sm/6 font-semibold text-gray-300">Marketplace</a>
-      <a href="#" class="text-sm/6 font-semibold text-gray-300">Company</a>
+      <a
+        href="#"
+        class="text-sm/6 font-semibold text-gray-100/40 hover:text-gray-100/80 transition"
+        >Features</a
+      >
+      <a
+        href="#"
+        class="text-sm/6 font-semibold text-gray-100/40 hover:text-gray-100/80 transition"
+        >Marketplace</a
+      >
+      <a
+        href="#"
+        class="text-sm/6 font-semibold text-gray-100/40 hover:text-gray-100/80 transition"
+        >Company</a
+      >
     </div>
 
-    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <a href="#" class="text-sm/6 font-semibold text-gray-300"
-        >Log in <span aria-hidden="true">&rarr;</span></a
-      >
+    <!-- Login y change theme -->
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end gap-5">
+      <div class="flex items-center justify-center">
+        <a
+          href="#"
+          class="text-sm/6 font-semibold text-gray-100/40 hover:text-gray-100/80 transition"
+          >Log in <span aria-hidden="true">&rarr;</span></a
+        >
+      </div>
+
+      <div class="flex items-center justify-center">
+        <button
+          type="button"
+          class="bg-dark-main text-gray-100/40 hover:text-fuchsia-500/80 hover:bg-dark-component-hover transition flex items-center gap-x-2 rounded-lg px-3 py-2 text-sm/6 font-semibold"
+          (click)="toggleTheme()"
+        >
+          <i class="bi bi-circle-half"></i>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -288,7 +323,7 @@
     <div
       *ngIf="isOpen"
       [@fadeBackground]
-      class="fixed inset-0 z-10 bg-black/30"
+      class="fixed inset-0 z-10 bg-black/20"
     ></div>
     <div
       *ngIf="isOpen"
@@ -298,11 +333,7 @@
       <div class="flex items-center justify-between">
         <a href="#" class="-m-1.5 p-1.5">
           <span class="sr-only">Your Company</span>
-          <img
-            class="h-8 w-auto"
-            src="logo.svg"
-            alt=""
-          />
+          <img class="h-8 w-auto" src="logo.svg" alt="" />
         </a>
         <button
           type="button"
@@ -311,7 +342,7 @@
         >
           <span class="sr-only">Close menu</span>
           <svg
-            class="size-6 text-gray-300"
+            class="size-6 text-fuchsia-700/60 hover:text-fuchsia-700/80 transition"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -333,14 +364,14 @@
             <div class="-mx-3">
               <button
                 type="button"
-                class="flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                class="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                 aria-controls="disclosure-1"
                 aria-expanded="false"
                 (click)="toggleSidebar('product')"
               >
                 Product
                 <svg
-                  class="size-5 flex-none"
+                  class="size-5 flex-none text-fuchsia-700/60 group-hover:text-fuchsia-700/80 transition-color"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   aria-hidden="true"
@@ -362,63 +393,72 @@
               >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Analytics</a
                 >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Engagement</a
                 >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Security</a
                 >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Integrations</a
                 >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Automations</a
                 >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Watch demo</a
                 >
                 <a
                   href="#"
-                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+                  class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
                   >Contact sales</a
                 >
               </div>
             </div>
             <a
               href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
               >Features</a
             >
             <a
               href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
               >Marketplace</a
             >
             <a
               href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
               >Company</a
             >
           </div>
           <div class="py-6">
             <a
               href="#"
-              class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover"
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
               >Log in</a
             >
+          </div>
+          <div class="py-6">
+            <a
+              href="#"
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-dark-component-hover transition"
+              (click)="toggleTheme()"
+            >
+              Toggle theme
+            </a>
           </div>
         </div>
       </div>

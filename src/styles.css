@@ -1,24 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import './assets/fonts';
+@import "./assets/fonts";
 @import "tailwindcss";
 
-@theme{
-    --font-sans: 'Inter', sans-serif;
-    --font-logo: 'Press Start 2P', sans-serif;
-    --font-sans--font-feature-settings: 'ss01', 'ss03', 'cv05', 'cv06', 'cv07', 'cv08', 'cv11', 'cv12', 'cv13';
-    --color-main-light: oklch(91.24% 0.0356 281.29);
-    --color-main-light-hover: oklch(79.04% 0.1011 281.29);
-    --color-dark-main: oklch(21.98% 0.0356 281.288);
-    --color-dark-border: oklch(26.97% 0.0356 281.288);
-    --color-dark-component: oklch(22.78% 0.0356 281.288);
-    --color-dark-component-hover: oklch(24.78% 0.0356 281.288);
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "DM Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-logo: "Press Start 2P", sans-serif;
+  --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
+    "cv08", "cv11", "cv12", "cv13";
+  /* Light colors */
+  --color-light-main: oklch(91.24% 0.0356 300);
+  --color-main-light-hover: oklch(79.04% 0.1011 300);
+  /* Dark colors */
+  --color-dark-main: oklch(21% 0.0356 300);
+  --color-dark-border: oklch(26.97% 0.0356 300);
+  --color-dark-component: oklch(22.5% 0.0356 300);
+  --color-dark-component-hover: oklch(25% 0.05 300);
+}
+
+.theme-transition {
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .logo-text {
-    @apply ms-3 text-xl font-bold text-center text-fuchsia-600 font-logo select-none;
+  @apply ms-3 text-xl font-bold text-center text-fuchsia-700 font-logo select-none;
 }
 
-button{
-    @apply cursor-pointer;
+button {
+  @apply cursor-pointer;
 }
