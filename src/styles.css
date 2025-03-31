@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "./assets/fonts";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-header: "Hanken Grotesk", sans-serif;
+  --font-logo: "Press Start 2P", sans-serif;
+  --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
+    "cv08", "cv11", "cv12", "cv13";
+
+  /* Primary colors */
+  --color-emphasis: var(--color-pink-600);
+  --color-emphasis-hover: var(--color-pink-700);
+
+  /* Light colors */
+  --color-light-main: oklch(1 0.05 150);
+  --color-light-border: oklch(90% 0.07 150);
+  --color-light-component: oklch(1 0.08 150);
+  --color-light-component-hover: oklch(95% 0.1 150);
+  /* Text colors */
+  --color-light: oklch(15% 0.1 200);
+  --color-light-text: oklch(45% 0.1 150);
+  --color-light-text-hover: oklch(55% 0.1 150);
+
+  /* Dark colors */
+  --color-dark-main: oklch(15% 0.04 300);
+  --color-dark-border: oklch(20% 0.05 300);
+  --color-dark-component: oklch(15% 0.065 300);
+  --color-dark-component-hover: oklch(21.5% 0.1 300);
+  /* Text colors */
+  --color-dark: oklch(98% 0.1 300);
+  --color-dark-text: oklch(80% 0.1 300);
+  --color-dark-text-hover: oklch(87% 0.1 300);
+}
+
+.dark .bg-dark-hero {
+  @apply bg-gradient-to-t from-transparent to-dark-component;
+}
+
+.bg-light-hero {
+  @apply bg-gradient-to-t from-transparent to-light-component;
+}
+
+.logo-text {
+  @apply ms-3 text-xl font-bold text-center text-pink-600 font-logo select-none;
+}
+
+.text-header {
+  @apply text-light-text dark:text-dark-text hover:text-light-text-hover dark:hover:text-dark-text-hover transition;
+}
+
+button {
+  @apply cursor-pointer;
+}
