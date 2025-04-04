@@ -6,8 +6,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Inter", sans-serif;
-  --font-header: "Hanken Grotesk", sans-serif;
+  --font-sans: "DM Sans", sans-serif;
+  --font-header: "DM Sans", sans-serif;
   --font-logo: "Press Start 2P", sans-serif;
   --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
     "cv08", "cv11", "cv12", "cv13";
@@ -17,14 +17,14 @@
   --color-emphasis-hover: var(--color-pink-700);
 
   /* Light colors */
-  --color-light-main: oklch(1 0.05 150);
-  --color-light-border: oklch(90% 0.07 150);
-  --color-light-component: oklch(1 0.08 150);
-  --color-light-component-hover: oklch(95% 0.1 150);
+  --color-light-main: oklch(100% 0 148);
+  --color-light-border: oklch(99% 0.08 148);
+  --color-light-component: oklch(95% 0.08 148);
+  --color-light-component-hover: oklch(95% 0.15 148);
   /* Text colors */
-  --color-light: oklch(15% 0.1 200);
-  --color-light-text: oklch(45% 0.1 150);
-  --color-light-text-hover: oklch(55% 0.1 150);
+  --color-light: oklch(15% 0.22 148);
+  --color-light-text: oklch(55% 0.22 148);
+  --color-light-text-hover: oklch(55% 0.6 148);
 
   /* Dark colors */
   --color-dark-main: oklch(15% 0.04 300);
@@ -35,10 +35,20 @@
   --color-dark: oklch(98% 0.1 300);
   --color-dark-text: oklch(80% 0.1 300);
   --color-dark-text-hover: oklch(87% 0.1 300);
+
+  /* Buttons */
+  --color-light-button: oklch(55% 0.22 148);
+  --color-light-button-hover: oklch(55% 0.6 148);
+  --color-dark-button: oklch(21.5% 0.1 300);
+  --color-dark-button-hover: oklch(26% 0.1 300);
 }
 
 .dark .bg-dark-hero {
   @apply bg-gradient-to-t from-transparent to-dark-component;
+}
+
+.button-colors {
+  @apply bg-light-button dark:bg-dark-button hover:bg-light-button-hover dark:hover:bg-dark-button-hover;
 }
 
 .bg-light-hero {
