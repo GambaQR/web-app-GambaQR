@@ -4,12 +4,11 @@ import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  standalone: true,
-  imports: [RouterModule, CommonModule, NgIf],
-  animations: [flyoutMenu, slideInOut, slideFromRight, fadeBackground],
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    imports: [RouterModule, CommonModule, NgIf],
+    animations: [flyoutMenu, slideInOut, slideFromRight, fadeBackground],
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
   isOpen: boolean = false;

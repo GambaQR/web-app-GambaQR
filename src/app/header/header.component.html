@@ -1,7 +1,7 @@
 <header
   class="sticky inset-0 z-10 mx-5 pt-5 bg-light-main dark:bg-dark-main rounded-b-xl"
 >
-  <div class="bg-light-component dark:bg-dark-component rounded-xl sticky">
+  <div class="bg-light-component dark:bg-dark-component border border-light-border dark:border-dark-border rounded-xl sticky">
     <nav
       class="mx-auto flex items-center justify-between p-4 lg:px-8 h-full"
       aria-label="Global"
@@ -68,7 +68,7 @@
           </button>
           <!-- Flyout menu -->
           <div
-            class="absolute top-full -left-8 z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-light-component dark:bg-dark-component border-1 border-light-border dark:border-dark-border shadow-md shadow-black-900/50"
+            class="absolute top-full -left-8 z-3 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-light-component dark:bg-dark-component border-1 border-light-border dark:border-dark-border shadow-md shadow-black-900/50"
             [class.hidden]="!nav['product']"
             [@flyoutMenu]="nav['product'] ? 'visible' : 'hidden'"
           >
