@@ -16,7 +16,7 @@ export class QRCodeGeneratorComponent implements OnInit {
   generateQRCode(data: string): void {
     QRCode.toDataURL(data, {
       color: {
-        dark: '#9572FF',
+        dark: '#2E0000',
         light: '#00000000'
       },
       version: 5,

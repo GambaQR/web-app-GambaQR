@@ -1,54 +1,31 @@
-<div class="p-5 flex flex-col items-center top-[10px]">
-  <div
-    class="p-[5%] w-full h-dvh rounded-xl grid grid-cols-1 lg:grid-cols-5 gap-x-4 gap-y-4 relative"
-  >
-    <div class="absolute inset-0 bg-light-hero bg-dark-hero rounded-xl z-0"></div>
-    <!-- Content -->
-    <div class="lg:col-span-1 col-span-5 h-full border-2 border-black z-1">
-      <div class="flex items-center justify-center h-full">
-        <qrcode
-          [qrdata]="'https://github.com/Cordobo/angularx-qrcode'"
-          [allowEmptyString]="true"
-          [ariaLabel]="'QR Code image with the following content...'"
-          [cssClass]="'center'"
-          [colorDark]="'#000000'"
-          [colorLight]="'#00000000'"
-          [elementType]="'canvas'"
-          [errorCorrectionLevel]="'M'"
-          [imageSrc]="'./logo.svg'"
-          [margin]="4"
-          [scale]="1"
-          [title]="'A custom title attribute'"
-          [width]="200"
-        ></qrcode>
-      </div>
-    </div>
-    <div
-      class="md:col-span-5 lg:col-span-4 h-full border-2 border-black flex flex-col justify-center z-1 lg:text-start text-center"
-    >
-      <span
-        class="lg:text-9xl sm:text-7xl text-5xl text-emphasis font-extrabold font-header"
-        >¡Bienvenido a GambaQR!
+<div class="p-5 flex flex-col items-center">
+  <div class="p-[5%] w-full h-auto max-w-screen-xl rounded-xl relative flex flex-col lg:flex-row gap-8 lg:gap-16">
+    
+    <!-- Fondo con gradiente -->
+    <div class="absolute inset-0 bg-light-component dark:bg-dark-component rounded-xl z-0 border border-light-border dark:border-dark-border"></div>
+    
+    <!-- Contenido principal -->
+    <div class="flex flex-col justify-center items-center lg:items-start lg:col-span-4 z-1 text-center lg:text-start space-y-6">
+      
+      <!-- Título -->
+      <span class="lg:text-9xl sm:text-7xl text-5xl text-emphasis font-extrabold font-header my-10 z-0">
+        ¡Bienvenido a GambaQR!
       </span>
-      <p
-        class="font-light text-light dark:text-dark lg:text-2xl md:text-xl text-lg mt-5"
-      >
-        Compra en tus restaurantes favoritos y obtén descuentos pagando en
-        línea.
+      
+      <!-- Descripción -->
+      <p class="font-light text-light dark:text-dark lg:text-2xl md:text-xl text-lg mt-5">
+        Compra en tus restaurantes favoritos y obtén descuentos pagando en línea.
       </p>
-      <div class="mt-8 flex flex-col lg:flex-row gap-4">
-        <button
-          class="w-50 text-xl button-colors text-white py-2 rounded-full transition z-2 self-center lg:self-start"
-        >
+      
+      <!-- Botones -->
+      <div class="mt-8 flex flex-col lg:flex-row gap-6">
+        <button class="w-full lg:w-auto text-xl button-colors text-white py-3 px-6 rounded-full transition z-1">
           Inicia sesión
         </button>
-        <button
-          class="w-50 text-xl button-colors text-white py-2 rounded-full transition z-2 self-center lg:self-start"
-        >
+        <button class="w-full lg:w-auto text-xl button-colors text-white py-3 px-6 rounded-full transition z-1">
           Regístrate
         </button>
       </div>
     </div>
-    
   </div>
 </div>

@@ -17,30 +17,30 @@
   --color-emphasis-hover: var(--color-pink-700);
 
   /* Light colors */
-  --color-light-main: oklch(100% 0 148);
-  --color-light-border: oklch(99% 0.08 148);
-  --color-light-component: oklch(95% 0.08 148);
-  --color-light-component-hover: oklch(95% 0.15 148);
+  --color-light-main: oklch(95% 0.02 1);
+  --color-light-border: oklch(90% 0.2 1);
+  --color-light-component: oklch(92% 0.08 1);
+  --color-light-component-hover: oklch(90% 0.13 1);
   /* Text colors */
-  --color-light: oklch(15% 0.22 148);
-  --color-light-text: oklch(55% 0.22 148);
-  --color-light-text-hover: oklch(55% 0.6 148);
+  --color-light: oklch(10% 0.22 1);
+  --color-light-text: oklch(50% 0.3 1);
+  --color-light-text-hover: oklch(58% 0.3 1);
+  /* Buttons */
+  --color-light-button: oklch(50% 0.3 1);
+  --color-light-button-hover: oklch(55% 0.3 1);
 
   /* Dark colors */
-  --color-dark-main: oklch(15% 0.04 300);
-  --color-dark-border: oklch(20% 0.05 300);
-  --color-dark-component: oklch(15% 0.065 300);
-  --color-dark-component-hover: oklch(21.5% 0.1 300);
+  --color-dark-main: oklch(10% 0.04 1);
+  --color-dark-border: oklch(20% 0.05 1);
+  --color-dark-component: oklch(10% 0.065 1);
+  --color-dark-component-hover: oklch(21.5% 0.1 1);
   /* Text colors */
-  --color-dark: oklch(98% 0.1 300);
-  --color-dark-text: oklch(80% 0.1 300);
-  --color-dark-text-hover: oklch(87% 0.1 300);
-
+  --color-dark: oklch(98% 0.1 1);
+  --color-dark-text: oklch(80% 0.1 1);
+  --color-dark-text-hover: oklch(87% 0.1 1);
   /* Buttons */
-  --color-light-button: oklch(55% 0.22 148);
-  --color-light-button-hover: oklch(55% 0.6 148);
-  --color-dark-button: oklch(21.5% 0.1 300);
-  --color-dark-button-hover: oklch(26% 0.1 300);
+  --color-dark-button: oklch(21.5% 0.1 1);
+  --color-dark-button-hover: oklch(26% 0.1 1);
 }
 
 .dark .bg-dark-hero {
