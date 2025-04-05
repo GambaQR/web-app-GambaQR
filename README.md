@@ -29,3 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Tailwindcss
 
 No olvidar instalar usando `npm install tailwindcss @tailwindcss/postcss postcss --force`
+
+## QRCode
+
+Usar `npm install qrcode --legacy-peer-deps`
