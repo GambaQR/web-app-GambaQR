@@ -32,4 +32,6 @@ No olvidar instalar usando `npm install tailwindcss @tailwindcss/postcss postcss
 
 ## QRCode
 
-Usar `npm install qrcode --legacy-peer-deps`
+Usar `npm install qrcode`*
+
+Antes de ello, actualizar ng-bootstrap: `npm install @ng-bootstrap/ng-bootstrap@latest`
