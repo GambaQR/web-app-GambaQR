@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { fadeBackground, flyoutMenu, slideFromRight, slideInOut } from '../../assets/animations/animations';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,14 @@ import { RouterModule } from '@angular/router';
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+
+  public isScrolled: boolean = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 50;
+  }
+  
   isOpen: boolean = false;
 
   nav: { [key: string]: boolean } = {

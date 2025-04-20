@@ -1,28 +1,44 @@
-<div class="p-5 flex flex-col items-center">
-  <div class="p-[5%] w-full h-auto max-w-screen-xl rounded-xl relative flex flex-col lg:flex-row gap-8 lg:gap-16">
-    
+<div class="flex flex-col items-center min-h-dvh">
+  <div
+    class="relative w-full h-dvh rounded-xl p-[5%] flex flex-col lg:flex-row gap-8 lg:gap-16 justify-center items-center"
+  >
     <!-- Fondo con gradiente -->
-    <div class="absolute inset-0 bg-light-component dark:bg-dark-component rounded-xl z-0 border border-light-border dark:border-dark-border"></div>
-    
+    <div
+      class="absolute inset-0 rounded-md -z-10 p-8 lg:p-16 bg-gradient-to-br from-pink-500 to-purple-600 opacity-30 dark:opacity-15 shadow blur-3xl"
+    ></div>
+
+    <!-- QR -->
+    <app-qr-code-generator [url]="url"></app-qr-code-generator>
+
     <!-- Contenido principal -->
-    <div class="flex flex-col justify-center items-center lg:items-start lg:col-span-4 z-1 text-center lg:text-start space-y-6">
-      
+    <div
+      class="z-10 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5"
+    >
       <!-- Título -->
-      <span class="lg:text-9xl sm:text-7xl text-5xl text-emphasis font-extrabold font-header my-10 z-0">
+      <h1
+        class="text-6xl xl:text-6xl font-extrabold font-header text-gray-900 dark:text-white"
+      >
         ¡Bienvenido a GambaQR!
-      </span>
-      
+      </h1>
+
       <!-- Descripción -->
-      <p class="font-light text-light dark:text-dark lg:text-2xl md:text-xl text-lg mt-5">
-        Compra en tus restaurantes favoritos y obtén descuentos pagando en línea.
+      <p class="text-lg md:text-xl lg:text-xl body-text">
+        Compra en tus restaurantes favoritos y obtén descuentos pagando en
+        línea.
       </p>
-      
+
       <!-- Botones -->
-      <div class="mt-8 flex flex-col lg:flex-row gap-6">
-        <button class="w-full lg:w-auto text-xl button-colors text-white py-3 px-6 rounded-full transition z-1">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <button
+          class="w-full lg:w-auto py-3 px-6 text-xl button-primary"
+          (click)="toLogin()"
+        >
           Inicia sesión
         </button>
-        <button class="w-full lg:w-auto text-xl button-colors text-white py-3 px-6 rounded-full transition z-1">
+        <button
+          class="w-full lg:w-auto py-3 px-6 text-xl button-primary"
+          (click)="toRegister()"
+        >
           Regístrate
         </button>
       </div>

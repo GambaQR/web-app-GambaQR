@@ -1,33 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import QRCode from 'qrcode';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import QRCodeStyling from 'qr-code-styling';
 
 @Component({
-  selector: 'app-qrcode-generator',
+  selector: 'app-qr-code-generator',
   templateUrl: './qrcode-generator.component.html',
-  styleUrl: './qrcode-generator.component.css',
 })
-export class QRCodeGeneratorComponent implements OnInit {
-  qrCodeDataUrl: string = '';
+export class QRCodeGeneratorComponent implements AfterViewInit {
+  @Input() url: string = '';
+  @ViewChild('qrCodeContainer') qrCodeContainer!: ElementRef;
 
-  ngOnInit(): void {
-    this.generateQRCode('www.gambaqr.com');
-  }
-
-  generateQRCode(data: string): void {
-    QRCode.toDataURL(data, {
-      color: {
-        dark: '#2E0000',
-        light: '#00000000'
+  readonly qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    type: "svg",
+    image: "logo.svg",
+    margin: 0,
+    dotsOptions: {
+      type: "rounded",
+      gradient: {
+        type: "radial",
+        colorStops: [
+          { offset: 0, color: "#FF69B4" },
+          { offset: 1, color: "#8A2BE2" },
+        ],
       },
-      version: 5,
-      scale: 50,
+    },
+    backgroundOptions: {
+      color: "transparent",
+    },
+    imageOptions: {
+      hideBackgroundDots: true,
+      imageSize: 0.5,
+      margin: 15,
+    },
+    qrOptions: {
       errorCorrectionLevel: 'H',
-    })
-      .then(url => {
-        this.qrCodeDataUrl = url;
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    }
+  });
+
+  ngAfterViewInit(): void {
+    this.qrCode.update({ data: this.url });
+
+    const container = this.qrCodeContainer.nativeElement;
+    container.innerHTML = '';
+    this.qrCode.append(container);
   }
 }
