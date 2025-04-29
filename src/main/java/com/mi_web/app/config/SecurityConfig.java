@@ -59,22 +59,33 @@ public class SecurityConfig {
                                 "/users/check-token",
                                 "/users/profile",
                                 "/users/all",
+                                "/users/employees/{restaurantId}",
                                 "/users",
                                 "/users/delete/**",
                                 "/restaurants/all",
                                 "/restaurants/create",
                                 "/restaurants/update",
                                 "/restaurants/delete/**",
-                                "/restaurants/**"
+                                "/restaurants/**",
+                                "/products/create",
+                                "/products/all",
+                                "/products/update/{id}",
+                                "/products/delete/{id}",
+                                "/products/{id}",
+                                "/products/by-restaurant/**",
+                                "/categories/{id}",
+                                "/categories/all",
+                                "/categories/create",
+                                "/categories/update/{id}",
+                                "/categories/delete/**",
+                                "/combos/create",
+                                "/combos/all",
+                                "/combos/{id}",
+                                "/combos/update/{id}",
+                                "/combos/delete/{id}",
+                                "/combos/by-restaurant/{restaurantId}"
 
                         ).permitAll()
-                        //.requestMatchers(HttpMethod.GET, "/users/profile").authenticated()
-
-                        // Endpoints de administración
-                       // .requestMatchers(
-                          //      "/users"
-                        //).hasAuthority("ADMIN")
-
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

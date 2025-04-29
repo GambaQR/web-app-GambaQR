@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ComboRepository extends JpaRepository<Combo, Integer> {
-    List<Combo> findByRestaurantId(Integer restaurantId);
+public interface ComboRepository extends JpaRepository<Combo, Long> {
+    List<Combo> findByRestaurantId(Long restaurantId);
 }

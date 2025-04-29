@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EmployeeInfoRepository extends JpaRepository<EmployeeInfo, Integer> {
-    List<EmployeeInfo> findByUserId(Integer userId);
-    List<EmployeeInfo> findByRestaurantId(Integer restaurantId);
+public interface EmployeeInfoRepository extends JpaRepository<EmployeeInfo, Long> {
+    List<EmployeeInfo> findByUserId(Long userId);
+    List<EmployeeInfo> findByRestaurantId(Long restaurantId);
 }
