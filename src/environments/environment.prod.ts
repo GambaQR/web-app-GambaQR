@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.google.com/api',
+  apiUrl: 'http://localhost:8080/api',
   tokenSecure: true
 }

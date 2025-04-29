@@ -28,4 +28,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Tailwindcss
 
-No olvidar instalar usando `npm install tailwindcss @tailwindcss/postcss postcss --force`
+[Install Tailwind CSS with Angular](https://tailwindcss.com/docs/installation/framework-guides/angular)
+
+## QRCode
+
+Usar `npm i qr-code-styling`

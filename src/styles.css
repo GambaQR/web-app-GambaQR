@@ -6,8 +6,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Inter", sans-serif;
-  --font-header: "Hanken Grotesk", sans-serif;
+  --font-sans: "Figtree", sans-serif;
+  --font-header: "DM Sans", sans-serif;
   --font-logo: "Press Start 2P", sans-serif;
   --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
     "cv08", "cv11", "cv12", "cv13";
@@ -17,32 +17,46 @@
   --color-emphasis-hover: var(--color-pink-700);
 
   /* Light colors */
-  --color-light-main: oklch(1 0.05 150);
-  --color-light-border: oklch(90% 0.07 150);
-  --color-light-component: oklch(1 0.08 150);
-  --color-light-component-hover: oklch(95% 0.1 150);
+  --color-light-main: oklch(99% 0 1);
+  --color-light-border: oklch(80% 0 1);
+  --color-light-component: oklch(92% 0.3 1 / 20%);
+  --color-light-component-hover: oklch(90% 0.3 1 / 15%);
   /* Text colors */
-  --color-light: oklch(15% 0.1 200);
-  --color-light-text: oklch(45% 0.1 150);
-  --color-light-text-hover: oklch(55% 0.1 150);
+  --color-light: oklch(10% 0.22 1);
+  --color-light-text: var(--color-gray-700);
+  --color-light-text-hover: oklch(58% 0.3 1);
+  /* Buttons */
+  --color-light-button: oklch(0.5 0.35 1);
+  --color-light-button-hover: oklch(0.592 0.35 1);
 
   /* Dark colors */
-  --color-dark-main: oklch(15% 0.04 300);
-  --color-dark-border: oklch(20% 0.05 300);
-  --color-dark-component: oklch(15% 0.065 300);
-  --color-dark-component-hover: oklch(21.5% 0.1 300);
+  --color-dark-main: oklch(10% 0.04 1);
+  --color-dark-border: oklch(20% 0.05 1);
+  --color-dark-component: oklch(10% 0.1 1);
+  --color-dark-component-hover: oklch(21.5% 0.1 1);
   /* Text colors */
-  --color-dark: oklch(98% 0.1 300);
-  --color-dark-text: oklch(80% 0.1 300);
-  --color-dark-text-hover: oklch(87% 0.1 300);
+  --color-dark: oklch(98% 0.1 1);
+  --color-dark-text: oklch(0.99 0 98.111);
+  --color-dark-text-hover: oklch(58% 0.3 1);
+  /* Buttons */
+  --color-dark-button: oklch(21.5% 0.1 1);
+  --color-dark-button-hover: oklch(26% 0.1 1);
+
+  --color-example: oklch(0.99 0 98.111);
+
+  --color-logo: oklch(0.66 0.2333 1.63);
 }
 
 .dark .bg-dark-hero {
-  @apply bg-gradient-to-t from-transparent to-dark-component;
+  @apply bg-gradient-to-b from-pink-700;
 }
 
 .bg-light-hero {
-  @apply bg-gradient-to-t from-transparent to-light-component;
+  @apply bg-gradient-to-b from-light-component;
+}
+
+.button-colors {
+  @apply bg-light-button dark:bg-dark-button hover:bg-light-button-hover dark:hover:bg-dark-button-hover;
 }
 
 .logo-text {
@@ -50,7 +64,35 @@
 }
 
 .text-header {
-  @apply text-light-text dark:text-dark-text hover:text-light-text-hover dark:hover:text-dark-text-hover transition;
+  @apply text-light-text dark:text-dark-text group-hover:text-light-text-hover group-hover:dark:hover:text-dark-text-hover transition;
+}
+
+.button-primary {
+  @apply rounded-full text-white bg-pink-600 shadow-pink-600 hover:bg-light-button-hover hover:shadow-[0_0_15px_0px] transition-all duration-400 z-10;
+}
+
+.title-text {
+  @apply font-extrabold font-header text-gray-900 dark:text-white;
+}
+
+.body-text {
+  @apply font-sans text-gray-800 dark:text-gray-300;
+}
+
+.disabled-text {
+  @apply text-gray-700 dark:text-gray-300 opacity-60;
+}
+
+.emphasis-text {
+  @apply font-header font-medium text-pink-600;
+}
+
+.input-style {
+  @apply block w-full rounded-md bg-white/10 px-3 py-2 text-base outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-pink-600 focus:shadow-[0_0_3px_0px] focus:shadow-pink-500;
+}
+
+.text-stroke{
+  -webkit-text-stroke: .1px var(--color-gray-900);
 }
 
 button {
