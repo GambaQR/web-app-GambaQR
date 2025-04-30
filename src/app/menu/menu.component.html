@@ -41,9 +41,9 @@
     <!-- Sección de Promociones o Combos -->
     <div class="z-10 space-y-4">
       <h2 class="text-3xl font-bold font-header text-gray-800 dark:text-white">
-        Promociones
+        Combos
       </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <menu-card
           [image]="'example.jpeg'"
           [title]="'Combo Hamburguesa'"
@@ -67,7 +67,7 @@
         <h3 class="text-2xl font-bold text-gray-700 dark:text-white">
           Hamburguesas
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <menu-card
             [image]="'burguer.jpg'"
             [title]="'Hamburguesa Artesanal'"
@@ -86,7 +86,7 @@
         <h3 class="text-2xl font-bold text-gray-700 dark:text-white">
           Bebidas
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <menu-card (onAddToCart)="addToCart()"></menu-card>
           <menu-card (onAddToCart)="addToCart()"></menu-card>
         </div>

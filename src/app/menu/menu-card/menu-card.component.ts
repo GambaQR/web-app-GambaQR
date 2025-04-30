@@ -33,7 +33,6 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-  styleUrls: ['./menu-card.component.css'],
 })
 export class MenuCardComponent {
   @Input() image: string = 'empty.webp';

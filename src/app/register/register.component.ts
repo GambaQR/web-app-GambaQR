@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
     selector: 'app-register',
     imports: [CommonModule],
     templateUrl: './register.component.html',
-    styleUrl: './register.component.css'
 })
 export class RegisterComponent {
     step = 1;
