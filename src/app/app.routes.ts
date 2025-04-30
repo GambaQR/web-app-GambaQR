@@ -7,11 +7,11 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { ExampleComponent } from './example/example.component';
 import { LayoutComponent } from './layout/layout.component';
+import { MenuComponent } from './menu/menu.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-
 
   {
     path: '', component: LayoutComponent, children: [
@@ -19,6 +19,7 @@ export const routes: Routes = [
       { path: 'app', component: DashboardComponent },
       { path: 'user', component: ProfileComponent },
       { path: 'example', component: ExampleComponent },
+      { path: 'menu', component: MenuComponent }
     ]
   },
   { path: '**', component: NotFoundComponent },

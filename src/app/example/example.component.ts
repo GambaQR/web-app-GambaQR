@@ -8,5 +8,5 @@ import { QRCodeGeneratorComponent } from "../qrcode-generator/qrcode-generator.c
 })
 export class ExampleComponent {
 
-  readonly url = 'https://www.gambaqr.com/';  // URL por defecto
+  readonly url = 'https://www.gambaqr.com/';
 }
