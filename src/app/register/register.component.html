@@ -1,1 +1,174 @@
-<p>register works!</p>
+<div class="flex flex-col items-center h-screen">
+    <div class="relative w-full h-full rounded-xl p-[5%] flex flex-col lg:flex-row gap-8 lg:gap-16 justify-center">
+      <!-- Fondo con gradiente -->
+      <div class="gradient-background-1"></div>
+  
+      <!-- Contenido del formulario de registro -->
+      <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 w-full max-w-md z-10">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+          <div class="flex justify-center items-center gap-3">
+            <a href="/">
+              <img class="h-10 w-auto" src="logo.svg" alt="GambaQR" />
+            </a>
+          </div>
+          <h2 class="mt-10 text-center text-4xl/9 font-bold title-text">
+            Crea tu cuenta
+          </h2>
+        </div>
+  
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <form class="space-y-6" action="#" method="POST">
+            <!-- Paso 1 -->
+            <div *ngIf="step === 1">
+              <div>
+                <label for="username" class="block text-lg/6 body-text">Usuario</label>
+                <div class="mt-2">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div>
+                <label for="password" class="block text-lg/6 body-text mt-4">Contraseña</label>
+                <div class="mt-2">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    autocomplete="new-password"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div>
+                <label for="repeatPassword" class="block text-lg/6 body-text mt-4">Repite la contraseña</label>
+                <div class="mt-2">
+                  <input
+                    type="password"
+                    name="repeatPassword"
+                    id="repeatPassword"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <button
+                type="button"
+                class="form-button w-full mt-6"
+                (click)="nextStep()"
+              >
+                Siguiente
+              </button>
+            </div>
+  
+            <!-- Paso 2 -->
+            <div *ngIf="step === 2">
+              <p class="body-text text-lg/6 text-center">¿Qué tipo de cuenta deseas crear?</p>
+              <div class="mt-4 space-y-4">
+                <label class="flex items-center gap-3 body-text text-lg/6">
+                  <input type="radio" name="accountType" value="owner" class="accent-pink-600" />
+                  Dueño de restaurante
+                </label>
+                <label class="flex items-center gap-3 body-text text-lg/6">
+                  <input type="radio" name="accountType" value="client" class="accent-pink-600" />
+                  Cliente
+                </label>
+              </div>
+  
+              <div class="flex justify-between mt-6 gap-3">
+                <button type="button" class="form-button" (click)="prevStep()">Atrás</button>
+                <button type="button" class="form-button" (click)="nextStep()">Siguiente</button>
+              </div>
+            </div>
+  
+            <!-- Paso 3 -->
+            <div *ngIf="step === 3">
+              <div>
+                <label for="firstName" class="block text-lg/6 body-text">Nombres</label>
+                <div class="mt-2">
+                  <input
+                    type="text"
+                    name="firstName"
+                    id="firstName"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div>
+                <label for="lastName" class="block text-lg/6 body-text mt-4">Apellidos</label>
+                <div class="mt-2">
+                  <input
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div>
+                <label for="address" class="block text-lg/6 body-text mt-4">Dirección</label>
+                <div class="mt-2">
+                  <input
+                    type="text"
+                    name="address"
+                    id="address"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div>
+                <label for="phone" class="block text-lg/6 body-text mt-4">Teléfono</label>
+                <div class="mt-2">
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div>
+                <label for="email" class="block text-lg/6 body-text mt-4">Email</label>
+                <div class="mt-2">
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    required
+                    class="input-style body-text sm:text-md/6 transition"
+                  />
+                </div>
+              </div>
+  
+              <div class="flex justify-between mt-6 gap-3">
+                <button type="button" class="form-button" (click)="prevStep()">Atrás</button>
+                <button type="submit" class="form-button">Registrar</button>
+              </div>
+            </div>
+          </form>
+  
+          <p class="mt-10 text-center text-lg/6">
+            <span class="muted-text">¿Ya tienes cuenta? </span>
+            <a href="/login" class="link-text">Inicia sesión</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -2,9 +2,15 @@ import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular
 import QRCodeStyling from 'qr-code-styling';
 
 @Component({
-  selector: 'app-qr-code-generator',
-  templateUrl: './qrcode-generator.component.html',
-  standalone: true
+
+  selector: 'qr',
+  template: `
+  <div class="relative flex justify-center items-center m-5 group">
+  <div #qrCodeContainer></div>
+  <div
+    class="absolute bg-gradient-to-br from-pink-600 to-purple-600 w-100 h-100 -z-10 opacity-15 group-hover:opacity-30 rounded-4xl blur-3xl transition duration-700"
+  ></div>
+</div>`,
 })
 export class QRCodeGeneratorComponent implements AfterViewInit {
   @Input() url: string = '';

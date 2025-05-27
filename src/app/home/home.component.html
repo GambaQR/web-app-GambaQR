@@ -3,12 +3,10 @@
     class="relative w-full h-dvh rounded-xl p-[5%] flex flex-col lg:flex-row gap-8 lg:gap-16 justify-center items-center"
   >
     <!-- Fondo con gradiente -->
-    <div
-      class="absolute inset-0 rounded-md -z-10 p-8 lg:p-16 bg-gradient-to-br from-pink-500 to-purple-600 opacity-30 dark:opacity-15 shadow blur-3xl"
-    ></div>
+    <div class="gradient-background-2"></div>
 
     <!-- QR -->
-    <app-qr-code-generator [url]="url"></app-qr-code-generator>
+    <qr [url]="url"></qr>
 
     <!-- Contenido principal -->
     <div
@@ -30,13 +28,14 @@
       <!-- Botones -->
       <div class="flex flex-col lg:flex-row gap-6">
         <button
-          class="w-full lg:w-auto py-3 px-6 text-xl button-primary"
+          class="hero-button"
           (click)="toLogin()"
         >
           Inicia sesión
         </button>
+
         <button
-          class="w-full lg:w-auto py-3 px-6 text-xl button-primary"
+          class="hero-button"
           (click)="toRegister()"
         >
           Regístrate

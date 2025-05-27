@@ -1,0 +1,96 @@
+<div class="flex flex-col items-center min-h-dvh">
+  <div
+    class="relative w-full h-full rounded-xl p-[5%] flex flex-col gap-8 lg:gap-16"
+  >
+    <!-- Fondo con gradiente -->
+    <div class="gradient-background-1"></div>
+    <!-- Header del restaurante -->
+    <div
+      class="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_4fr] items-center gap-8 text-center lg:text-left p-8"
+    >
+      <!-- Logo del restaurante con fondo y sombra -->
+      <div class="flex justify-center lg:justify-start">
+        <div class="relative">
+          <!-- Fondo con gradiente y blur -->
+          <div
+            class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 rounded-full blur-xl opacity-30 bg-purple-600/60 -z-10"
+          ></div>
+
+          <!-- Imagen con sombra -->
+          <img
+            src="shop.jpg"
+            alt="Logo de Gamba Burgers"
+            class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full shadow-lg relative z-10"
+          />
+        </div>
+      </div>
+
+      <!-- Título y descripción del restaurante -->
+      <div class="space-y-3">
+        <h1
+          class="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold font-header text-gray-900 dark:text-white my-4"
+        >
+          Gamba Burgers
+        </h1>
+        <p class="text-lg lg:text-xl body-text">
+          Descubre nuestras hamburguesas artesanales y combos especiales.
+        </p>
+      </div>
+    </div>
+
+    <!-- Sección de Promociones o Combos -->
+    <div class="z-10 space-y-4">
+      <h2 class="text-3xl font-bold font-header text-gray-800 dark:text-white">
+        Combos
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <menu-card
+          [image]="'example.jpeg'"
+          [title]="'Combo Hamburguesa'"
+          [price]="8.99"
+          [description]="'Haburguesa + Papas + Bebida'"
+          (onAddToCart)="addToCart()"
+        ></menu-card>
+
+        <menu-card (onAddToCart)="addToCart()"></menu-card>
+      </div>
+    </div>
+
+    <!-- Sección del Menú General -->
+    <div class="z-10 space-y-4">
+      <h2 class="text-3xl font-bold font-header text-gray-800 dark:text-white">
+        Menú
+      </h2>
+
+      <!-- Categoría: Hamburguesas -->
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-gray-700 dark:text-white">
+          Hamburguesas
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <menu-card
+            [image]="'burguer.jpg'"
+            [title]="'Hamburguesa Artesanal'"
+            [price]="9.99"
+            [description]="'Haburguesa bañada en salsa especial'"
+            (onAddToCart)="addToCart()"
+          ></menu-card>
+
+          <menu-card (onAddToCart)="addToCart()"></menu-card>
+          <menu-card (onAddToCart)="addToCart()"></menu-card>
+        </div>
+      </div>
+
+      <!-- Categoría: Bebidas -->
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-gray-700 dark:text-white">
+          Bebidas
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <menu-card (onAddToCart)="addToCart()"></menu-card>
+          <menu-card (onAddToCart)="addToCart()"></menu-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

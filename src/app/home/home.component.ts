@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
+
+    readonly url = 'https://www.gambaqr.com/';
+
     constructor(
         private readonly router: Router,
     ) { }
@@ -21,7 +24,5 @@ export class HomeComponent {
     toRegister() {
         this.router.navigate(['/register']);
     }
-
-    readonly url = 'https://www.gambaqr.com/';
 
 }

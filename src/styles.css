@@ -18,7 +18,7 @@
 
   /* Light colors */
   --color-light-main: oklch(99% 0 1);
-  --color-light-border: oklch(80% 0 1);
+  --color-light-border: oklch(92% 0.3 1 / 20%);
   --color-light-component: oklch(92% 0.3 1 / 20%);
   --color-light-component-hover: oklch(90% 0.3 1 / 15%);
   /* Text colors */
@@ -47,28 +47,10 @@
   --color-logo: oklch(0.66 0.2333 1.63);
 }
 
-.dark .bg-dark-hero {
-  @apply bg-gradient-to-b from-pink-700;
-}
-
-.bg-light-hero {
-  @apply bg-gradient-to-b from-light-component;
-}
-
-.button-colors {
-  @apply bg-light-button dark:bg-dark-button hover:bg-light-button-hover dark:hover:bg-dark-button-hover;
-}
-
-.logo-text {
-  @apply ms-3 text-xl font-bold text-center text-pink-600 font-logo select-none;
-}
+/* Tailwind CSS classes */
 
 .text-header {
   @apply text-light-text dark:text-dark-text group-hover:text-light-text-hover group-hover:dark:hover:text-dark-text-hover transition;
-}
-
-.button-primary {
-  @apply rounded-full text-white bg-pink-600 shadow-pink-600 hover:bg-light-button-hover hover:shadow-[0_0_15px_0px] transition-all duration-400 z-10;
 }
 
 .title-text {
@@ -79,7 +61,7 @@
   @apply font-sans text-gray-800 dark:text-gray-300;
 }
 
-.disabled-text {
+.muted-text {
   @apply text-gray-700 dark:text-gray-300 opacity-60;
 }
 
@@ -91,10 +73,38 @@
   @apply block w-full rounded-md bg-white/10 px-3 py-2 text-base outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-pink-600 focus:shadow-[0_0_3px_0px] focus:shadow-pink-500;
 }
 
-.text-stroke{
-  -webkit-text-stroke: .1px var(--color-gray-900);
-}
-
 button {
   @apply cursor-pointer;
+}
+
+.button-primary {
+  @apply w-full px-3 py-1.5 text-lg rounded-full text-white bg-pink-600 shadow-pink-600 hover:bg-light-button-hover hover:shadow-[0_0_15px_0px] transition-all duration-400 z-10;
+}
+
+.form-button {
+  @apply w-full px-3 py-1.5 text-lg rounded-full text-white bg-pink-600 shadow-pink-600 hover:bg-light-button-hover hover:shadow-[0_0_15px_0px] transition-all duration-400 z-10;
+}
+
+.hero-button {
+  @apply w-full py-3 px-6 text-xl rounded-full text-white bg-pink-600 shadow-pink-600 hover:bg-light-button-hover hover:shadow-[0_0_15px_0px] transition-all duration-400 z-10 lg:w-auto;
+}
+
+.link-text {
+  @apply font-header font-medium text-pink-600 text-shadow-[0_0_0] hover:text-shadow-[0_0_8px] text-shadow-pink-500 transition duration-300;
+}
+
+.price-text {
+  @apply font-header text-lg font-medium text-pink-600 text-shadow-[0_0_2px] text-shadow-pink-500;
+}
+
+.gradient-background-1 {
+  @apply absolute inset-0 rounded-md -z-10 p-8 lg:p-16 bg-gradient-to-br from-pink-600 to-purple-600 opacity-40 dark:opacity-15 shadow blur-3xl;
+}
+
+.gradient-background-2 {
+  @apply absolute inset-0 rounded-md -z-10 p-8 lg:p-16 bg-gradient-to-br from-pink-500 to-purple-600 opacity-30 dark:opacity-15 shadow blur-3xl;
+}
+
+.menu-card {
+  @apply rounded-xl p-4 bg-light-component dark:bg-dark-component shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-white/10 ring-1 ring-light-border dark:ring-dark-border space-y-3;
 }
