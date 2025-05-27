@@ -1,0 +1,49 @@
+<div
+  class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+>
+  <div class="relative h-48 p-3">
+    <img
+      [src]="image || 'example.png'"
+      [alt]="title"
+      loading="lazy"
+      class="object-cover w-full h-full rounded-lg"
+    />
+    <button
+      (click)="addToCart()"
+      class="absolute bottom-1 right-2 bg-purple-950 shadow-purple-700/50 hover:shadow-[0_0_30px_0px] transition-all duration-300 text-white w-12 h-12 px-3 py-2 rounded-full inline-flex items-center justify-center gap-2"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-plus h-5 w-5"
+      >
+        <path d="M5 12h14"></path>
+        <path d="M12 5v14"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="p-6">
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+      {{ title | titlecase }}
+    </h3>
+
+    <p
+      class="mt-2 text-gray-600 dark:text-gray-300 font-light truncate"
+      style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+    >
+      {{ description }}
+    </p>
+
+    <h3 class="mt-2 text-purple-950 dark:text-purple-100 text-lg font-medium">
+      {{ price }} €
+    </h3>
+  </div>
+</div>

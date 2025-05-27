@@ -11,13 +11,13 @@ import { MenuComponent } from './menu/menu.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-
+  
   {
     path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent },
       { path: 'app', component: DashboardComponent },
       { path: 'user', component: ProfileComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'example', component: ExampleComponent },
       { path: 'menu', component: MenuComponent }
     ]

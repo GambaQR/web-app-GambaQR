@@ -6,11 +6,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* Font families */
+  --font-header: "Hanken Grotesk", sans-serif;
   --font-sans: "Figtree", sans-serif;
-  --font-header: "DM Sans", sans-serif;
   --font-logo: "Press Start 2P", sans-serif;
-  --font-sans--font-feature-settings: "ss01", "ss03", "cv05", "cv06", "cv07",
-    "cv08", "cv11", "cv12", "cv13";
 
   /* Primary colors */
   --color-emphasis: var(--color-pink-600);
@@ -41,8 +40,6 @@
   /* Buttons */
   --color-dark-button: oklch(21.5% 0.1 1);
   --color-dark-button-hover: oklch(26% 0.1 1);
-
-  --color-example: oklch(0.99 0 98.111);
 
   --color-logo: oklch(0.66 0.2333 1.63);
 }
@@ -86,25 +83,20 @@ button {
 }
 
 .hero-button {
-  @apply w-full py-3 px-6 text-xl rounded-full text-white bg-pink-600 shadow-pink-600 hover:bg-light-button-hover hover:shadow-[0_0_15px_0px] transition-all duration-400 z-10 lg:w-auto;
+  @apply px-8 py-3 rounded-full text-lg font-semibold transition-all duration-400;
+  @apply bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 shadow-purple-600 hover:shadow-[0_0_15px_0px];
+}
+
+.hero-button-outline {
+  @apply px-8 py-3 rounded-full text-lg font-semibold transition-all duration-300;
+  @apply border-2 border-purple-600 text-purple-600 hover:bg-purple-300/50 dark:border-purple-500 dark:text-purple-500 dark:hover:bg-purple-950/50;
+}
+
+.hero-button-large {
+  @apply px-12 py-4 rounded-full text-xl font-bold transition-all duration-300;
+  @apply bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 shadow-purple-600 hover:shadow-[0_0_15px_0px];
 }
 
 .link-text {
-  @apply font-header font-medium text-pink-600 text-shadow-[0_0_0] hover:text-shadow-[0_0_8px] text-shadow-pink-500 transition duration-300;
-}
-
-.price-text {
-  @apply font-header text-lg font-medium text-pink-600 text-shadow-[0_0_2px] text-shadow-pink-500;
-}
-
-.gradient-background-1 {
-  @apply absolute inset-0 rounded-md -z-10 p-8 lg:p-16 bg-gradient-to-br from-pink-600 to-purple-600 opacity-40 dark:opacity-15 shadow blur-3xl;
-}
-
-.gradient-background-2 {
-  @apply absolute inset-0 rounded-md -z-10 p-8 lg:p-16 bg-gradient-to-br from-pink-500 to-purple-600 opacity-30 dark:opacity-15 shadow blur-3xl;
-}
-
-.menu-card {
-  @apply rounded-xl p-4 bg-light-component dark:bg-dark-component shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-white/10 ring-1 ring-light-border dark:ring-dark-border space-y-3;
+  @apply font-header font-medium text-purple-600 text-shadow-[0_0_0] hover:text-shadow-[0_0_8px] text-shadow-purple-500 transition duration-300;
 }
