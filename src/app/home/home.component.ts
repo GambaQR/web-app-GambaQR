@@ -4,23 +4,24 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
+    standalone: true,
     imports: [QRCodeGeneratorComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
 })
 export class HomeComponent {
 
-constructor(
-    private readonly router : Router,
-) {}
-toLogin() {
-    this.router.navigate(['/login']);
-}
+    constructor(
+        private readonly router: Router,
+    ) { }
+    toLogin() {
+        this.router.navigate(['/login']);
+    }
 
-toRegister(){
-    this.router.navigate(['/register']);
-}
+    toRegister() {
+        this.router.navigate(['/register']);
+    }
 
-    readonly url = 'https://www.gambaqr.com/'; 
+    readonly url = 'https://www.gambaqr.com/';
 
 }

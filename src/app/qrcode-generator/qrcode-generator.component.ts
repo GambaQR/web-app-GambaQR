@@ -4,6 +4,7 @@ import QRCodeStyling from 'qr-code-styling';
 @Component({
   selector: 'app-qr-code-generator',
   templateUrl: './qrcode-generator.component.html',
+  standalone: true
 })
 export class QRCodeGeneratorComponent implements AfterViewInit {
   @Input() url: string = '';
