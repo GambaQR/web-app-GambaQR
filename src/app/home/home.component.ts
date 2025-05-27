@@ -10,17 +10,18 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-constructor(
-    private readonly router : Router,
-) {}
-toLogin() {
-    this.router.navigate(['/login']);
-}
+    readonly url = 'https://www.gambaqr.com/';
 
-toRegister(){
-    this.router.navigate(['/register']);
-}
+    constructor(
+        private readonly router: Router,
+    ) { }
+    toLogin() {
+        this.router.navigate(['/login']);
+    }
 
-    readonly url = 'https://www.gambaqr.com/'; 
+    toRegister() {
+        this.router.navigate(['/register']);
+    }
+
 
 }
