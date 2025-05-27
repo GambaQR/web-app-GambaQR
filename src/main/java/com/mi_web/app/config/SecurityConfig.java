@@ -6,7 +6,6 @@ import com.mi_web.app.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 @Configuration
 @EnableWebSecurity
@@ -38,8 +36,8 @@ public class SecurityConfig {
                         .withUsername(user.getUsername())
                         .password(user.getPassword())
                         .authorities(user.getRole().name())
-                        .build()
-                ).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+                        .build())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
     }
 
     @Bean
@@ -78,16 +76,32 @@ public class SecurityConfig {
                                 "/categories/create",
                                 "/categories/update/{id}",
                                 "/categories/delete/**",
+                                "/promotions/create",
+                                "/promotions/all",
+                                "/promotions/{id}",
+                                "/promotions/update/{id}",
+                                "/promotions/delete/{id}",
+                                "/promotions/by-restaurant/{restaurantId}",
                                 "/combos/create",
                                 "/combos/all",
                                 "/combos/{id}",
                                 "/combos/update/{id}",
                                 "/combos/delete/{id}",
-                                "/combos/by-restaurant/{restaurantId}"
+                                "/combos/by-restaurant/{restaurantId}",
+                                "/orders/create",
+                                "/orders/all",
+                                "/orders/by-user/{userId}",
+                                "/orders/{id}",
+                                "/orders/update/{id}",
+                                "/orders/delete/{id}",
+                                "/payments/process",
+                                "/payments/user/{userId}",
+                                "/payments/order/{orderId}",
+                                "/payments/delete/{id}",
+                                "/payments/update/{id}"
 
                         ).permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

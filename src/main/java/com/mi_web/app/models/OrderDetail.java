@@ -26,6 +26,10 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "combo_id")
+    private Combo combo;
+
     @Column(nullable = false)
     private Integer quantity;
 
@@ -35,6 +39,4 @@ public class OrderDetail {
     @Column(nullable = false)
     private BigDecimal total;
 
-    @Column(nullable = false)
-    private String status;
 }

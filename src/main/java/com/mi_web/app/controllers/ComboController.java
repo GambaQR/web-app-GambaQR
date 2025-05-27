@@ -28,7 +28,7 @@ public class ComboController {
             ComboResponse combo = comboService.createCombo(request);
             return ResponseEntity.ok(combo);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of("error ", e.getMessage()));
         }
     }
 
@@ -50,7 +50,7 @@ public class ComboController {
             ComboResponse updated = comboService.updateCombo(id, request);
             return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of(" error", e.getMessage()));
         }
     }
 

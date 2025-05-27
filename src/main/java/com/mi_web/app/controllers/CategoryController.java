@@ -1,12 +1,16 @@
 package com.mi_web.app.controllers;
 
+import com.mi_web.app.exceptions.ResourceNotFoundException;
 import com.mi_web.app.models.Category;
 import com.mi_web.app.services.CategoryService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/categories")
@@ -27,22 +31,32 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        return categoryService.getCategoryById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(categoryService.getCategoryById(id));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        return categoryService.updateCategory(id, category)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category category) {
+        try {
+            Category updatedCategory = categoryService.updateCategory(id, category);
+            return ResponseEntity.ok(updatedCategory);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        boolean deleted = categoryService.deleteCategory(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+    try {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.noContent().build(); 
+    } catch (ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
     }
+}
+
 }

@@ -1,6 +1,5 @@
 package com.mi_web.app.controllers;
 
-import com.mi_web.app.dtos.auth.EmployeeDTO;
 import com.mi_web.app.dtos.auth.*;
 import com.mi_web.app.models.User;
 import com.mi_web.app.models.EmployeeInfo;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -109,7 +107,7 @@ public class UserController {
                     employeeDTO.setRole(employeeInfo.getUser().getRole().toString());
                     return employeeDTO;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return ResponseEntity.ok(employeeDTOs);
     }

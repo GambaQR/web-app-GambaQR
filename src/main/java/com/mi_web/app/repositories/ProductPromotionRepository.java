@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ProductPromotionRepository extends JpaRepository<ProductPromotion, Integer> {
     List<ProductPromotion> findByPromotionId(Integer promotionId);
+    List<ProductPromotion> findByProductId(Long productId);
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class ComboService {
             cp.setProduct(product);
             cp.setQuantity(p.getQuantity());
             return cp;
-        }).collect(Collectors.toList());
+        }).toList();
 
         comboProductRepository.saveAll(comboProducts);
 
@@ -54,7 +53,7 @@ public class ComboService {
         List<Combo> combos = comboRepository.findAll();
         return combos.stream()
                 .map(combo -> toComboResponse(combo, comboProductRepository.findByCombo(combo)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<ComboResponse> getComboById(Long id) {
@@ -66,7 +65,7 @@ public class ComboService {
         List<Combo> combos = comboRepository.findByRestaurantId(restaurantId);
         return combos.stream()
                 .map(combo -> toComboResponse(combo, comboProductRepository.findByCombo(combo)))
-                .collect(Collectors.toList());
+                .toList();
     }
     @Transactional
     public ComboResponse updateCombo(Long id, ComboRequest request) {
@@ -90,7 +89,7 @@ public class ComboService {
             cp.setProduct(product);
             cp.setQuantity(p.getQuantity());
             return cp;
-        }).collect(Collectors.toList());
+        }).toList();
 
         comboProductRepository.saveAll(newComboProducts);
 
@@ -120,7 +119,7 @@ public class ComboService {
             detail.setProductName(cp.getProduct().getName());
             detail.setQuantity(cp.getQuantity());
             return detail;
-        }).collect(Collectors.toList());
+        }).toList();
 
         response.setProducts(productDetails);
         return response;

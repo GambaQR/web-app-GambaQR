@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ComboPromotionRepository extends JpaRepository<ComboPromotion, Integer> {
     List<ComboPromotion> findByPromotionId(Integer promotionId);
+    List<ComboPromotion> findByComboId(Long comboId);
+
 }
