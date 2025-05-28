@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KitchenDisplayComponent } from './kitchen-display.component';
+import { CategoryManagerComponent } from './category-manager.component';
 
-describe('KitchenDisplayComponent', () => {
-  let component: KitchenDisplayComponent;
-  let fixture: ComponentFixture<KitchenDisplayComponent>;
+describe('CategoryManagerComponent', () => {
+  let component: CategoryManagerComponent;
+  let fixture: ComponentFixture<CategoryManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KitchenDisplayComponent]
+      imports: [CategoryManagerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(KitchenDisplayComponent);
+    fixture = TestBed.createComponent(CategoryManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

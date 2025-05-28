@@ -1,0 +1,242 @@
+<div
+  class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white"
+>
+  <div class="max-w-4xl mx-auto p-6">
+    <div
+      class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+    >
+      <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+        Instrucciones de Uso
+      </h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div
+            class="bg-blue-100 dark:bg-blue-900/20 rounded-full p-4 w-16 h-16 mx-auto mb-3 flex items-center justify-center"
+          >
+            <span class="text-2xl font-bold text-blue-600 dark:text-blue-400"
+              >1</span
+            >
+          </div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-2">
+            Generar QR
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Ingresa el número de mesa y genera el código QR correspondiente
+          </p>
+        </div>
+        <div class="text-center">
+          <div
+            class="bg-green-100 dark:bg-green-900/20 rounded-full p-4 w-16 h-16 mx-auto mb-3 flex items-center justify-center"
+          >
+            <span class="text-2xl font-bold text-green-600 dark:text-green-400"
+              >2</span
+            >
+          </div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-2">
+            Imprimir y Colocar
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Descarga e imprime el código QR para colocarlo en la mesa
+          </p>
+        </div>
+        <div class="text-center">
+          <div
+            class="bg-purple-100 dark:bg-purple-900/20 rounded-full p-4 w-16 h-16 mx-auto mb-3 flex items-center justify-center"
+          >
+            <span
+              class="text-2xl font-bold text-purple-600 dark:text-purple-400"
+              >3</span
+            >
+          </div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-2">
+            Cliente Escanea
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Los clientes escanean el QR para acceder al menú digital
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-6 mt-6">
+      <div
+        class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+      >
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+          Generar Código QR
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label
+              htmlFor="tableNumber"
+              class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
+              >Número de Mesa</label
+            >
+            <input
+              id="tableNumber"
+              [(ngModel)]="tableNumber"
+              placeholder="Ej: Mesa 1, Mesa 2..."
+              class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+            />
+          </div>
+          <button
+            (click)="generateQR()"
+            [disabled]="!tableNumber"
+            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <rect width="5" height="5" x="3" y="3" rx="1" />
+              <rect width="5" height="5" x="16" y="3" rx="1" />
+              <rect width="5" height="5" x="3" y="16" rx="1" />
+              <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
+              <path d="M21 21v.01" />
+              <path d="M12 7v3a2 2 0 0 1-2 2H7" />
+              <path d="M3 12h.01" />
+              <path d="M12 3h.01" />
+              <path d="M12 16v.01" />
+              <path d="M16 12h1" />
+              <path d="M21 12v.01" />
+              <path d="M12 21v-1" />
+            </svg>
+            Generar Código QR
+          </button>
+
+          <ng-container *ngIf="qrUrlSafe">
+            <div
+              class="space-y-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700"
+            >
+              <p class="text-sm font-medium text-green-800 dark:text-green-200">
+                ¡Código QR generado!
+              </p>
+              <div class="flex gap-2">
+                <input
+                  [value]="qrUrlString"
+                  readOnly
+                  class="flex-1 px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 text-xs transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+                />
+                <button
+                  (click)="copyToClipboard()"
+                  class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="h-4 w-4"
+                  >
+                    <rect
+                      x="9"
+                      y="9"
+                      width="13"
+                      height="13"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <path
+                      d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div
+        class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+      >
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+          Vista Previa del QR
+        </h2>
+        <div class="text-center space-y-4">
+          <ng-container *ngIf="qrUrlSafe; else noQrMessage">
+            <div
+              class="bg-white dark:bg-gray-700 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 inline-block"
+            >
+              <qr [url]="qrUrlSafe"></qr>
+            </div>
+            <div class="space-y-2">
+              <p class="font-medium text-gray-900 dark:text-white">
+                {{ tableNumber }}
+              </p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Los clientes pueden escanear este código para acceder al menú
+              </p>
+              <button
+                (click)="downloadQR()"
+                class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4 mr-2"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Descargar QR
+              </button>
+            </div>
+          </ng-container>
+          <ng-template #noQrMessage>
+            <div class="py-16">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4"
+              >
+                <rect width="5" height="5" x="3" y="3" rx="1" />
+                <rect width="5" height="5" x="16" y="3" rx="1" />
+                <rect width="5" height="5" x="3" y="16" rx="1" />
+                <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
+                <path d="M21 21v.01" />
+                <path d="M12 7v3a2 2 0 0 1-2 2H7" />
+                <path d="M3 12h.01" />
+                <path d="M12 3h.01" />
+                <path d="M12 16v.01" />
+                <path d="M16 12h1" />
+                <path d="M21 12v.01" />
+                <path d="M12 21v-1" />
+              </svg>
+              <p class="text-gray-500 dark:text-gray-400">
+                Ingresa un número de mesa para generar el código QR
+              </p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

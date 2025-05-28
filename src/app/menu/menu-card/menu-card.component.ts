@@ -1,21 +1,36 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common'; // Importar NgIf y NgClass
+
+import { Product } from '../menu.component'; // Importar la interfaz Product desde el componente Menu
 
 @Component({
   selector: 'menu-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgIf], // Asegúrate de importar NgIf y NgClass
   templateUrl: './menu-card.component.html',
 })
 export class MenuCardComponent {
-  @Input() image: string = 'placeholder.webp';
-  @Input() title: string = 'Producto';
-  @Input() price: number = 0.0;
-  @Input() description: string = 'Descripción del producto';
+  @Input() product!: Product; // Ahora recibe el objeto producto completo
+  @Input() quantityInCart: number = 0; // La cantidad actual de este producto en el carrito
 
-  @Output() onAddToCart = new EventEmitter<void>();
+  // Eventos de salida más específicos
+  @Output() addFirstItem = new EventEmitter<Product>();
+  @Output() updateItemQuantity = new EventEmitter<{ itemId: number, newQuantity: number }>();
 
-  addToCart() {
-    this.onAddToCart.emit();
+  // Nuevo getter para el precio formateado (ej. $12.99)
+  get formattedPrice(): string {
+    return `$${this.product.price.toFixed(2)}`;
+  }
+
+  onAddFirstItem(): void {
+    this.addFirstItem.emit(this.product);
+  }
+
+  onIncreaseQuantity(): void {
+    this.updateItemQuantity.emit({ itemId: this.product.id, newQuantity: this.quantityInCart + 1 });
+  }
+
+  onDecreaseQuantity(): void {
+    this.updateItemQuantity.emit({ itemId: this.product.id, newQuantity: this.quantityInCart - 1 });
   }
 }

@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { QRCodeGeneratorComponent } from "../qrcode-generator/qrcode-generator.component";
+import { QRCodeComponent } from "../qrcode/qrcode.component";
 import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
-    imports: [QRCodeGeneratorComponent],
+    imports: [QRCodeComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
 })
 export class HomeComponent {
 
-    readonly url = 'https://www.gambaqr.com/';
+    readonly url = 'http://localhost:4200/cliente?table=1';
 
     constructor(
         private readonly router: Router,

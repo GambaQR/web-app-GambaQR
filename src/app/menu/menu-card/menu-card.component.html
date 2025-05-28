@@ -1,16 +1,17 @@
 <div
-  class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+  class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 text-gray-900 dark:text-white"
 >
   <div class="relative h-48 p-3">
     <img
-      [src]="image || 'example.png'"
-      [alt]="title"
+      [src]="product.image || 'placeholder.webp'"
+      [alt]="product.name"
       loading="lazy"
       class="object-cover w-full h-full rounded-lg"
     />
     <button
-      (click)="addToCart()"
-      class="absolute bottom-1 right-2 bg-purple-950 shadow-purple-700/50 hover:shadow-[0_0_30px_0px] transition-all duration-300 text-white w-12 h-12 px-3 py-2 rounded-full inline-flex items-center justify-center gap-2"
+      *ngIf="quantityInCart === 0"
+      (click)="onAddFirstItem()"
+      class="absolute bottom-1 right-2 bg-purple-600 dark:bg-purple-950 shadow-purple-700/50 hover:shadow-[0_0_30px_0px] transition-all duration-300 text-white w-12 h-12 px-3 py-2 rounded-full inline-flex items-center justify-center gap-2 hover:bg-purple-700 dark:hover:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -30,20 +31,64 @@
     </button>
   </div>
 
-  <div class="p-6">
-    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-      {{ title | titlecase }}
-    </h3>
+  <div class="p-4 sm:p-6">
+    <div class="flex items-start justify-between mb-2">
+      <h3 class="text-lg font-bold">{{ product.name | titlecase }}</h3>
+    </div>
 
     <p
-      class="mt-2 text-gray-600 dark:text-gray-300 font-light truncate"
-      style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+      class="mt-1 text-gray-600 dark:text-gray-300 font-light text-sm line-clamp-2"
     >
-      {{ description }}
+      {{ product.description }}
     </p>
 
-    <h3 class="mt-2 text-purple-950 dark:text-purple-100 text-lg font-medium">
-      {{ price }} €
-    </h3>
+    <div class="flex items-center justify-between mt-3">
+      <span class="font-bold text-purple-600 dark:text-purple-400 text-lg">
+        {{ formattedPrice }}
+      </span>
+
+      <div *ngIf="quantityInCart > 0" class="flex items-center gap-2">
+        <button
+          (click)="onDecreaseQuantity()"
+          class="flex items-center justify-center h-8 w-8 rounded-full border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-4 w-4"
+          >
+            <path d="M5 12h14"></path>
+          </svg>
+        </button>
+        <span class="w-8 text-center font-medium">{{ quantityInCart }}</span>
+        <button
+          (click)="onIncreaseQuantity()"
+          class="flex items-center justify-center h-8 w-8 rounded-full border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-4 w-4"
+          >
+            <path d="M12 5v14"></path>
+            <path d="M5 12h14"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

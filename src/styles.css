@@ -100,3 +100,11 @@ button {
 .link-text {
   @apply font-header font-medium text-purple-600 text-shadow-[0_0_0] hover:text-shadow-[0_0_8px] text-shadow-purple-500 transition duration-300;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;            /* Chrome, Safari, Opera*/
+}

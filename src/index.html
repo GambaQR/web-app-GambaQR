@@ -8,10 +8,21 @@
     <link rel="icon" type="image/x-icon" href="logo.svg" />
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <script>
+      // Comprueba si ya existe una preferencia en localStorage
+      const savedTheme = localStorage.getItem("theme");
+      if (
+        savedTheme === "dark" ||
+        (savedTheme === null &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
   </head>
-  <body
-    class="relative min-h-screen bg-gray-100 dark:bg-gray-900 "
-  ></body>
+  <body class="relative min-h-screen bg-gray-100 dark:bg-gray-900"></body>
   <!-- bg-[url(/bbblurry-6.svg)] bg-cover bg-center bg-no-repeat -->
   <app-root></app-root>
 </html>
