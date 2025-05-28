@@ -1,0 +1,45 @@
+/* Oculta la barra de desplazamiento por defecto */
+.categories-scroll-container {
+  /* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    width: 0.5rem; /* Ancho de la barra de desplazamiento */
+    height: 0.5rem; /* Alto de la barra de desplazamiento para scroll horizontal */
+    background: transparent; /* Fondo de la barra de desplazamiento transparente por defecto */
+  }
+
+  /* Para Firefox */
+  scrollbar-width: none; /* Oculta la barra de desplazamiento */
+  scrollbar-color: transparent transparent; /* Oculta el color del pulgar y la pista */
+
+  /* Para IE y Edge (antiguo) */
+  -ms-overflow-style: none; /* Oculta la barra de desplazamiento */
+}
+
+/* Muestra la barra de desplazamiento al hacer hover */
+.categories-scroll-container:hover {
+  /* Para navegadores basados en WebKit */
+  &::-webkit-scrollbar {
+    background: rgba(0, 0, 0, 0.1); /* Fondo sutil al hacer hover */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 128, 128, 0.5); /* Color del "pulgar" (el que se arrastra) */
+    border-radius: 0.25rem; /* Bordes redondeados del pulgar */
+  }
+
+  /* Para Firefox */
+  scrollbar-width: thin; /* Muestra una barra de desplazamiento delgada */
+  scrollbar-color: rgba(128, 128, 128, 0.5) transparent; /* Color del pulgar y pista transparente */
+}
+
+/* Opcional: Asegurarse de que el scroll funcione bien en pantallas pequeñas (móviles) */
+/* Sin necesidad de hover, solo táctil */
+@media (max-width: 767px) { /* Esto corresponde a la breakpoint 'md' de Tailwind por defecto */
+  .categories-scroll-container {
+    -ms-overflow-style: -ms-autohiding-scrollbar; /* Oculta auto en IE/Edge en móviles */
+    scrollbar-width: auto; /* Muestra auto en Firefox en móviles */
+    scrollbar-color: auto auto; /* Color auto en Firefox en móviles */
+  }
+  .categories-scroll-container::-webkit-scrollbar {
+    display: none; /* Sigue oculto en WebKit en móviles */
+  }
+}
