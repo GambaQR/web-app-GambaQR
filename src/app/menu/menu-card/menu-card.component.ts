@@ -1,48 +1,36 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common'; // Importar NgIf y NgClass
+
+import { Product } from '../menu.component'; // Importar la interfaz Product desde el componente Menu
 
 @Component({
   selector: 'menu-card',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div class="menu-card p-4 rounded-xl shadow-md bg-white dark:bg-gray-800 space-y-3">
-      <img
-        [src]="image"
-        [alt]="title"
-        class="rounded-lg w-full h-40 object-cover"
-      />
-
-      <div class="flex justify-between items-center">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-white">
-          {{ title }}
-        </h3>
-        <span class="price-text text-lg font-bold text-primary">
-          {{ price | currency:'EUR' }}
-        </span>
-      </div>
-
-      <p class="text-md text-gray-600 dark:text-gray-300">
-        {{ description }}
-      </p>
-
-      <div class="flex justify-end">
-        <button class="form-button px-4 py-2 text-sm" (click)="addToCart()">
-          <i class="bi bi-cart-plus mr-1"></i> Añadir al carrito
-        </button>
-      </div>
-    </div>
-  `,
+  imports: [CommonModule, NgIf], // Asegúrate de importar NgIf y NgClass
+  templateUrl: './menu-card.component.html',
 })
 export class MenuCardComponent {
-  @Input() image: string = 'empty.webp';
-  @Input() title: string = 'Producto';
-  @Input() price: number = 0.0;
-  @Input() description: string = 'Descripción del producto';
+  @Input() product!: Product; // Ahora recibe el objeto producto completo
+  @Input() quantityInCart: number = 0; // La cantidad actual de este producto en el carrito
 
-  @Output() onAddToCart = new EventEmitter<void>();
+  // Eventos de salida más específicos
+  @Output() addFirstItem = new EventEmitter<Product>();
+  @Output() updateItemQuantity = new EventEmitter<{ itemId: number, newQuantity: number }>();
 
-  addToCart() {
-    this.onAddToCart.emit();
+  // Nuevo getter para el precio formateado (ej. $12.99)
+  get formattedPrice(): string {
+    return `$${this.product.price.toFixed(2)}`;
+  }
+
+  onAddFirstItem(): void {
+    this.addFirstItem.emit(this.product);
+  }
+
+  onIncreaseQuantity(): void {
+    this.updateItemQuantity.emit({ itemId: this.product.id, newQuantity: this.quantityInCart + 1 });
+  }
+
+  onDecreaseQuantity(): void {
+    this.updateItemQuantity.emit({ itemId: this.product.id, newQuantity: this.quantityInCart - 1 });
   }
 }

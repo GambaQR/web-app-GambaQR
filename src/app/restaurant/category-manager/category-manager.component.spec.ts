@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckoutComponent } from './checkout.component';
+import { CategoryManagerComponent } from './category-manager.component';
 
-describe('CheckoutComponent', () => {
-  let component: CheckoutComponent;
-  let fixture: ComponentFixture<CheckoutComponent>;
+describe('CategoryManagerComponent', () => {
+  let component: CategoryManagerComponent;
+  let fixture: ComponentFixture<CategoryManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutComponent]
+      imports: [CategoryManagerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CheckoutComponent);
+    fixture = TestBed.createComponent(CategoryManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
