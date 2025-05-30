@@ -15,10 +15,3 @@ public class OrderResponse {
     private List<OrderItemResponse> items;
 }
 
-@Data
-@Builder
-class OrderItemResponse {
-    private String productName;
-    private Integer quantity;
-    private Double price;
-}

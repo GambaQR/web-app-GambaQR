@@ -8,8 +8,4 @@ public class OrderRequest {
     private List<OrderItemRequest> items;
 }
 
-@Data
-class OrderItemRequest {
-    private Long productId;
-    private Integer quantity;
-}
+
