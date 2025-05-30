@@ -15,6 +15,7 @@ import { KitchenDisplayComponent } from './seller/kitchen-display/kitchen-displa
 import { RestaurantPanelComponent } from './restaurant-panel/restaurant-panel.component';
 import { QrGeneratorComponent } from './restaurant/qr-generator/qr-generator.component';
 
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
       { path: 'user', component: ProfileComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'example', component: ExampleComponent },
+
     ]
   },
   { path: '**', component: NotFoundComponent },
