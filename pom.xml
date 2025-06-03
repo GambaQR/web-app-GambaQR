@@ -99,7 +99,7 @@
 			<artifactId>stripe-java</artifactId>
 			<version>24.10.0</version>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

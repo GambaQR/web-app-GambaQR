@@ -27,10 +27,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    // Lista de rutas públicas que no requieren autenticación
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/api/users/login",
+            "/api/users/register",
+            "/api/users/check-token"
+    };
 
-        final String authHeader = request.getHeader("Authentication");
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        // Ignora método OPTIONS (para CORS) y rutas públicas
+        return "OPTIONS".equalsIgnoreCase(request.getMethod()) ||
+                java.util.Arrays.stream(PUBLIC_ENDPOINTS).anyMatch(path::equals);
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        final String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
 
@@ -38,17 +55,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
 
             try {
-                username = this.jwtUtil.extractUsername(token);
+                username = jwtUtil.extractUsername(token);
             } catch (JwtException e) {
-                logger.error("Error al extraer el username del token: " + e.getMessage());
+                log.error("Error al extraer el username del token: {}", e.getMessage());
             }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (this.jwtUtil.validateToken(token, username)) {
-
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (jwtUtil.validateToken(token, username)) {
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -57,5 +74,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
 }

@@ -6,6 +6,7 @@ import com.mi_web.app.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,15 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private JwtUtil jwtUtil;
-    private UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -50,39 +50,42 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
                         // Endpoints públicos
                         .requestMatchers(
-                                "/users/login",
-                                "/users/register",
-                                "/users/check-token",
-                                "/users/profile",
-                                "/users/all",
-                                "/users/employees/{restaurantId}",
-                                "/users",
-                                "/users/delete/**",
-                                "/restaurants/all",
-                                "/restaurants/create",
-                                "/restaurants/update",
-                                "/restaurants/delete/**",
-                                "/restaurants/**",
-                                "/products/create",
-                                "/products/all",
-                                "/products/update/{id}",
-                                "/products/delete/{id}",
-                                "/products/{id}",
-                                "/products/by-restaurant/**",
-                                "/categories/{id}",
-                                "/categories/all",
-                                "/categories/create",
-                                "/categories/update/{id}",
-                                "/categories/delete/**",
-                                "/combos/create",
-                                "/combos/all",
-                                "/combos/{id}",
-                                "/combos/update/{id}",
-                                "/combos/delete/{id}",
-                                "/combos/by-restaurant/{restaurantId}"
+                                "/api/users/login",
+                                "/api/users/register",
+                                "/api/users/check-token",
+                                "/api/users/profile",
+                                "/api/users/all",
+                                "/api/users/employees/{restaurantId}",
+                                "/api/users",
+                                "/api/users/delete/**",
+                                "/api/restaurants/all",
+                                "/api/restaurants/create",
+                                "/api/restaurants/update",
+                                "/api/restaurants/delete/**",
+                                "/api/restaurants/**",
+                                "/api/products/create",
+                                "/api/products/all",
+                                "/api/products/update/{id}",
+                                "/api/products/delete/{id}",
+                                "/api/products/{id}",
+                                "/api/products/by-restaurant/**",
+                                "/api/categories/{id}",
+                                "/api/categories/all",
+                                "/api/categories/create",
+                                "/api/categories/update/{id}",
+                                "/api/categories/delete/**",
+                                "/api/combos/create",
+                                "/api/combos/all",
+                                "/api/combos/{id}",
+                                "/api/combos/update/{id}",
+                                "/api/combos/delete/{id}",
+                                "/api/combos/by-restaurant/{restaurantId}"
 
                         ).permitAll()
                         .anyRequest().authenticated()
@@ -103,4 +106,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

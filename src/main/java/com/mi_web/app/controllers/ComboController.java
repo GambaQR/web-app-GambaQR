@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/combos")
+@RequestMapping("/api/combos")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ComboController {
