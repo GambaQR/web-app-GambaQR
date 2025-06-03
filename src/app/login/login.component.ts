@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // Importar ReactiveFormsModule y sus clases
-import { RouterLink } from '@angular/router'; // Importar RouterLink para los enlaces de navegación
+import { Router, RouterLink } from '@angular/router'; // Importar RouterLink para los enlaces de navegación
+import { AuthService } from '../services/auth/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -14,14 +16,18 @@ import { RouterLink } from '@angular/router'; // Importar RouterLink para los en
 export class LoginComponent {
   // Propiedad para controlar la visibilidad de la contraseña
   showPassword = false;
+  errorMessage: string = '';
 
   // FormGroup para manejar el estado y la validación del formulario de login
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     // Inicialización del FormGroup con los controles y sus validadores
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Campo de email: requerido y formato de email
+      username: ['', [Validators.required, Validators.email]], // Campo de email: requerido y formato de email
       password: ['', [Validators.required, Validators.minLength(6)]], // Campo de contraseña: requerido y mínimo 6 caracteres
       rememberMe: [false] // Checkbox "Recordarme": valor inicial falso
     });
@@ -34,18 +40,34 @@ export class LoginComponent {
 
   // Función que se ejecuta al enviar el formulario
   onSubmit() {
-    // Marca todos los controles del formulario como 'touched' para mostrar los errores de validación
     this.loginForm.markAllAsTouched();
 
     if (this.loginForm.valid) {
-      // Si el formulario es válido, imprime los valores en consola
-      console.log('Formulario de login válido:', this.loginForm.value);
-      // Aquí iría la lógica para enviar los datos al servidor (ej. un servicio de autenticación)
-      alert('¡Inicio de sesión exitoso!'); // Mensaje de éxito temporal
-      // Ejemplo: this.authService.login(this.loginForm.value).subscribe(...)
-    } else {
-      // Si el formulario no es válido, imprime un mensaje de error
-      console.error('Formulario de login inválido. Por favor, revisa los campos.');
+      const { username, password } = this.loginForm.value;
+
+      this.authService.login({ username, password }).subscribe({
+        next: (response) => {
+          console.log('Login exitoso:', response);
+
+          // Extrae el rol del usuario autenticado
+          const role = response.role;
+
+          // Redirige según el rol
+          if (role === 'CLIENT') {
+            this.router.navigate(['/menu']);
+          } else if (role === 'EMPLOYEE') {
+            this.router.navigate(['/kitchen']);
+          } else if (role === 'OWNER' || role === 'ADMIN') {
+            this.router.navigate(['/restaurant']);
+          } else {
+            this.router.navigate(['/']); // Fallback si el rol no es reconocido
+          }
+        },
+        error: (error) => {
+          console.error('Error al iniciar sesión:', error);
+          this.errorMessage = 'Credenciales incorrectas o error en el servidor.';
+        }
+      });
     }
   }
 
