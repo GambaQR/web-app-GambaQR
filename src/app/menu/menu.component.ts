@@ -4,7 +4,8 @@ import { MenuCardComponent } from "./menu-card/menu-card.component";
 import { FilterByCategoryPipe } from "../pipes/filterByCategory.pipe";
 import { CartService, CartState, CartItem } from '../services/cart.service';
 import { Subscription } from 'rxjs';
-import { RouterLink, ActivatedRoute } from '@angular/router'; 
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { ProductService, ProductResponse } from '../services/product.service';
 
 export interface Category {
   id: string;
@@ -41,86 +42,42 @@ export class MenuComponent implements OnInit, OnDestroy {
     { id: 'sopas', name: 'Sopas', icon: '🍲' },
   ];
 
-  // Datos de menú combinados directamente en el componente para Angular
-  allProducts: Product[] = [
-    {
-      id: 1,
-      name: "Ensalada Mediterránea",
-      description: "Fresca ensalada con tomates, aceitunas, queso feta y aderezo de hierbas",
-      price: 12.99,
-      category: "ensaladas", // Usar minúsculas para consistencia con los IDs de categoría
-      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Imágenes de ejemplo
-    },
-    {
-      id: 2,
-      name: "Hamburguesa Clásica",
-      description: "Carne de res, lechuga, tomate, cebolla y papas fritas",
-      price: 15.99,
-      category: "principales",
-      image: "https://images.unsplash.com/photo-1571091718767-f87c9bc451b6?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 3,
-      name: "Pasta Carbonara",
-      description: "Pasta con salsa cremosa, panceta y queso parmesano",
-      price: 14.99,
-      category: "principales",
-      image: "https://images.unsplash.com/photo-1621995874288-7511c521074e?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 4,
-      name: "Smoothie de Frutas",
-      description: "Mezcla de frutas tropicales con yogurt natural",
-      price: 6.99,
-      category: "bebidas",
-      image: "https://images.unsplash.com/photo-1505252585461-a11333afbd3d?q=80&w=1853&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 5,
-      name: "Pizza Margherita",
-      description: "Pizza clásica con tomate, mozzarella y albahaca fresca",
-      price: 18.99,
-      category: "principales",
-      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a47?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 6,
-      name: "Sopa de Tomate",
-      description: "Cremosa sopa de tomate con hierbas aromáticas",
-      price: 8.99,
-      category: "sopas",
-      image: "https://images.unsplash.com/photo-1543719003-9e4a3a6c221a?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
-
   filteredProducts: Product[] = [];
+  allProducts: Product[] = [];
   cartState!: CartState;
   private cartSubscription!: Subscription;
   private routeSubscription!: Subscription; // ¡Nueva suscripción para los parámetros de ruta!
 
   constructor(
     private readonly cartService: CartService,
-    private readonly route: ActivatedRoute // ¡Inyectar ActivatedRoute!
-  ) {}
+    private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
+    private readonly productService: ProductService
+  ) { }
 
   ngOnInit(): void {
-    // Al inicio, se muestran todos los productos
-    this.filterProducts();
+    this.productService.getAllProducts().subscribe({
+      next: (productsResponse) => {
+        this.allProducts = productsResponse.map(p => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          price: p.price,
+          image: p.imageUrl, // Convertimos imageUrl a image
+          category: p.category.name // Convertimos objeto a string
+        }));
+        this.filterProducts();
+      },
+      error: (err) => {
+        console.error('Error al obtener productos:', err);
+      }
+    });
 
-    // Suscribirse a los cambios del carrito
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;
     });
 
-    // ¡Suscribirse a los queryParams para obtener el número de mesa!
     this.routeSubscription = this.route.queryParams.subscribe(params => {
-      if (params['table']) {
-        this.tableNumber = params['table'];
-        // Opcional: Podrías guardar esto en un servicio o localStorage
-        // si necesitas persistirlo a través de recargas o navegar fuera y volver.
-      } else {
-        this.tableNumber = 'N/A'; // O un valor por defecto si no hay mesa
-      }
+      this.tableNumber = params['table'] || 'N/A';
     });
   }
 

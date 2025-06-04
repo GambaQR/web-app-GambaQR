@@ -11,10 +11,6 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   registerUser(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, data, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+    return this.http.post(`${this.baseUrl}/register`, data);
   }
 }

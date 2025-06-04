@@ -22,11 +22,9 @@ export const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
-
-  // CLIENT
-  { path: 'cart', component: CartComponent, canActivate: [RoleGuard], data: { roles: ['CLIENT', 'EMPLOYEE', 'ADMIN', 'OWNER'] } },
-  { path: 'checkout', component: CheckoutComponent, canActivate: [RoleGuard], data: { roles: ['CLIENT', 'EMPLOYEE', 'ADMIN', 'OWNER'] } },
-  { path: 'order-confirmation', component: OrderConfirmationComponent, canActivate: [RoleGuard], data: { roles: ['CLIENT', 'EMPLOYEE', 'ADMIN', 'OWNER'] } },
+  { path: 'cart', component: CartComponent },
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'order-confirmation', component: OrderConfirmationComponent },
 
   // EMPLOYEE, ADMIN, OWNER
   { path: 'kitchen', component: KitchenDisplayComponent, canActivate: [RoleGuard], data: { roles: ['EMPLOYEE', 'ADMIN', 'OWNER'] } },
