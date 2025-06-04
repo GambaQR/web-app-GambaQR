@@ -13,15 +13,6 @@ export interface Category {
   icon: string;
 }
 
-export interface Product {
-  id: number;
-  image: string;
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-}
-
 @Component({
   selector: 'app-menu',
   standalone: true, // Añadir standalone
@@ -42,8 +33,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     { id: 'sopas', name: 'Sopas', icon: '🍲' },
   ];
 
-  filteredProducts: Product[] = [];
-  allProducts: Product[] = [];
+  products: ProductResponse[] = []; // Almacena todos los productos
+  filteredProducts: ProductResponse[] = []; // Para mostrar en la vista
+  //activeCategory: string = 'all'; // Categoría activa (por defecto "all")
+
   cartState!: CartState;
   private cartSubscription!: Subscription;
   private routeSubscription!: Subscription; // ¡Nueva suscripción para los parámetros de ruta!
@@ -55,22 +48,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.productService.getAllProducts().subscribe({
-      next: (productsResponse) => {
-        this.allProducts = productsResponse.map(p => ({
-          id: p.id,
-          name: p.name,
-          description: p.description,
-          price: p.price,
-          image: p.imageUrl, // Convertimos imageUrl a image
-          category: p.category.name // Convertimos objeto a string
-        }));
-        this.filterProducts();
-      },
-      error: (err) => {
-        console.error('Error al obtener productos:', err);
-      }
-    });
+    this.loadProducts();
 
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;
@@ -80,6 +58,17 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.tableNumber = params['table'] || 'N/A';
     });
   }
+
+  loadProducts(): void {
+    this.productService.getAllProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+        this.filteredProducts = data; // Inicialmente muestra todos los productos
+      },
+      error: (err) => console.error('Error cargando productos:', err)
+    });
+  }
+
 
   ngOnDestroy(): void {
     // Desuscribirse para evitar fugas de memoria
@@ -91,34 +80,25 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterProducts(): void {
-    if (this.activeCategory === 'all') {
-      this.filteredProducts = this.allProducts;
-    } else {
-      // Usar el pipe de filtro si lo tienes, o filtrar directamente
-      // Si el pipe `FilterByCategoryPipe` ya hace esto, puedes usarlo.
-      // Si no, la lógica de abajo es la que hará el filtrado.
-      this.filteredProducts = this.allProducts.filter(
-        (p) => p.category === this.activeCategory
-      );
-    }
-  }
 
   setActiveCategory(categoryId: string): void {
     this.activeCategory = categoryId;
-    this.filterProducts();
+    this.filteredProducts = categoryId === 'all'
+      ? this.products
+      : this.products.filter(product => product.category.id === categoryId);
   }
+
 
   // --- Métodos de interacción con el carrito ---
 
-  handleAddToCart(item: Product): void {
+  handleAddToCart(item: ProductResponse): void {
     // Convertir Product a CartItem
     const cartItem: CartItem = {
       id: item.id,
       name: item.name,
       price: item.price,
       quantity: 1, // Añadir 1 por defecto
-      image: item.image
+      image: item.imageUrl
     };
     this.cartService.addItem(cartItem);
   }

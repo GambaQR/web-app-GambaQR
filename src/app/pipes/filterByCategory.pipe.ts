@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Product } from '../menu/menu.component';
+import { ProductResponse as Product } from '../services/product.service';
 
 @Pipe({
   name: 'filterByCategory'
