@@ -1,5 +1,6 @@
 package com.mi_web.app.controllers;
 
+import com.mi_web.app.dtos.auth.CategoryResponse;
 import com.mi_web.app.models.Category;
 import com.mi_web.app.services.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 

@@ -68,18 +68,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Ignorar métodos OPTIONS (usados en preflight CORS) y rutas públicas
         return "OPTIONS".equalsIgnoreCase(request.getMethod()) ||
-                Arrays.asList(PUBLIC_ENDPOINTS).contains(path);
+                Arrays.stream(PUBLIC_ENDPOINTS).anyMatch(path::startsWith);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getServletPath();
+        log.debug("Solicitud recibida: {}", path);
+
         final String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            log.debug("Token recibido: {}", authHeader.substring(7));
             token = authHeader.substring(7);
 
             try {

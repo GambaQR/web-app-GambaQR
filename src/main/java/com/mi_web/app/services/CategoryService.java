@@ -1,5 +1,6 @@
 package com.mi_web.app.services;
 
+import com.mi_web.app.dtos.auth.CategoryResponse;
 import com.mi_web.app.models.Category;
 import com.mi_web.app.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +20,16 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(category -> CategoryResponse.builder()
+                        .id(category.getId())
+                        .name(category.getName())
+                        .description(category.getDescription())
+                        .build())
+                .collect(Collectors.toList());
     }
+
 
     public Optional<Category> getCategoryById(Long id) {
         return categoryRepository.findById(id);
