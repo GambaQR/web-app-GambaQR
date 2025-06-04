@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 @Slf4j
@@ -31,16 +32,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/users/login",
             "/api/users/register",
-            "/api/users/check-token"
+            "/api/users/check-token",
+            "/api/users/profile",
+            "/api/users/all",
+            "/api/users/employees/{restaurantId}",
+            "/api/users",
+            "/api/users/delete/**",
+            "/api/restaurants/all",
+            "/api/restaurants/create",
+            "/api/restaurants/update",
+            "/api/restaurants/delete/**",
+            "/api/restaurants/**",
+            "/api/products/create",
+            "/api/products/all",
+            "/api/products/update/{id}",
+            "/api/products/delete/{id}",
+            "/api/products/{id}",
+            "/api/products/by-restaurant/**",
+            "/api/categories/{id}",
+            "/api/categories/all",
+            "/api/categories/create",
+            "/api/categories/update/{id}",
+            "/api/categories/delete/**",
+            "/api/combos/create",
+            "/api/combos/all",
+            "/api/combos/{id}",
+            "/api/combos/update/{id}",
+            "/api/combos/delete/{id}",
+            "/api/combos/by-restaurant/{restaurantId}"
     };
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        // Ignora método OPTIONS (para CORS) y rutas públicas
+        // Ignorar métodos OPTIONS (usados en preflight CORS) y rutas públicas
         return "OPTIONS".equalsIgnoreCase(request.getMethod()) ||
-                java.util.Arrays.stream(PUBLIC_ENDPOINTS).anyMatch(path::equals);
+                Arrays.asList(PUBLIC_ENDPOINTS).contains(path);
     }
 
     @Override

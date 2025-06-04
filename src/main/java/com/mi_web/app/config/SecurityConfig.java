@@ -53,7 +53,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/users/**").permitAll()
                         // Endpoints públicos
                         .requestMatchers(
                                 "/api/users/login",
