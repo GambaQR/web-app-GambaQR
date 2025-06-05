@@ -1,42 +1,37 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, NgClass, NgIf, NgFor } from '@angular/common';
 import { MenuCardComponent } from "./menu-card/menu-card.component";
-import { FilterByCategoryPipe } from "../pipes/filterByCategory.pipe";
 import { CartService, CartState, CartItem } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { ProductService, ProductResponse } from '../services/product.service';
+import { CategoryResponse, CategoryService } from '../services/category.service';
 
-export interface Category {
-  id: string;
-  name: string;
-  icon: string;
-}
 
 @Component({
   selector: 'app-menu',
-  standalone: true, // Añadir standalone
-  imports: [MenuCardComponent, CommonModule, FilterByCategoryPipe, NgClass, NgIf, NgFor, RouterLink],
+  standalone: true,
+  imports: [MenuCardComponent, CommonModule, NgClass, NgIf, NgFor, RouterLink],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, OnDestroy {
 
-  activeCategory: string = 'all';
+  activeCategory: number = 0;
   tableNumber: string = 'Mesa'; // Inicializar con un valor por defecto o base
 
-  categories: Category[] = [
-    { id: 'all', name: 'Todos', icon: '📦' },
-    { id: 'ensaladas', name: 'Ensaladas', icon: '🥗' },
-    { id: 'principales', name: 'Principales', icon: '🍝' },
-    { id: 'bebidas', name: 'Bebidas', icon: '🥤' },
-    { id: 'sopas', name: 'Sopas', icon: '🍲' },
-  ];
+  private categoryIcons: { [key: string]: string } = {
+    "Todos": "📦",
+    "Ensaladas": "🥗",
+    "Principales": "🍝",
+    "Bebidas": "🥤",
+    "Sopas": "🍲"
+  };
 
+  categories: CategoryResponse[] = [];
   products: ProductResponse[] = []; // Almacena todos los productos
   filteredProducts: ProductResponse[] = []; // Para mostrar en la vista
   //activeCategory: string = 'all'; // Categoría activa (por defecto "all")
-
   cartState!: CartState;
   private cartSubscription!: Subscription;
   private routeSubscription!: Subscription; // ¡Nueva suscripción para los parámetros de ruta!
@@ -44,11 +39,14 @@ export class MenuComponent implements OnInit, OnDestroy {
   constructor(
     private readonly cartService: CartService,
     private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
+
 
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;
@@ -59,16 +57,31 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe({
+      next: (data) => {
+        this.categories = [{ id: 0, name: 'Todos', description: '', icon: "📦" },
+        ...data.map(category => ({
+          ...category,
+          icon: this.categoryIcons[category.name] || "❓"
+        }))
+        ];
+      },
+      error: (err) => console.error('Error cargando categorías:', err)
+    });
+  }
+
+
   loadProducts(): void {
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         this.products = data;
         this.filteredProducts = data; // Inicialmente muestra todos los productos
+        console.log("Productos obtenidos del backend:", this.products);
       },
       error: (err) => console.error('Error cargando productos:', err)
     });
   }
-
 
   ngOnDestroy(): void {
     // Desuscribirse para evitar fugas de memoria
@@ -80,14 +93,24 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  setActiveCategory(categoryId: string): void {
+  setActiveCategory(categoryId: number): void {
     this.activeCategory = categoryId;
-    this.filteredProducts = categoryId === 'all'
-      ? this.products
-      : this.products.filter(product => product.category.id === categoryId);
-  }
 
+    console.log("Categoría activa:", categoryId);
+    console.log("Productos filtrados:", this.filteredProducts);
+
+    if (categoryId === 0) {
+      this.filteredProducts = this.products; // Mostrar todos los productos
+    } else {
+      this.filteredProducts = this.products.filter(product => {
+        console.log(`Producto: ${product.name}, Categoría ID: ${product.category?.id}`);
+        return product.category && product.category.id === categoryId;
+      });
+    }
+    console.log("Productos filtrados:", this.filteredProducts);
+
+
+  }
 
   // --- Métodos de interacción con el carrito ---
 
@@ -100,10 +123,12 @@ export class MenuComponent implements OnInit, OnDestroy {
       quantity: 1, // Añadir 1 por defecto
       image: item.imageUrl
     };
+    console.log("Añadiendo al carrito:", cartItem);
     this.cartService.addItem(cartItem);
   }
 
   handleUpdateQuantity(itemId: number, newQuantity: number): void {
+    console.log(`Actualizando cantidad: ID ${itemId}, Nueva cantidad ${newQuantity}`);
     this.cartService.updateQuantity(itemId, newQuantity);
   }
 

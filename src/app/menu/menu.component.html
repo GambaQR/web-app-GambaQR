@@ -76,37 +76,13 @@
     <div class="flex gap-2 mb-6 overflow-x-auto pb-2 categories-scroll-container">
       <ng-container *ngFor="let category of categories">
         <button (click)="setActiveCategory(category.id)" [ngClass]="{
-            'bg-purple-600 dark:bg-purple-800 text-white':
-              activeCategory === category.id,
-            'hover:bg-purple-50/20 dark:hover:bg-gray-700/30 text-gray-600 dark:text-gray-400':
-              activeCategory !== category.id,
-            'border border-gray-300 dark:border-gray-800':
-              activeCategory !== category.id
-          }"
+        'bg-purple-600 dark:bg-purple-800 text-white': activeCategory === category.id,
+        'hover:bg-purple-50/20 dark:hover:bg-gray-700/30 text-gray-600 dark:text-gray-400': activeCategory !== category.id,
+        'border border-gray-300 dark:border-gray-800': activeCategory !== category.id
+      }"
           class="min-w-[80px] sm:min-w-[90px] px-2 py-3 flex-shrink-0 flex flex-col justify-center items-center rounded-lg transition-all duration-300">
-          <p class="flex items-center justify-center text-4xl"
-            [ngClass]="{ 'text-white': activeCategory === category.id }">
-            {{ category.icon }}
-          </p>
-          <div class="flex flex-col items-center gap-1">
-            <span class="text-xs sm:text-sm font-medium text-center leading-tight"
-              [ngClass]="{ 'text-white': activeCategory === category.id }">
-              {{ category.name }}
-            </span>
-            <span class="text-xs opacity-70 font-normal" [ngClass]="{
-                'text-purple-200 dark:text-purple-300':
-                  activeCategory === category.id,
-                'text-gray-500 dark:text-gray-400':
-                  activeCategory !== category.id
-              }">
-              {{
-              category.id === "all"
-              ? products.length
-              : (products | filterByCategory : category.id).length
-              }}
-              items
-            </span>
-          </div>
+          <p class="text-4xl">{{ category.icon }}</p> <!-- Mostrar el ícono -->
+          <span class="text-lg font-bold">{{ category.name }}</span>
         </button>
       </ng-container>
     </div>
