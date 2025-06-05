@@ -1,5 +1,6 @@
 package com.mi_web.app.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mi_web.app.dtos.auth.ProductRequest;
 import com.mi_web.app.dtos.auth.ProductResponse;
 import com.mi_web.app.services.ProductService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -19,19 +21,22 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createProduct(@RequestBody ProductRequest request) {
-        try {
-            ProductResponse product = productService.createProduct(request);
-            return ResponseEntity.ok(product);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
-    }
+      
 
     @GetMapping("/all")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
+    }
+    @PostMapping("/create")
+    public ResponseEntity<?> createProduct(@RequestParam("product") String productJson, @RequestParam("image") MultipartFile imageFile) {
+        try {
+            ProductRequest request = new ObjectMapper().readValue(productJson, ProductRequest.class);
+            // Aquí estamos pasando el MultipartFile (imagen) a nuestro servicio
+            ProductResponse product = productService.createProduct(request, imageFile);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping("/{id}")
@@ -41,12 +46,13 @@ public class ProductController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
+     @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestParam("product") String productJson, @RequestParam("image") MultipartFile imageFile) {
         try {
-            ProductResponse updated = productService.updateProduct(id, request);
+            ProductRequest request = new ObjectMapper().readValue(productJson, ProductRequest.class);
+            ProductResponse updated = productService.updateProduct(id, request, imageFile);
             return ResponseEntity.ok(updated);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }

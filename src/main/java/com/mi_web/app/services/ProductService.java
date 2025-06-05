@@ -11,10 +11,11 @@ import com.mi_web.app.repositories.ProductRepository;
 import com.mi_web.app.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final RestaurantRepository restaurantRepository;
+    private final SupabaseService supabaseService;
 
-    public ProductResponse createProduct(ProductRequest request) {
+    public ProductResponse createProduct(ProductRequest request, MultipartFile imageFile) throws Exception {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
@@ -38,7 +40,10 @@ public class ProductService {
         product.setPrice(request.getPrice());
         product.setTax(request.getTax());
         product.setCurrency(request.getCurrency());
-        product.setImageUrl(request.getImageUrl());
+
+        // Subir la imagen a Supabase y obtener la URL
+        String imageUrl = supabaseService.uploadImage(imageFile);  // Aquí subimos la imagen
+        product.setImageUrl(imageUrl);  // Guarda la URL en el producto
 
         Product saved = productRepository.save(product);
         return mapToResponse(saved);
@@ -59,7 +64,7 @@ public class ProductService {
                                 .build()
                         )
                         .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
@@ -67,7 +72,7 @@ public class ProductService {
         return productRepository.findById(id).map(this::mapToResponse);
     }
 
-    public ProductResponse updateProduct(Long id, ProductRequest request) {
+   public ProductResponse updateProduct(Long id, ProductRequest request, MultipartFile imageFile) throws Exception {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
 
@@ -83,7 +88,10 @@ public class ProductService {
         product.setPrice(request.getPrice());
         product.setTax(request.getTax());
         product.setCurrency(request.getCurrency());
-        product.setImageUrl(request.getImageUrl());
+
+        // Subir la nueva imagen y obtener la URL
+        String imageUrl = supabaseService.uploadImage(imageFile);  // Aquí subimos la imagen
+        product.setImageUrl(imageUrl);  // Guarda la URL en el producto
 
         return mapToResponse(productRepository.save(product));
     }
@@ -95,7 +103,7 @@ public class ProductService {
     public List<ProductResponse> getProductsByRestaurant(Long restaurantId) {
         return productRepository.findByRestaurantId(restaurantId).stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private ProductResponse mapToResponse(Product product) {
