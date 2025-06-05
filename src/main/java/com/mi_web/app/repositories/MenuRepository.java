@@ -1,12 +1,12 @@
 package com.mi_web.app.repositories;
 
-import com.mi_web.app.models.Combo;
+import com.mi_web.app.models.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ComboRepository extends JpaRepository<Combo, Integer> {
-    List<Combo> findByRestaurantId(Integer restaurantId);
+public interface MenuRepository extends JpaRepository<Menu, Integer> {
+    List<Menu> findByRestaurantId(Integer restaurantId);
 }

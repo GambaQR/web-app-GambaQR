@@ -12,5 +12,4 @@ public class RegisterRequest {
     private String address;
     private String phone;
     private String email;
-    private Long restaurantId;
 }

@@ -2,10 +2,8 @@ package com.mi_web.app.services;
 
 import com.mi_web.app.dtos.auth.*;
 import com.mi_web.app.enums.Role;
-import com.mi_web.app.models.EmployeeInfo;
 import com.mi_web.app.models.User;
 import com.mi_web.app.models.UserInfo;
-import com.mi_web.app.repositories.EmployeeInfoRepository;
 import com.mi_web.app.repositories.UserInfoRepository;
 import com.mi_web.app.repositories.UserRepository;
 import com.mi_web.app.security.JwtUtil;
@@ -26,7 +24,6 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final EmployeeInfoRepository employeeInfoRepository;
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -44,9 +41,6 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
-    }
-    public List<EmployeeInfo> getEmployeesByRestaurant(Long restaurantId) {
-        return employeeInfoRepository.findByRestaurantId(restaurantId);
     }
 
     public Optional<User> getUserById(Long id) {
@@ -106,7 +100,7 @@ public class UserService implements UserDetailsService {
                 .username(user.getUsername())
                 .role(user.getRole().name())
                 .token(jwtUtil.generateToken(user.getUsername()))
-                .userId(user.getId())
+                .userId(Long.valueOf(user.getId()))
                 .build();
     }
 

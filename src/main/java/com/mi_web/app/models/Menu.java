@@ -1,6 +1,5 @@
 package com.mi_web.app.models;
 
-import com.mi_web.app.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,24 +9,25 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "menus")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     @Column(nullable = false)
-    private String password;
+    private String name;
 
     @Column(nullable = false)
-    private Role role;
+    private String description;
 
     @CreationTimestamp
     @Column(nullable = false)
