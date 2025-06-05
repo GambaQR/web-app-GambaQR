@@ -1,5 +1,6 @@
 package com.mi_web.app.services;
 
+import com.mi_web.app.dtos.auth.CategoryResponse;
 import com.mi_web.app.dtos.auth.ProductRequest;
 import com.mi_web.app.dtos.auth.ProductResponse;
 import com.mi_web.app.models.Category;
@@ -45,9 +46,22 @@ public class ProductService {
 
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().stream()
-                .map(this::mapToResponse)
+                .map(product -> ProductResponse.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .imageUrl(product.getImageUrl())
+                        .category(CategoryResponse.builder()
+                                .id(product.getCategory().getId()) // ✅ Asegurar que se incluye la categoría
+                                .name(product.getCategory().getName())
+                                .description(product.getCategory().getDescription())
+                                .build()
+                        )
+                        .build())
                 .collect(Collectors.toList());
     }
+
 
     public Optional<ProductResponse> getProductById(Long id) {
         return productRepository.findById(id).map(this::mapToResponse);
