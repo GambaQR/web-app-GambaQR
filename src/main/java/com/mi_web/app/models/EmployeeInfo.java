@@ -15,7 +15,7 @@ public class EmployeeInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -24,5 +24,12 @@ public class EmployeeInfo {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    public EmployeeInfo(Long userId, Long restaurantId) {
+        this.user = new User();
+        this.user.setId(userId);
+        this.restaurant = new Restaurant();
+        this.restaurant.setId(restaurantId);
+    }
 
 }

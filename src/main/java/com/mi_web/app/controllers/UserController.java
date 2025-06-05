@@ -1,18 +1,23 @@
 package com.mi_web.app.controllers;
 
+import com.mi_web.app.dtos.auth.EmployeeDTO;
 import com.mi_web.app.dtos.auth.*;
 import com.mi_web.app.models.User;
+import com.mi_web.app.models.EmployeeInfo;
+import com.mi_web.app.models.UserInfo;
+import com.mi_web.app.services.UserInfoService;
 import com.mi_web.app.services.UserService;
+import com.mi_web.app.services.EmployeeInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -21,11 +26,20 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final EmployeeInfoService employeeInfoService;
+    private final UserInfoService userInfoService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
             User user = this.userService.createUser(registerRequest);
+
+            // Si el usuario tiene un restaurantId en la solicitud, lo añadimos a la tabla employee_info
+            if (registerRequest.getRestaurantId() != null) {
+                EmployeeInfo employeeInfo = new EmployeeInfo(user.getId(), registerRequest.getRestaurantId());
+                employeeInfoService.createEmployeeInfo(employeeInfo);
+            }
+
             return ResponseEntity.ok(user);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body(e.getMessage());
@@ -69,6 +83,38 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+    @GetMapping("/employees/{restaurantId}")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByRestaurant(@PathVariable Long restaurantId) {
+        List<EmployeeInfo> employeeInfos = employeeInfoService.getEmployeesByRestaurant(restaurantId);
+
+        if (employeeInfos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        // Convertir los EmployeeInfo a EmployeeDTO
+        List<EmployeeDTO> employeeDTOs = employeeInfos.stream()
+                .map(employeeInfo -> {
+                    EmployeeDTO employeeDTO = new EmployeeDTO();
+                    employeeDTO.setId(employeeInfo.getId());
+                    employeeDTO.setUsername(employeeInfo.getUser().getUsername());
+
+                    // Obtener firstName y lastName desde UserInfo
+                    UserInfo userInfo = userInfoService.getUserInfoByUserId(employeeInfo.getUser().getId());
+                    if (userInfo != null) {
+                        employeeDTO.setFirstName(userInfo.getFirstName());
+                        employeeDTO.setLastName(userInfo.getLastName());
+                    }
+
+                    // Convertir Role enum a String
+                    employeeDTO.setRole(employeeInfo.getUser().getRole().toString());
+                    return employeeDTO;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(employeeDTOs);
+    }
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {

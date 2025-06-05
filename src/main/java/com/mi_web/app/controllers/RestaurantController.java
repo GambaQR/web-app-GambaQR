@@ -20,7 +20,6 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @PostMapping("/create")
-    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createRestaurant(
             @RequestBody RestaurantRequest request,
             @RequestParam String username // Usuario actual desde el token
