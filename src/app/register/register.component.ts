@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,9 @@ export class RegisterComponent {
   form: FormGroup;
 
   constructor(
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private user: UserService,
+    private router: Router
   ) {
     this.form = this.fb.group({
       // Paso 1: Información de cuenta
@@ -45,8 +49,8 @@ export class RegisterComponent {
       confirmPassword.setErrors({ mismatch: true }); // Establece el error en el control de confirmación
       return { mismatch: true }; // Error a nivel de formulario
     } else if (confirmPassword?.hasError('mismatch')) {
-        // Si no hay mismatch, pero el error estaba previamente seteado, lo removemos
-        confirmPassword.setErrors(null);
+      // Si no hay mismatch, pero el error estaba previamente seteado, lo removemos
+      confirmPassword.setErrors(null);
     }
     return null;
   }
@@ -63,10 +67,10 @@ export class RegisterComponent {
 
       // Verificar validez de los campos del paso 1
       if (this.form.get('usuario')?.invalid ||
-          this.form.get('email')?.invalid ||
-          this.form.get('password')?.invalid ||
-          this.form.get('confirmPassword')?.invalid ||
-          this.form.hasError('mismatch')) {
+        this.form.get('email')?.invalid ||
+        this.form.get('password')?.invalid ||
+        this.form.get('confirmPassword')?.invalid ||
+        this.form.hasError('mismatch')) {
         currentFormSectionValid = false;
       }
     } else if (this.paso === 2) {
@@ -103,12 +107,39 @@ export class RegisterComponent {
     this.form.markAllAsTouched();
 
     if (this.form.valid) {
-      console.log('Formulario válido, datos:', this.form.value);
-      // Aquí podrías enviar los datos a un servicio o API
-      alert('¡Registro exitoso!');
+      const formData = this.form.value;
+
+      // Mapea los valores del frontend a lo que espera el backend
+      const roleMap: { [key: string]: string } = {
+        'cliente': 'CLIENT',      // Valor del form -> Valor que espera el backend
+        'restaurante': 'OWNER'
+      };
+
+      const registerRequest = {
+        username: formData.usuario,
+        password: formData.password,
+        role: roleMap[formData.tipoCuenta],
+        firstName: formData.nombres,
+        lastName: formData.apellidos,
+        address: formData.direccion,
+        phone: formData.telefono,
+        email: formData.email,
+        restaurantId: formData.tipoCuenta !== 'CLIENT' ? 1 : null // o el ID real según lógica
+      };
+
+      this.user.registerUser(registerRequest).subscribe({
+        next: (res) => {
+          console.log('Registro exitoso:', res);
+          alert('¡Registro exitoso!');
+          this.router.navigate(['/login']); // Redirige al login
+        },
+        error: (err) => {
+          console.error('Error en el registro:', err);
+          alert('Error al registrar el usuario.');
+        }
+      });
     } else {
       console.error('Formulario inválido, revisa los errores.');
-      // Puedes añadir lógica para desplazar la vista al primer error si es necesario
     }
   }
 

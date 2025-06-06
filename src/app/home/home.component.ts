@@ -10,7 +10,12 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
+
+
+    //readonly url = 'https://www.gambaqr.com/';
+
     readonly url = 'http://localhost:4200/cliente?table=1';
+
 
     constructor(
         private readonly router: Router,
@@ -22,6 +27,5 @@ export class HomeComponent {
     toRegister() {
         this.router.navigate(['/register']);
     }
-
 
 }

@@ -14,16 +14,26 @@ import { OrderConfirmationComponent } from './order-confirmation/order-confirmat
 import { KitchenDisplayComponent } from './seller/kitchen-display/kitchen-display.component';
 import { RestaurantPanelComponent } from './restaurant-panel/restaurant-panel.component';
 import { QrGeneratorComponent } from './restaurant/qr-generator/qr-generator.component';
+import { AuthGuard } from './services/auth/auth.guard';
+import { RoleGuard } from './services/auth/role.guard';
+
 
 export const routes: Routes = [
+
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'order-confirmation', component: OrderConfirmationComponent },
-  { path: 'kitchen', component: KitchenDisplayComponent },
-  { path: 'restaurant', component: RestaurantPanelComponent },
-  { path: 'restaurant/qr-generator', component: QrGeneratorComponent },
+
+  // EMPLOYEE, ADMIN, OWNER
+  { path: 'kitchen', component: KitchenDisplayComponent, canActivate: [RoleGuard], data: { roles: ['EMPLOYEE', 'ADMIN', 'OWNER'] } },
+
+  // OWNER, ADMIN
+  { path: 'restaurant', component: RestaurantPanelComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN', 'OWNER'] } },
+  { path: 'restaurant/qr-generator', component: QrGeneratorComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN', 'OWNER'] } },
+
+  // ZONA GENERAL
   {
     path: '', component: LayoutComponent, children: [
       { path: '', component: HomeComponent },
@@ -31,6 +41,7 @@ export const routes: Routes = [
       { path: 'user', component: ProfileComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'example', component: ExampleComponent },
+
     ]
   },
   { path: '**', component: NotFoundComponent },
