@@ -21,15 +21,15 @@ export class LoginComponent {
   // FormGroup para manejar el estado y la validación del formulario de login
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {
     // Inicialización del FormGroup con los controles y sus validadores
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.email]], // Campo de email: requerido y formato de email
+      username: ['', [Validators.required]], // Campo de email: requerido y formato de email
       password: ['', [Validators.required, Validators.minLength(6)]], // Campo de contraseña: requerido y mínimo 6 caracteres
-      rememberMe: [false] // Checkbox "Recordarme": valor inicial falso
     });
   }
 

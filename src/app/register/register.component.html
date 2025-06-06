@@ -1,64 +1,106 @@
-<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-12">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+    <div class="flex items-center justify-center gap-1 mb-6">
+      <div class="w-10 h-10 flex items-center justify-center">
+        <img src="logo.svg" alt="Logo" width="40" height="40" />
+      </div>
+    </div>
+    <h2
+      class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white"
+    >
       Crea tu cuenta
     </h2>
     <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
       Completa el formulario para registrarte en nuestra plataforma
     </p>
   </div>
-  <div class="mt-8 items-center mx-auto w-full max-w-md">
-    <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl py-8 shadow rounded-lg px-10">
+  <div class="mt-8 items-center mx-auto w-full px-12 md:px-0">
+    <div class="pt-8">
       <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
         <div class="mb-8">
           <div class="flex justify-between mb-2">
             <div class="flex flex-col items-center">
-              <div class="w-10 h-10 flex items-center justify-center rounded-full border-2" [ngClass]="{
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full border-2"
+                [ngClass]="{
                   'border-purple-600 bg-purple-600 text-white': paso >= 1,
                   'border-gray-400/50 text-gray-400': paso < 1
-                }">
+                }"
+              >
                 <ng-container *ngIf="paso > 1; else pasoUnoNumero">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-check w-5 h-5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-check w-5 h-5"
+                  >
                     <path d="M20 6 9 17l-5-5"></path>
                   </svg>
                 </ng-container>
                 <ng-template #pasoUnoNumero>1</ng-template>
               </div>
-              <span class="text-xs mt-1 text-gray-500 dark:text-gray-400">Cuenta</span>
+              <span class="text-xs mt-1 text-gray-500 dark:text-gray-400"
+                >Cuenta</span
+              >
             </div>
 
             <div class="flex flex-col items-center">
-              <div class="w-10 h-10 flex items-center justify-center rounded-full border-2" [ngClass]="{
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full border-2"
+                [ngClass]="{
                   'border-purple-600 bg-purple-600 text-white': paso >= 2,
                   'border-gray-400/50 text-gray-400': paso < 2
-                }">
+                }"
+              >
                 <ng-container *ngIf="paso > 2; else pasoDosNumero">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-check w-5 h-5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-check w-5 h-5"
+                  >
                     <path d="M20 6 9 17l-5-5"></path>
                   </svg>
                 </ng-container>
                 <ng-template #pasoDosNumero>2</ng-template>
               </div>
-              <span class="text-xs mt-1 text-gray-500 dark:text-gray-400">Tipo</span>
+              <span class="text-xs mt-1 text-gray-500 dark:text-gray-400"
+                >Tipo</span
+              >
             </div>
 
             <div class="flex flex-col items-center">
-              <div class="w-10 h-10 flex items-center justify-center rounded-full border-2" [ngClass]="{
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full border-2"
+                [ngClass]="{
                   'border-purple-600 bg-purple-600 text-white': paso >= 3,
                   'border-gray-400/50 text-gray-400': paso < 3
-                }">
+                }"
+              >
                 3
               </div>
-              <span class="text-xs mt-1 text-gray-500 dark:text-gray-400">Personal</span>
+              <span class="text-xs mt-1 text-gray-500 dark:text-gray-400"
+                >Personal</span
+              >
             </div>
           </div>
           <div class="w-full bg-white/50 rounded-full h-2.5">
-            <div class="bg-purple-600 h-2.5 rounded-full transition-all duration-300 ease-in-out"
-              [style.width.%]="calcularProgreso()"></div>
+            <div
+              class="bg-purple-600 h-2.5 rounded-full transition-all duration-300 ease-in-out"
+              [style.width.%]="calcularProgreso()"
+            ></div>
           </div>
         </div>
         <div id="paso-1" *ngIf="paso === 1">
@@ -67,11 +109,18 @@
               Información de cuenta
             </h3>
             <div class="space-y-2">
-              <label for="username" class="block text-sm font-light text-gray-600 dark:text-gray-400">Nombre de
-                usuario</label>
+              <label
+                for="username"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                >Nombre de usuario</label
+              >
               <div>
-                <input id="username" type="text" formControlName="usuario"
-                  class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
+                <input
+                  id="username"
+                  type="text"
+                  formControlName="usuario"
+                  class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+                />
                 <ng-container *ngIf="confirmarCampo('usuario')">
                   <p class="mt-2 text-sm text-red-600">
                     El nombre de usuario es obligatorio.
@@ -81,16 +130,29 @@
             </div>
 
             <div class="space-y-2">
-              <label for="email" class="block text-sm font-light text-gray-600 dark:text-gray-400">Correo
-                electrónico</label>
+              <label
+                for="email"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                >Correo electrónico</label
+              >
               <div>
-                <input id="email" type="email" formControlName="email"
-                  class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+                />
                 <ng-container *ngIf="confirmarCampo('email')">
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('email')?.hasError('required')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('email')?.hasError('required')"
+                  >
                     El correo electrónico es obligatorio.
                   </p>
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('email')?.hasError('email')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('email')?.hasError('email')"
+                  >
                     Debes ingresar un correo electrónico válido.
                   </p>
                 </ng-container>
@@ -99,26 +161,45 @@
 
             <div class="space-y-2">
               <div class="flex items-center justify-between">
-                <label for="password"
-                  class="block text-sm font-light text-gray-600 dark:text-gray-400">Contraseña</label>
+                <label
+                  for="password"
+                  class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                  >Contraseña</label
+                >
               </div>
               <div>
                 <div class="relative">
-                  <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
-                    class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
-                  <button type="button"
+                  <input
+                    id="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+                  />
+                  <button
+                    type="button"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-purple-600 transition-colors"
-                    (click)="togglePasswordVisibility()" [attr.aria-label]="
+                    (click)="togglePasswordVisibility()"
+                    [attr.aria-label]="
                       showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'
-                    ">
-                    <i class="bi" [ngClass]="showPassword ? 'bi-eye' : 'bi-eye-slash'"></i>
+                    "
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="showPassword ? 'bi-eye' : 'bi-eye-slash'"
+                    ></i>
                   </button>
                 </div>
                 <ng-container *ngIf="confirmarCampo('password')">
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('password')?.hasError('required')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('password')?.hasError('required')"
+                  >
                     La contraseña es obligatoria.
                   </p>
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('password')?.hasError('minlength')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('password')?.hasError('minlength')"
+                  >
                     La contraseña debe tener al menos 6 caracteres.
                   </p>
                 </ng-container>
@@ -127,35 +208,52 @@
 
             <div class="space-y-2">
               <div class="flex items-center justify-between">
-                <label for="confirmPassword" class="block text-sm font-light text-gray-600 dark:text-gray-400">Confirmar
-                  contraseña</label>
+                <label
+                  for="confirmPassword"
+                  class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                  >Confirmar contraseña</label
+                >
               </div>
               <div>
                 <div class="relative">
-                  <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                  <input
+                    id="confirmPassword"
+                    [type]="showConfirmPassword ? 'text' : 'password'"
                     formControlName="confirmPassword"
-                    class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
-                  <button type="button"
+                    class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+                  />
+                  <button
+                    type="button"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-purple-600 transition-colors"
-                    (click)="toggleConfirmPasswordVisibility()" [attr.aria-label]="
+                    (click)="toggleConfirmPasswordVisibility()"
+                    [attr.aria-label]="
                       showConfirmPassword
                         ? 'Ocultar contraseña'
                         : 'Mostrar contraseña'
-                    ">
-                    <i class="bi" [ngClass]="
+                    "
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="
                         showConfirmPassword ? 'bi-eye' : 'bi-eye-slash'
-                      "></i>
+                      "
+                    ></i>
                   </button>
                 </div>
                 <ng-container *ngIf="confirmarCampo('confirmPassword')">
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('confirmPassword')?.hasError('required')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('confirmPassword')?.hasError('required')"
+                  >
                     Debes confirmar la contraseña.
                   </p>
                 </ng-container>
-                <ng-container *ngIf="
+                <ng-container
+                  *ngIf="
                     form.hasError('mismatch') &&
                     form.get('confirmPassword')?.touched
-                  ">
+                  "
+                >
                   <p class="mt-2 text-sm text-red-600">
                     Las contraseñas no coinciden.
                   </p>
@@ -166,17 +264,30 @@
 
           <div class="mt-8 flex justify-between">
             <div></div>
-            <button type="button" (click)="siguientePaso()" [disabled]="
+            <button
+              type="button"
+              (click)="siguientePaso()"
+              [disabled]="
                 form.get('usuario')?.invalid ||
                 form.get('email')?.invalid ||
                 form.get('password')?.invalid ||
                 form.get('confirmPassword')?.invalid ||
                 form.hasError('mismatch')
               "
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed">
-              Siguiente<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-arrow-right ml-2 h-4 w-4">
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Siguiente<svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-right ml-2 h-4 w-4"
+              >
                 <path d="M5 12h14"></path>
                 <path d="m12 5 7 7-7 7"></path>
               </svg>
@@ -189,31 +300,50 @@
               Tipo de cuenta
             </h3>
             <div>
-              <label for="tipoCuenta" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-4">Selecciona
-                el tipo de cuenta que deseas crear</label>
+              <label
+                for="tipoCuenta"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-4"
+                >Selecciona el tipo de cuenta que deseas crear</label
+              >
               <div class="space-y-4 px-4">
                 <div class="flex items-center">
                   <div class="relative inline-flex items-center h-4 w-4">
-                    <input id="restaurante"
+                    <input
+                      id="restaurante"
                       class="appearance-none peer cursor-pointer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all"
-                      type="radio" value="restaurante" formControlName="tipoCuenta" />
+                      type="radio"
+                      value="restaurante"
+                      formControlName="tipoCuenta"
+                    />
                     <span
-                      class="pointer-events-none absolute inset-0 bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"></span>
+                      class="pointer-events-none absolute inset-0 bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+                    ></span>
                   </div>
-                  <label for="restaurante" class="ml-3 block text-sm font-light text-gray-600 dark:text-gray-400">Dueño
-                    de restaurante</label>
+                  <label
+                    for="restaurante"
+                    class="ml-3 block text-sm font-light text-gray-600 dark:text-gray-400"
+                    >Dueño de restaurante</label
+                  >
                 </div>
 
                 <div class="flex items-center">
                   <div class="relative inline-flex items-center h-4 w-4">
-                    <input id="cliente"
+                    <input
+                      id="cliente"
                       class="appearance-none peer cursor-pointer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all"
-                      type="radio" value="cliente" formControlName="tipoCuenta" />
+                      type="radio"
+                      value="cliente"
+                      formControlName="tipoCuenta"
+                    />
                     <span
-                      class="pointer-events-none absolute inset-0 bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"></span>
+                      class="pointer-events-none absolute inset-0 bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+                    ></span>
                   </div>
-                  <label for="cliente"
-                    class="ml-3 block text-sm font-light text-gray-600 dark:text-gray-400">Cliente</label>
+                  <label
+                    for="cliente"
+                    class="ml-3 block text-sm font-light text-gray-600 dark:text-gray-400"
+                    >Cliente</label
+                  >
                 </div>
               </div>
               <ng-container *ngIf="confirmarCampo('tipoCuenta')">
@@ -225,21 +355,46 @@
           </div>
 
           <div class="mt-8 flex justify-between">
-            <button type="button" (click)="pasoAnterior()"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-white/40 dark:hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-arrow-left mr-2 h-4 w-4">
+            <button
+              type="button"
+              (click)="pasoAnterior()"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-white/40 dark:hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-left mr-2 h-4 w-4"
+              >
                 <path d="m12 19-7-7 7-7"></path>
-                <path d="M19 12H5"></path>
-              </svg>Atrás
+                <path d="M19 12H5"></path></svg
+              >Atrás
             </button>
 
-            <button type="button" (click)="siguientePaso()" [disabled]="form.get('tipoCuenta')?.invalid"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed">
-              Siguiente<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-arrow-right ml-2 h-4 w-4">
+            <button
+              type="button"
+              (click)="siguientePaso()"
+              [disabled]="form.get('tipoCuenta')?.invalid"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Siguiente<svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-right ml-2 h-4 w-4"
+              >
                 <path d="M5 12h14"></path>
                 <path d="m12 5 7 7-7 7"></path>
               </svg>
@@ -253,11 +408,18 @@
             </h3>
             <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               <div>
-                <label for="nombres" class="block text-sm font-light text-gray-600 dark:text-gray-400">Nombres</label>
+                <label
+                  for="nombres"
+                  class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                  >Nombres</label
+                >
                 <div class="mt-1">
-                  <input id="nombres" formControlName="nombres"
+                  <input
+                    id="nombres"
+                    formControlName="nombres"
                     class="w-full px-3 py-2 shadow-sm border border-gray-300 rounded-lg text-gray-900 dark:text-white focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 transition-colors sm:text-sm"
-                    type="text" />
+                    type="text"
+                  />
                   <ng-container *ngIf="confirmarCampo('nombres')">
                     <p class="mt-2 text-sm text-red-600">
                       Los nombres son obligatorios.
@@ -266,12 +428,18 @@
                 </div>
               </div>
               <div>
-                <label for="apellidos"
-                  class="block text-sm font-light text-gray-600 dark:text-gray-400">Apellidos</label>
+                <label
+                  for="apellidos"
+                  class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                  >Apellidos</label
+                >
                 <div class="mt-1">
-                  <input id="apellidos" formControlName="apellidos"
+                  <input
+                    id="apellidos"
+                    formControlName="apellidos"
                     class="w-full px-3 py-2 shadow-sm border border-gray-300 rounded-lg text-gray-900 dark:text-white focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 transition-colors sm:text-sm"
-                    type="text" />
+                    type="text"
+                  />
                   <ng-container *ngIf="confirmarCampo('apellidos')">
                     <p class="mt-2 text-sm text-red-600">
                       Los apellidos son obligatorios.
@@ -281,11 +449,18 @@
               </div>
             </div>
             <div>
-              <label for="direccion" class="block text-sm font-light text-gray-600 dark:text-gray-400">Dirección</label>
+              <label
+                for="direccion"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                >Dirección</label
+              >
               <div class="mt-1">
-                <input id="direccion" formControlName="direccion"
+                <input
+                  id="direccion"
+                  formControlName="direccion"
                   class="w-full px-3 py-2 shadow-sm border border-gray-300 rounded-lg text-gray-900 dark:text-white focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 transition-colors sm:text-sm"
-                  type="text" />
+                  type="text"
+                />
                 <ng-container *ngIf="confirmarCampo('direccion')">
                   <p class="mt-2 text-sm text-red-600">
                     La dirección es obligatoria.
@@ -294,16 +469,29 @@
               </div>
             </div>
             <div>
-              <label for="telefono" class="block text-sm font-light text-gray-600 dark:text-gray-400">Teléfono</label>
+              <label
+                for="telefono"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400"
+                >Teléfono</label
+              >
               <div class="mt-1">
-                <input id="telefono" formControlName="telefono"
+                <input
+                  id="telefono"
+                  formControlName="telefono"
                   class="w-full px-3 py-2 shadow-sm border border-gray-300 rounded-lg text-gray-900 dark:text-white focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 transition-colors sm:text-sm"
-                  type="tel" />
+                  type="tel"
+                />
                 <ng-container *ngIf="confirmarCampo('telefono')">
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('telefono')?.hasError('required')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('telefono')?.hasError('required')"
+                  >
                     El teléfono es obligatorio.
                   </p>
-                  <p class="mt-2 text-sm text-red-600" *ngIf="form.get('telefono')?.hasError('pattern')">
+                  <p
+                    class="mt-2 text-sm text-red-600"
+                    *ngIf="form.get('telefono')?.hasError('pattern')"
+                  >
                     Ingresa un número de teléfono válido (9-10 dígitos).
                   </p>
                 </ng-container>
@@ -311,17 +499,32 @@
             </div>
           </div>
           <div class="mt-8 flex justify-between">
-            <button type="button" (click)="pasoAnterior()"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-white/40 dark:hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-arrow-left mr-2 h-4 w-4">
+            <button
+              type="button"
+              (click)="pasoAnterior()"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-400 hover:bg-white/40 dark:hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-left mr-2 h-4 w-4"
+              >
                 <path d="m12 19-7-7 7-7"></path>
-                <path d="M19 12H5"></path>
-              </svg>Atrás
+                <path d="M19 12H5"></path></svg
+              >Atrás
             </button>
-            <button type="submit" [disabled]="form.invalid"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button
+              type="submit"
+              [disabled]="form.invalid"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Registrar
             </button>
           </div>
@@ -330,13 +533,23 @@
 
       <div class="mt-6">
         <div class="flex items-center w-full">
-          <div class="flex-grow border-t border-gray-600/30 dark:border-gray-400/30"></div>
-          <span class="mx-4 text-sm text-gray-600 dark:text-gray-400">¿Ya tienes una cuenta?</span>
-          <div class="flex-grow border-t border-gray-600/30 dark:border-gray-400/30"></div>
+          <div
+            class="flex-grow border-t border-gray-600/30 dark:border-gray-400/30"
+          ></div>
+          <span class="mx-4 text-sm text-gray-600 dark:text-gray-400"
+            >¿Ya tienes una cuenta?</span
+          >
+          <div
+            class="flex-grow border-t border-gray-600/30 dark:border-gray-400/30"
+          ></div>
         </div>
 
         <div class="mt-6 text-center">
-          <a href="/login" class="font-medium text-purple-600 hover:text-purple-500">Inicia sesión</a>
+          <a
+            href="/login"
+            class="font-medium text-purple-600 hover:text-purple-500"
+            >Inicia sesión</a
+          >
         </div>
       </div>
     </div>
