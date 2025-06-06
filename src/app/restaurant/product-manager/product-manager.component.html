@@ -46,25 +46,7 @@
             {{ category.icon }} {{ category.name }}
           </option>
         </ng-container>
-      </select>
-      <div
-        class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-      >
-        <svg
-          class="h-5 w-5 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M19 9l-7 7-7-7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          ></path>
-        </svg>
-      </div>
+      </select> 
 
       <select
         [(ngModel)]="statusFilter"
@@ -76,24 +58,6 @@
         <option value="available">Disponibles</option>
         <option value="unavailable">No disponibles</option>
       </select>
-      <div
-        class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-      >
-        <svg
-          class="h-5 w-5 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M19 9l-7 7-7-7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          ></path>
-        </svg>
-      </div>
 
       <div class="text-sm text-gray-600 dark:text-gray-400 flex items-center">
         Mostrando {{ filteredProducts.length }} de {{ products.length }}
@@ -218,35 +182,8 @@
                   </svg>
                   <span>{{ product.preparationTime }} min</span>
                 </div>
-                <div *ngIf="product.calories" class="flex items-center gap-1">
-                  🔥 <span>{{ product.calories }} cal</span>
-                </div>
                 <div class="flex items-center gap-1">
                   📝 {{ product.ingredients.length }} ingredientes
-                </div>
-                <div
-                  *ngIf="product.allergens.length > 0"
-                  class="flex items-center gap-1 text-orange-600 dark:text-orange-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="h-3 w-3"
-                  >
-                    <path
-                      d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
-                    ></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                  </svg>
-                  {{ product.allergens.join(", ") }}
                 </div>
               </div>
 

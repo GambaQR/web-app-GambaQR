@@ -1,6 +1,4 @@
-<div
-  class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white"
->
+<div class="min-h-screen text-gray-900 dark:text-white">
   <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl shadow-sm p-4">
     <div
       class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"
@@ -95,14 +93,14 @@
   <div class="max-w-7xl mx-auto p-6">
     <div class="space-y-6">
       <div
-        class="grid w-full grid-cols-3 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 text-gray-900 dark:text-white"
+        class="grid w-full grid-cols-3 bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-lg text-gray-900 dark:text-white"
       >
         <button
           (click)="setActiveTab('dashboard')"
           [ngClass]="{
-            'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow':
+            'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow py-3':
               activeTab === 'dashboard',
-            'hover:bg-gray-200 dark:hover:bg-gray-600':
+            'hover:bg-purple-300/10 dark:hover:bg-gray-600/30 backdrop-blur':
               activeTab !== 'dashboard'
           }"
           class="py-2 px-4 rounded-md text-sm font-medium transition-colors"
@@ -112,9 +110,10 @@
         <button
           (click)="setActiveTab('orders')"
           [ngClass]="{
-            'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow':
+            'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow py-3':
               activeTab === 'orders',
-            'hover:bg-gray-200 dark:hover:bg-gray-600': activeTab !== 'orders'
+            'hover:bg-purple-300/10 dark:hover:bg-gray-600/30 backdrop-blur':
+              activeTab !== 'orders'
           }"
           class="py-2 px-4 rounded-md text-sm font-medium transition-colors"
         >
@@ -123,9 +122,10 @@
         <button
           (click)="setActiveTab('menu')"
           [ngClass]="{
-            'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow':
+            'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow py-3':
               activeTab === 'menu',
-            'hover:bg-gray-200 dark:hover:bg-gray-600': activeTab !== 'menu'
+            'hover:bg-purple-300/10 dark:hover:bg-gray-600/30 backdrop-blur':
+              activeTab !== 'menu'
           }"
           class="py-2 px-4 rounded-md text-sm font-medium transition-colors"
         >
@@ -411,14 +411,14 @@
           Gestión de Menú
         </h2>
         <div
-          class="grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 text-gray-900 dark:text-white"
+          class="grid w-full grid-cols-2 bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-lg text-gray-900 dark:text-white"
         >
           <button
             (click)="setActiveMenuTab('categories')"
             [ngClass]="{
-              'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow':
+              'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow py-3':
                 activeMenuTab === 'categories',
-              'hover:bg-gray-200 dark:hover:bg-gray-600':
+              'hover:bg-purple-300/10 dark:hover:bg-gray-600/30 backdrop-blur':
                 activeMenuTab !== 'categories'
             }"
             class="py-2 px-4 rounded-md text-sm font-medium transition-colors"
@@ -428,9 +428,9 @@
           <button
             (click)="setActiveMenuTab('products')"
             [ngClass]="{
-              'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow':
+              'bg-white dark:bg-purple-800 text-purple-600 dark:text-white shadow py-3':
                 activeMenuTab === 'products',
-              'hover:bg-gray-200 dark:hover:bg-gray-600':
+              'hover:bg-purple-300/10 dark:hover:bg-gray-600/30 backdrop-blur':
                 activeMenuTab !== 'products'
             }"
             class="py-2 px-4 rounded-md text-sm font-medium transition-colors"
