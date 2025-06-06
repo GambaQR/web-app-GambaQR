@@ -9,7 +9,7 @@ import { MenuComponent } from './menu/menu.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
-import { KitchenDisplayComponent } from './seller/kitchen-display/kitchen-display.component';
+import { KitchenDisplayComponent } from './kitchen-display/kitchen-display.component';
 import { RestaurantPanelComponent } from './restaurant-panel/restaurant-panel.component';
 import { QrGeneratorComponent } from './restaurant/qr-generator/qr-generator.component';
 import { AuthGuard } from './services/auth/auth.guard';
