@@ -1,53 +1,45 @@
 package com.mi_web.app.controllers;
-import com.mi_web.app.dtos.auth.PaymentRequest;
-import com.mi_web.app.models.Order;
-import com.mi_web.app.models.Payment;
-import com.mi_web.app.repositories.OrderRepository;
-import com.mi_web.app.repositories.PaymentRepository;
-import com.mi_web.app.repositories.RestaurantRepository;
+
+import com.mi_web.app.dtos.auth.order.PaymentRequestDTO;
+import com.mi_web.app.dtos.auth.order.PaymentResponseDTO;
 import com.mi_web.app.services.PaymentService;
-import com.stripe.exception.StripeException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/payment")
-@CrossOrigin("*")
+@RequestMapping("/payments")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
+    private final PaymentService paymentService;
 
-    @PostMapping("/create-payment-intent")
-    public String createPaymentIntent(@RequestParam Long amount, @RequestParam String currency) throws StripeException {
-        return paymentService.createPaymentIntent(amount, currency);
+    @PostMapping("/process")
+    public ResponseEntity<PaymentResponseDTO> processPayment(@RequestBody PaymentRequestDTO request) {
+        return ResponseEntity.ok(paymentService.processPayment(request));
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<String> savePayment(@RequestBody PaymentRequest request) {
-        Optional<Order> orderOpt = orderRepository.findById(request.getOrderId());
-
-        if (orderOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
-        }
-
-        Payment payment = new Payment();
-        payment.setOrder(orderOpt.get());
-        payment.setAmount(BigDecimal.valueOf(request.getAmount()));
-        payment.setPaymentMethod(request.getPaymentMethod());
-        payment.setPaymentStatus(request.getPaymentStatus());
-
-        paymentRepository.save(payment);
-        return ResponseEntity.ok("Payment saved successfully");
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PaymentResponseDTO>> getPaymentsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(paymentService.getPaymentsByUser(userId));
     }
 
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<PaymentResponseDTO> getPaymentByOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(paymentService.getPaymentByOrder(orderId));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<PaymentResponseDTO> updatePayment(@PathVariable Long id, @RequestBody PaymentRequestDTO request) {
+        return ResponseEntity.ok(paymentService.updatePayment(id, request));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deletePayment(@PathVariable Long id) {
+        paymentService.deletePayment(id);
+        return ResponseEntity.noContent().build();
+    }
 }

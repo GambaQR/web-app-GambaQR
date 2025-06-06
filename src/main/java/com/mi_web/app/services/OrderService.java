@@ -29,7 +29,6 @@ public class OrderService {
     private final ProductPromotionRepository productPromotionRepository;
     private final ComboPromotionRepository comboPromotionRepository;
 
-    /*
     public OrderResponseDTO createOrder(OrderRequestDTO request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
@@ -60,7 +59,6 @@ public class OrderService {
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders.stream().map(this::mapToResponse).toList();
     }
-
 
     public Optional<OrderResponseDTO> getOrderById(Integer id) {
         return orderRepository.findById(id).map(this::mapToResponse);
@@ -176,6 +174,6 @@ public class OrderService {
 
         return new OrderResponseDTO(order.getId(), order.getUser().getId(), order.getRestaurant().getId(),
                 order.getTableNumber(), order.getStatus(), order.getCreatedAt(), order.getUpdatedAt(), totalAmount, products, combos);
-    }*/
+    }
 
 }

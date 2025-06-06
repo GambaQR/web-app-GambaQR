@@ -1,30 +1,86 @@
 package com.mi_web.app.services;
 
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-import org.springframework.beans.factory.annotation.Value;
+import com.mi_web.app.dtos.auth.order.PaymentRequestDTO;
+import com.mi_web.app.dtos.auth.order.PaymentResponseDTO;
+import com.mi_web.app.models.Order;
+import com.mi_web.app.models.OrderDetail;
+import com.mi_web.app.models.Payment;
+import com.mi_web.app.repositories.OrderDetailRepository;
+import com.mi_web.app.repositories.OrderRepository;
+import com.mi_web.app.repositories.PaymentRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
 
-    @Value("${stripe.secret.key}")
-    private String stripeSecretKey;
+    private final PaymentRepository paymentRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
-    public String createPaymentIntent(Long amount, String currency) throws StripeException {
-        Stripe.apiKey = stripeSecretKey;
+    @Transactional
+    public PaymentResponseDTO processPayment(PaymentRequestDTO request) {
+        Order order = orderRepository.findById(request.getOrderId())
+                .orElseThrow(() -> new IllegalArgumentException("Orden no encontrada"));
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("amount", amount);
-        params.put("currency", currency);
-        params.put("payment_method_types", new String[]{"card"});
+        Payment payment = new Payment();
+        payment.setOrder(order);
+        payment.setAmount(calculateOrderTotal(order));
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setPaymentStatus("COMPLETED");
+        payment.setCreatedAt(LocalDateTime.now());
 
-        PaymentIntent paymentIntent = PaymentIntent.create(params);
-        return paymentIntent.getClientSecret();
+        Payment savedPayment = paymentRepository.save(payment);
+
+        return mapToResponse(savedPayment);
     }
 
+    private BigDecimal calculateOrderTotal(Order order) {
+        return orderDetailRepository.findByOrder(order)
+                .stream()
+                .map(OrderDetail::getTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public PaymentResponseDTO getPaymentByOrder(Long orderId) {
+        Payment payment = paymentRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Pago no encontrado"));
+        return mapToResponse(payment);
+    }
+
+    public List<PaymentResponseDTO> getPaymentsByUser(Long userId) {
+        List<Payment> payments = paymentRepository.findByOrder_UserId(userId);
+        return payments.stream().map(this::mapToResponse).toList();
+    }
+
+    @Transactional
+    public PaymentResponseDTO updatePayment(Long id, PaymentRequestDTO request) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pago no encontrado"));
+
+        Order order = payment.getOrder();
+
+        payment.setAmount(calculateOrderTotal(order));
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setPaymentStatus("UPDATED");
+        return mapToResponse(paymentRepository.save(payment));
+    }
+
+    @Transactional
+    public void deletePayment(Long id) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pago no encontrado"));
+        paymentRepository.delete(payment);
+    }
+
+    private PaymentResponseDTO mapToResponse(Payment payment) {
+        return new PaymentResponseDTO(payment.getId(), payment.getOrder().getId(),
+                payment.getAmount(), payment.getPaymentMethod(), payment.getPaymentStatus(), payment.getCreatedAt());
+    }
 }
