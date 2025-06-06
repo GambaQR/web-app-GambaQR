@@ -35,9 +35,9 @@ export class CartService {
 
     // --- AÑADIR CÓDIGO PARA DATOS DE EJEMPLO AQUÍ ---
     // Solo carga datos de ejemplo si el carrito está vacío después de cargar de localStorage
-    if (this._cartState.value.items.length === 0) {
-      this.addExampleItems();
-    }
+    // if (this._cartState.value.items.length === 0) {
+    //   this.addExampleItems();
+    // }
     // --- FIN DE CÓDIGO PARA DATOS DE EJEMPLO ---
   }
 
@@ -79,38 +79,15 @@ export class CartService {
   }
 
   // --- NUEVO MÉTODO PARA AÑADIR EJEMPLOS ---
-  private addExampleItems(): void {
-    const exampleItems: CartItem[] = [
-      {
-        id: 101,
-        name: 'Hamburguesa Clásica',
-        price: 12.50,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1571091718767-f87c9bc451b6?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        notes: 'Sin cebolla, extra pepinillos.'
-      },
-      {
-        id: 102,
-        name: 'Ensalada César',
-        price: 9.75,
-        quantity: 2,
-        image: 'https://images.unsplash.com/photo-1512852643596-f94d3a86c67d?q=80&w=1853&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      },
-      {
-        id: 103,
-        name: 'Refresco Cola',
-        price: 2.00,
-        quantity: 3,
-        image: 'https://images.unsplash.com/photo-1629203851211-1c5c9b7e7c4f?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      }
-    ];
+  // private addExampleItems(): void {
 
-    const { total, itemCount } = this.calculateCartTotals(exampleItems);
-    this._cartState.next({ items: exampleItems, total, itemCount });
-    this.saveCartToLocalStorage(); // Guarda los ítems de ejemplo en localStorage
-    console.log('Carrito inicializado con ítems de ejemplo para desarrollo.');
-  }
-  // --- FIN DE NUEVO MÉTODO ---
+
+  //   const { total, itemCount } = this.calculateCartTotals(exampleItems);
+  //   this._cartState.next({ items: exampleItems, total, itemCount });
+  //   this.saveCartToLocalStorage(); // Guarda los ítems de ejemplo en localStorage
+  //   console.log('Carrito inicializado con ítems de ejemplo para desarrollo.');
+  // }
+  // // --- FIN DE NUEVO MÉTODO ---
 
 
   // Métodos para interactuar con el carrito (sin cambios)
