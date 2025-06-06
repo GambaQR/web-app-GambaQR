@@ -12,5 +12,4 @@ public class ProductRequest {
     private BigDecimal price;
     private BigDecimal tax;
     private String currency;
-    private String imageUrl;
 }

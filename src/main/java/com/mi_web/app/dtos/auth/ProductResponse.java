@@ -1,6 +1,5 @@
 package com.mi_web.app.dtos.auth;
 
-import com.mi_web.app.models.Category;
 import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
