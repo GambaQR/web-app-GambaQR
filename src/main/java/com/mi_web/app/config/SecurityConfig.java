@@ -86,7 +86,19 @@ public class SecurityConfig {
                                 "/api/combos/{id}",
                                 "/api/combos/update/{id}",
                                 "/api/combos/delete/{id}",
-                                "/api/combos/by-restaurant/{restaurantId}"
+                                "/api/combos/by-restaurant/{restaurantId}",
+                                "/api/orders/create",
+                                "/api/orders/all",
+                                "/api/orders/by-user/{userId}",
+                                "/api/orders/{id}",
+                                "/api/orders/update/{id}",
+                                "/api/orders/delete/{id}",
+                                "/api/payments/process",
+                                "/api/payments/user/{userId}",
+                                "/api/payments/order/{orderId}",
+                                "/api/payments/delete/{id}",
+                                "/api/payments/update/{id}",
+                                "/api/qrcodes/create"
 
                         ).permitAll()
                         .anyRequest().authenticated()
