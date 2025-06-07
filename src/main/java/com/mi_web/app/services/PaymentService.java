@@ -8,8 +8,13 @@ import com.mi_web.app.models.Payment;
 import com.mi_web.app.repositories.OrderDetailRepository;
 import com.mi_web.app.repositories.OrderRepository;
 import com.mi_web.app.repositories.PaymentRepository;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,6 +28,9 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    @Value("${stripe.secret.key}") // ✅ Inyectar la clave desde application.properties
+    private String stripeSecretKey;
+
 
     @Transactional
     public PaymentResponseDTO processPayment(PaymentRequestDTO request) {
@@ -40,6 +48,20 @@ public class PaymentService {
 
         return mapToResponse(savedPayment);
     }
+
+    public String createPaymentIntent(BigDecimal amount, String currency) throws StripeException {
+        Stripe.apiKey = stripeSecretKey;
+
+        PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+                .setAmount(amount.multiply(new BigDecimal(100)).longValue()) // Stripe usa centavos
+                .setCurrency(currency)
+                .addPaymentMethodType("card")
+                .build();
+
+        PaymentIntent intent = PaymentIntent.create(params);
+        return intent.getClientSecret();
+    }
+
 
     private BigDecimal calculateOrderTotal(Order order) {
         return orderDetailRepository.findByOrder(order)

@@ -94,10 +94,13 @@ public class SecurityConfig {
                                 "/api/orders/update/{id}",
                                 "/api/orders/delete/{id}",
                                 "/api/payments/process",
+                                "/api/payments/public-key",
                                 "/api/payments/user/{userId}",
                                 "/api/payments/order/{orderId}",
                                 "/api/payments/delete/{id}",
                                 "/api/payments/update/{id}",
+                                "/api/payments/create-payment-intent",
+                                "/api/payments/confirm-payment",
                                 "/api/qrcodes/create"
 
                         ).permitAll()

@@ -9,12 +9,18 @@ import com.mi_web.app.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class QrCodeService {
 
     private final QrCodeRepository qrCodeRepository;
     private final RestaurantRepository restaurantRepository; // Para asociar el QR con un restaurante
+
+    public Optional<QrCode> findByQrUrl(String qrUrl) {
+        return qrCodeRepository.findByQrUrl(qrUrl);
+    }
 
     public QrCodeResponse createQrCode(QrCodeRequest request) {
         // Buscar el restaurante por ID
