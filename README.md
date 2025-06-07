@@ -33,7 +33,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## QRCode
 
 Usar `npm i qr-code-styling`
-
-## Download QR en PDF
-usar `npm install jspdf html2canvas --save`
-

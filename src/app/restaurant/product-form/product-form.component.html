@@ -1,371 +1,128 @@
-<div class="w-full max-w-2xl max-h-[90vh] text-gray-900 dark:text-white">
-  <div class="p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold">
-        {{ product ? "Editar Producto" : "Nuevo Producto" }}
-      </h2>
-    </div>
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto text-gray-900 dark:text-white">
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">{{ product ? "Editar Producto" : "Nuevo Producto" }}</h2>
+        <button (click)="onCancel.emit()" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
 
-    <form
-      [formGroup]="productForm"
-      (ngSubmit)="handleSubmit()"
-      class="space-y-6"
-    >
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium">Información Básica</h3>
+      <form [formGroup]="productForm" (ngSubmit)="handleSubmit()" class="space-y-6">
+        <div class="space-y-4">
+          <h3 class="text-lg font-medium">Información Básica</h3>
 
-        <div>
-          <label
-            for="name"
-            class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
-            >Nombre del Producto *</label
-          >
-          <input
-            id="name"
-            formControlName="name"
-            placeholder="Ej: Hamburguesa Clásica"
-            class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
-            [ngClass]="{ 'border-red-500': confirmarCampo('name') }"
-          />
-          <p
-            *ngIf="
-              confirmarCampo('name') &&
-              productForm.get('name')?.hasError('required')
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            El nombre es requerido.
-          </p>
+          <div>
+            <label for="name" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Nombre del Producto *</label>
+            <input
+              id="name"
+              formControlName="name"
+              placeholder="Ej: Hamburguesa Clásica"
+              class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+              [ngClass]="{'border-red-500': confirmarCampo('name')}"
+            />
+            <p *ngIf="confirmarCampo('name') && productForm.get('name')?.hasError('required')" class="text-red-500 text-sm mt-1">El nombre es requerido.</p>
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Descripción *</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Describe el producto..."
+              class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 min-h-[80px]"
+              [ngClass]="{'border-red-500': confirmarCampo('description')}"
+            ></textarea>
+            <p *ngIf="confirmarCampo('description') && productForm.get('description')?.hasError('required')" class="text-red-500 text-sm mt-1">La descripción es requerida.</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="categoryId" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Categoría *</label>
+              <select
+                id="categoryId"
+                formControlName="categoryId"
+                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 appearance-none pr-8 cursor-pointer"
+                [ngClass]="{'border-red-500': confirmarCampo('categoryId')}"
+              >
+                <option value="" disabled selected>Seleccionar categoría</option>
+                <ng-container *ngFor="let category of categories"> 
+                  <option [value]="category.id"> {{ category.name }}</option>
+                </ng-container>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </div>
+              <p *ngIf="confirmarCampo('categoryId') && productForm.get('categoryId')?.hasError('required')" class="text-red-500 text-sm mt-1">Debe seleccionar una categoría.</p>
+            </div>
+
+            
+          </div>
         </div>
 
-        <div>
-          <label
-            for="description"
-            class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
-            >Descripción *</label
-          >
-          <textarea
-            id="description"
-            formControlName="description"
-            placeholder="Describe el producto..."
-            class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 min-h-[80px]"
-            [ngClass]="{ 'border-red-500': confirmarCampo('description') }"
-          ></textarea>
-          <p
-            *ngIf="
-              confirmarCampo('description') &&
-              productForm.get('description')?.hasError('required')
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            La descripción es requerida.
-          </p>
-        </div>
-
-        <div>
-          <label
-            for="categoryId"
-            class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
-            >Categoría *</label
-          >
-
-          <div class="relative">
-            <select
-              id="categoryId"
-              formControlName="categoryId"
-              class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 appearance-none pr-10 cursor-pointer"
-              [ngClass]="{ 'border-red-500': confirmarCampo('categoryId') }"
-            >
-              <option value="" disabled selected>Seleccionar categoría</option>
-              <ng-container
-                *ngFor="let category of categories | filterActiveCategories"
-              >
-                <option [value]="category.id">
-                  {{ category.icon }} {{ category.name }}
-                </option>
-              </ng-container>
-            </select>
-
-            <div
-              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none h-full"
-            >
-              <svg
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 9l-7 7-7-7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                ></path>
-              </svg>
+        <div class="space-y-4">
+          <h3 class="text-lg font-medium">Imagen del Producto</h3>
+          <div class="flex items-center gap-4">
+            <ng-container *ngIf="imagePreviewUrl">
+              <img
+                [src]="imagePreviewUrl"
+                alt="Preview"
+                class="w-20 h-20 rounded-lg object-cover"
+              />
+            </ng-container>
+            <div>
+              <label for="image" class="cursor-pointer inline-block">
+                <div class="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-900 dark:text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                  Subir Imagen
+                </div>
+              </label>
+              <input id="image" type="file" accept="image/*" (change)="handleImageUpload($event)" class="hidden" />
             </div>
           </div>
-          <p
-            *ngIf="
-              confirmarCampo('categoryId') &&
-              productForm.get('categoryId')?.hasError('required')
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Debe seleccionar una categoría.
-          </p>
         </div>
-      </div>
 
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium">Imagen del Producto</h3>
-        <div class="flex items-center gap-4">
-          <ng-container *ngIf="productForm.get('image')?.value">
-            <img
-              [src]="productForm.get('image')?.value || '/placeholder.svg'"
-              alt="Preview"
-              class="w-20 h-20 rounded-lg object-cover"
-            />
-          </ng-container>
-          <div>
-            <label for="image" class="cursor-pointer inline-block">
-              <div
-                class="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-900 dark:text-white"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-4 w-4"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                Subir Imagen
-              </div>
-            </label>
-            <input
-              id="image"
-              type="file"
-              accept="image/*"
-              (change)="handleImageUpload($event)"
-              class="hidden"
-            />
+        <div class="space-y-4">
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="price" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Precio *</label>
+              <input
+                id="price"
+                formControlName="price"
+                type="number"
+                step="0.01"
+                min="0"
+                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+                [ngClass]="{'border-red-500': confirmarCampo('price')}"
+              />
+              <p *ngIf="confirmarCampo('price') && productForm.get('price')?.hasError('required')" class="text-red-500 text-sm mt-1">El precio es obligatorio.</p>
+              <p *ngIf="confirmarCampo('price') && productForm.get('price')?.hasError('min')" class="text-red-500 text-sm mt-1">El precio debe ser mayor a 0.</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium">Precios</h3>
-        <div>
-          <label
-            for="price"
-            class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
-            >Precio *</label
-          >
-          <input
-            id="price"
-            formControlName="price"
-            type="number"
-            step="0.01"
-            min="0"
-            (input)="onPriceChange($event)"
-            class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
-            [ngClass]="{ 'border-red-500': confirmarCampo('price') }"
-          />
-          <p
-            *ngIf="
-              confirmarCampo('price') &&
-              productForm.get('price')?.hasError('required')
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            El precio es obligatorio.
-          </p>
-          <p
-            *ngIf="
-              confirmarCampo('price') &&
-              productForm.get('price')?.hasError('min')
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            El precio debe ser mayor a 0.
-          </p>
-        </div>
-        <div class="grid grid-cols-2 gap-4"></div>
-
-        <div class="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="isPromotion"
-            formControlName="isPromotion"
-            class="rounded border-gray-300 dark:border-gray-600 text-purple-600 shadow-sm focus:ring-purple-500 bg-white dark:bg-gray-700"
-          />
-          <label
-            for="isPromotion"
-            class="text-sm font-light text-gray-600 dark:text-gray-400"
-            >Es una promoción</label
-          >
-        </div>
-
-        <ng-container *ngIf="productForm.get('isPromotion')?.value">
-          <div>
-            <label
-              for="originalPrice"
-              class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
-              >Precio Original *</label
-            >
-            <input
-              id="originalPrice"
-              formControlName="originalPrice"
-              type="number"
-              step="0.01"
-              min="0"
-              (input)="onOriginalPriceChange($event)"
-              class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
-              [ngClass]="{ 'border-red-500': confirmarCampo('originalPrice') }"
-            />
-            <p
-              *ngIf="
-                confirmarCampo('originalPrice') &&
-                productForm.get('originalPrice')?.hasError('required')
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              El precio original es obligatorio para promociones.
-            </p>
-            <p
-              *ngIf="
-                confirmarCampo('originalPrice') &&
-                productForm.get('originalPrice')?.hasError('min')
-              "
-              class="text-sm text-red-600 mt-1"
-            >
-              El precio original debe ser mayor al precio promocional.
-            </p>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium">Ingredientes</h3>
-        <div class="flex gap-2">
-          <input
-            type="text"
-            [(ngModel)]="newIngredient"
-            [ngModelOptions]="{ standalone: true }"
-            placeholder="Agregar ingrediente..."
-            (keydown.enter)="addIngredient(); $event.preventDefault()"
-            class="flex-1 px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
-          />
-          <button
-            type="button"
-            (click)="addIngredient()"
-            class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-4 w-4"
-            >
-              <path d="M5 12h14"></path>
-              <path d="M12 5v14"></path>
-            </svg>
+        
+        
+        <!-- Botones -->
+        <div class="flex gap-2 pt-4">
+          <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            {{ product ? "Actualizar" : "Crear" }} Producto
+          </button>
+          <button type="button" (click)="onCancel.emit()" class="flex-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm">
+            Cancelar
           </button>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <span
-            *ngFor="let ingredient of productForm.get('ingredients')?.value"
-            class="inline-flex items-center bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 px-2.5 py-0.5 rounded-full text-xs font-medium gap-1"
-          >
-            {{ ingredient }}
-            <button
-              type="button"
-              (click)="removeIngredient(ingredient)"
-              class="ml-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="h-3 w-3"
-              >
-                <path d="M18 6 6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
-            </button>
-          </span>
-        </div>
-      </div>
-
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium">Estado del Producto</h3>
-        <div class="space-y-2">
-          <div class="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="isActive"
-              formControlName="isActive"
-              class="rounded border-gray-300 dark:border-gray-600 text-purple-600 shadow-sm focus:ring-purple-500 bg-white dark:bg-gray-700"
-            />
-            <label
-              for="isActive"
-              class="text-sm font-light text-gray-600 dark:text-gray-400"
-              >Producto activo</label
-            >
-          </div>
-
-          <div class="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="isAvailable"
-              formControlName="isAvailable"
-              class="rounded border-gray-300 dark:border-gray-600 text-purple-600 shadow-sm focus:ring-purple-500 bg-white dark:bg-gray-700"
-            />
-            <label
-              for="isAvailable"
-              class="text-sm font-light text-gray-600 dark:text-gray-400"
-              >Disponible para venta</label
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="flex gap-2 pt-4">
-        <button
-          type="submit"
-          class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-        >
-          {{ product ? "Actualizar" : "Crear" }} Producto
-        </button>
-        <button
-          type="button"
-          (click)="onCancel.emit()"
-          class="flex-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm"
-        >
-          Cancelar
-        </button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>

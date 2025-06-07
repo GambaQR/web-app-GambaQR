@@ -24,8 +24,6 @@ export class ProductManagerComponent {
   statusFilter: string = 'all';
 
   constructor() {}
-
-  // Getter para productos filtrados
   get filteredProducts(): MenuProduct[] {
     return this.products.filter(product => {
       const matchesSearch =
@@ -35,20 +33,34 @@ export class ProductManagerComponent {
       const matchesCategory =
         this.selectedCategory === 'all' || product.categoryId.toString() === this.selectedCategory;
 
-      const matchesStatus =
-        this.statusFilter === 'all' ||
-        (this.statusFilter === 'active' && product.isActive) ||
-        (this.statusFilter === 'inactive' && !product.isActive) ||
-        (this.statusFilter === 'available' && product.isAvailable) ||
-        (this.statusFilter === 'unavailable' && !product.isAvailable);
-
-      return matchesSearch && matchesCategory && matchesStatus;
+      return matchesSearch && matchesCategory;
     });
   }
 
+  // Getter para productos filtrados
+  // get filteredProducts(): MenuProduct[] {
+  //   return this.products.filter(product => {
+  //     const matchesSearch =
+  //       product.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+  //       product.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+  //     const matchesCategory =
+  //       this.selectedCategory === 'all' || product.categoryId.toString() === this.selectedCategory;
+
+  //     const matchesStatus =
+  //       this.statusFilter === 'all' ||
+  //       (this.statusFilter === 'active' && product.isActive) ||
+  //       (this.statusFilter === 'inactive' && !product.isActive) ||
+  //       (this.statusFilter === 'available' && product.isAvailable) ||
+  //       (this.statusFilter === 'unavailable' && !product.isAvailable);
+
+  //     return matchesSearch && matchesCategory && matchesStatus;
+  //   });
+  // }
+
   // Métodos que emiten eventos
-  editProduct(product: MenuProduct): void {
-    this.onEdit.emit(product);
+  editProduct(productId: MenuProduct): void {
+    this.onEdit.emit(productId);
   }
 
   deleteProduct(productId: number): void {

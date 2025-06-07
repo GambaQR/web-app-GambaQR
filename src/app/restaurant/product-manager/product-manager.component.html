@@ -8,23 +8,11 @@
     </p>
   </div>
 
-  <div
-    class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
-  >
+  <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Filtro de búsqueda -->
       <div class="relative">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.3-4.3"></path>
         </svg>
@@ -36,29 +24,17 @@
         />
       </div>
 
-      <select
-        [(ngModel)]="selectedCategory"
-        class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 appearance-none pr-8 cursor-pointer"
-      >
+      <!-- Filtro de categoría -->
+      <select [(ngModel)]="selectedCategory" class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 appearance-none pr-8 cursor-pointer">
         <option value="all">Todas las categorías</option>
         <ng-container *ngFor="let category of categories">
           <option [value]="category.id.toString()">
-            {{ category.icon }} {{ category.name }}
+            {{ category.name }}
           </option>
         </ng-container>
-      </select> 
-
-      <select
-        [(ngModel)]="statusFilter"
-        class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 appearance-none pr-8 cursor-pointer"
-      >
-        <option value="all">Todos los estados</option>
-        <option value="active">Activos</option>
-        <option value="inactive">Inactivos</option>
-        <option value="available">Disponibles</option>
-        <option value="unavailable">No disponibles</option>
       </select>
 
+      <!-- Mostrar cantidad de productos filtrados -->
       <div class="text-sm text-gray-600 dark:text-gray-400 flex items-center">
         Mostrando {{ filteredProducts.length }} de {{ products.length }}
       </div>
@@ -66,14 +42,11 @@
   </div>
 
   <div class="grid gap-4">
+    <!-- Mensaje cuando no hay productos -->
     <ng-container *ngIf="filteredProducts.length === 0">
-      <div
-        class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-8 text-center"
-      >
+      <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-8 text-center">
         <p class="text-gray-500 dark:text-gray-400 mb-4">
-          <ng-container
-            *ngIf="products.length === 0; else noProductsFoundMessage"
-          >
+          <ng-container *ngIf="products.length === 0; else noProductsFoundMessage">
             No hay productos creados aún.
           </ng-container>
           <ng-template #noProductsFoundMessage>
@@ -81,9 +54,7 @@
           </ng-template>
         </p>
         <p class="text-sm text-gray-400">
-          <ng-container
-            *ngIf="products.length === 0; else adjustFiltersMessage"
-          >
+          <ng-container *ngIf="products.length === 0; else adjustFiltersMessage">
             Crea tu primer producto para comenzar a vender.
           </ng-container>
           <ng-template #adjustFiltersMessage>
@@ -93,21 +64,12 @@
       </div>
     </ng-container>
 
+    <!-- Productos filtrados -->
     <ng-container *ngIf="filteredProducts.length > 0">
       <ng-container *ngFor="let product of filteredProducts">
-        <div
-          class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
-          [ngClass]="{
-            'opacity-60': !product.isActive,
-            'border border-gray-200 dark:border-gray-700': true
-          }"
-        >
+        <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
           <div class="flex gap-4">
-            <img
-              [src]="product.image || '/placeholder.svg'"
-              [alt]="product.name"
-              class="w-24 h-24 rounded-lg object-cover flex-shrink-0"
-            />
+            <img [src]="product.image || '/placeholder.svg'" [alt]="product.name" class="w-24 h-24 rounded-lg object-cover flex-shrink-0" />
             <div class="flex-1">
               <div class="flex items-start justify-between mb-2">
                 <div>
@@ -118,176 +80,56 @@
                     {{ product.description }}
                   </p>
                   <div class="flex flex-wrap items-center gap-2 mb-2">
-                    <span
-                      class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2.5 py-0.5 rounded-full text-xs font-medium"
-                      >{{ product.categoryName }}</span
-                    >
-                    <span
-                      *ngIf="product.isPromotion"
-                      class="bg-orange-500 text-white px-2.5 py-0.5 rounded-full text-xs font-medium"
-                      >Promoción</span
-                    >
+                    <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2.5 py-0.5 rounded-full text-xs font-medium">
+                      {{ product.categoryName }}
+                    </span>
                   </div>
                 </div>
                 <div class="text-right flex-shrink-0">
                   <div class="flex items-center gap-2 mb-1 justify-end">
-                    <ng-container
-                      *ngIf="product.isPromotion && product.originalPrice"
-                    >
-                      <span
-                        class="text-sm text-gray-500 dark:text-gray-400 line-through"
-                        >${{ product.originalPrice | number : "1.2-2" }}</span
-                      >
-                    </ng-container>
-                    <span
-                      class="font-bold text-lg text-purple-600 dark:text-purple-400"
-                      >${{ product.price | number : "1.2-2" }}</span
-                    >
-                  </div>
-                  <div class="flex flex-wrap justify-end gap-1">
-                    <span
-                      [ngClass]="getBadgeVariant(product.isActive)"
-                      class="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    >
-                      {{ product.isActive ? "Activo" : "Inactivo" }}
-                    </span>
-                    <span
-                      [ngClass]="getBadgeVariant(product.isAvailable, true)"
-                      class="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    >
-                      {{ product.isAvailable ? "Disponible" : "Agotado" }}
+                    <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
+                      ${{ product.price | number : "1.2-2" }}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div
-                class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3"
-              >
+              <!-- Información adicional del producto
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
                 <div class="flex items-center gap-1">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="h-4 w-4"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                   <span>{{ product.preparationTime }} min</span>
                 </div>
+                <div *ngIf="product.calories" class="flex items-center gap-1">
+                  🔥 <span>{{ product.calories }} cal</span>
+                </div>
                 <div class="flex items-center gap-1">
                   📝 {{ product.ingredients.length }} ingredientes
                 </div>
-              </div>
-
-              <div class="flex items-center justify-between">
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  Creado el {{ product.createdAt | date : "shortDate" }}
+                <div *ngIf="product.allergens.length > 0" class="flex items-center gap-1 text-orange-600 dark:text-orange-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  {{ product.allergens.join(", ") }}
                 </div>
+              </div>  -->
+
+              <!-- Botones de acción (editar, eliminar) -->
+              <div class="flex items-center justify-between">
                 <div class="flex flex-wrap gap-2 justify-end">
-                  <button
-                    class="inline-flex items-center px-3 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white text-sm font-medium rounded-lg transition-colors"
-                    (click)="toggleProductAvailability(product.id)"
-                  >
-                    {{ product.isAvailable ? "Agotar" : "Disponible" }}
-                  </button>
-                  <button
-                    (click)="toggleProductStatus(product.id)"
-                    class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
-                    [title]="product.isActive ? 'Desactivar' : 'Activar'"
-                  >
-                    <ng-container
-                      *ngIf="product.isActive; else eyeOffProductIcon"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="h-4 w-4"
-                      >
-                        <path
-                          d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-                        ></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                    </ng-container>
-                    <ng-template #eyeOffProductIcon>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="h-4 w-4"
-                      >
-                        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                        <path
-                          d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
-                        ></path>
-                        <path
-                          d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
-                        ></path>
-                        <line x1="2" x2="22" y1="2" y2="22"></line>
-                      </svg>
-                    </ng-template>
-                  </button>
-                  <button
-                    (click)="editProduct(product)"
-                    class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
-                    title="Editar"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="h-4 w-4"
-                    >
+                  <button (click)="editProduct(product)" class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400" title="Editar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                       <path d="M12 20h9"></path>
-                      <path
-                        d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
-                      ></path>
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                     </svg>
                   </button>
-                  <button
-                    (click)="deleteProduct(product.id)"
-                    class="flex items-center justify-center p-2 rounded-full hover:bg-red-50/20 dark:hover:bg-red-900/20 transition-colors text-red-600 hover:text-red-700"
-                    title="Eliminar"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="h-4 w-4"
-                    >
+                  <button (click)="deleteProduct(product.id)" class="flex items-center justify-center p-2 rounded-full hover:bg-red-50/20 dark:hover:bg-red-900/20 transition-colors text-red-600 hover:text-red-700" title="Eliminar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                       <path d="M3 6h18"></path>
                       <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                       <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>

@@ -19,7 +19,7 @@ export class CategoryManagerComponent {
 
   // Ordenar categorías por la propiedad 'order'
   get sortedCategories(): MenuCategory[] {
-    return [...this.categories].sort((a, b) => a.order - b.order);
+     return this.categories;
   }
 
   // Métodos que emiten eventos

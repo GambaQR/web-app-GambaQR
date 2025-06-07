@@ -1,66 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { QRCodeComponent } from "../qrcode/qrcode.component";
 import { Router } from '@angular/router';
 
-import { OverlayComponent } from '../overlay/overlay.component'; // Asegúrate de que la ruta sea correcta
-import { LoginComponent } from '../login/login.component'; // Asegúrate de que la ruta sea correcta
-import { RegisterComponent } from '../register/register.component'; // ¡Importar RegisterComponent!
-import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
-
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, QRCodeComponent, OverlayComponent, LoginComponent, RegisterComponent], // ¡Añadir RegisterComponent a imports!
-  templateUrl: './home.component.html',
+    selector: 'app-home',
+    imports: [QRCodeComponent],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  url!: SafeUrl;
 
-  showLoginOverlay: boolean = false;
-  showRegisterOverlay: boolean = false; // ¡Nueva propiedad para el overlay de registro!
 
-  constructor(
-    private readonly router: Router,
-    private readonly sanitizer: DomSanitizer
-  ) { }
+    //readonly url = 'https://www.gambaqr.com/';
 
-  ngOnInit(): void {
-    const rawUrl = 'http://localhost:4200/cliente?table=1';
-    this.url = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
-  }
+    readonly url = 'http://localhost:4200/cliente?table=1';
 
-  toLogin(): void {
-    this.showLoginOverlay = true;
-  }
 
-  // Método para abrir el overlay de registro
-  toRegister(): void {
-    this.showRegisterOverlay = true;
-  }
+    constructor(
+        private readonly router: Router,
+    ) { }
+    toLogin() {
+        this.router.navigate(['/login']);
+    }
 
-  onLoginOverlayClose(): void {
-    this.showLoginOverlay = false;
-  }
+    toRegister() {
+        this.router.navigate(['/register']);
+    }
 
-  // Método para cerrar el overlay de registro (llamado por el OverlayComponent)
-  onRegisterOverlayClose(): void {
-    this.showRegisterOverlay = false;
-  }
-
-  // Método opcional si el LoginComponent emite loggedIn. No es estrictamente necesario aquí
-  // ya que el login te podría redirigir directamente, pero es un ejemplo de cómo manejarlo
-  onLoginSuccess(): void {
-    this.showLoginOverlay = false;
-    // this.router.navigate(['/restaurante']); // Ejemplo: redirigir tras login exitoso
-  }
-
-  // Método opcional si el RegisterComponent emite registered.
-  onRegisterSuccess(): void {
-    this.showRegisterOverlay = false;
-    // Opcional: Podrías abrir el login después del registro, o redirigir
-    // this.showLoginOverlay = true;
-    // this.router.navigate(['/restaurante']);
-  }
 }
