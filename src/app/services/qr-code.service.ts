@@ -33,5 +33,11 @@ export class QrCodeService {
   getQrCodesByRestaurant(restaurantId: number): Observable<QrCodeResponse[]> {
     return this.http.get<QrCodeResponse[]>(`${this.apiUrl}/restaurant/${restaurantId}`);
   }
+
+  getQrCodeByQrUrl(qrUrl: string): Observable<QrCodeResponse> {
+    return this.http.get<QrCodeResponse>(`${this.apiUrl}/lookup?qrUrl=${qrUrl}`);
+  }
+
+
 }
 
