@@ -15,7 +15,7 @@ export class CategoryFormComponent implements OnInit {
   @Output() onCancel = new EventEmitter<void>();
 
   categoryForm!: FormGroup;
-  iconOptions: string[] = ["🥗", "🍽️", "🥤", "🍔", "⭐", "🍕", "🍜", "🧁", "🍷", "☕", "🥘", "🍤"];
+  iconOptions: string[] = [];
 
   constructor(
     private readonly fb: FormBuilder

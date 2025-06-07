@@ -9,11 +9,11 @@ import { MenuCategory } from '../../restaurant-panel/restaurant-panel.component'
   templateUrl: './category-manager.component.html',
 })
 export class CategoryManagerComponent {
-  @Input() categories: MenuCategory[] = []; // Recibe la lista de categorías del padre
+  @Input() categories: MenuCategory[] = []; 
 
   // Eventos de salida para comunicar acciones al componente padre
   @Output() onEdit = new EventEmitter<MenuCategory>();
-  @Output() onDelete = new EventEmitter<number>(); // Emite el ID de la categoría a eliminar
+  @Output() onDelete = new EventEmitter<number>(); 
 
   // Ordenar categorías por la propiedad 'order'
   get sortedCategories(): MenuCategory[] {

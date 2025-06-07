@@ -55,7 +55,7 @@ export class ProductFormComponent implements OnInit {
         currency: 'EUR',
       };
 
-      // *** CAMBIO CLAVE: Emitimos el objeto con requestData y selectedImageFile ***
+      // CAMBIO CLAVE: Emitimos el objeto con requestData y selectedImageFile 
       this.onSave.emit({ productData: requestData, imageFile: this.selectedImageFile });
 
     } else {

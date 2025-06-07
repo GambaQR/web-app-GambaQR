@@ -6,7 +6,7 @@ import { MenuCategory, MenuProduct } from '../../restaurant-panel/restaurant-pan
 @Component({
   selector: 'app-product-manager',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, FormsModule], // Importar FormsModule
+  imports: [CommonModule, NgIf, NgFor, FormsModule],
   templateUrl: './product-manager.component.html',
 })
 export class ProductManagerComponent {
