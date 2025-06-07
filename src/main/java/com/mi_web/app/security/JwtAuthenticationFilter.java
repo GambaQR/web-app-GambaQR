@@ -74,7 +74,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/payments/update/{id}",
             "/api/payments//create-payment-intent",
             "/api/payments/confirm-payment",
-            "/api/qrcodes/create"
+            "/api/qrcodes/create",
+            "/api/qrcodes/lookup"
     };
 
     @Override

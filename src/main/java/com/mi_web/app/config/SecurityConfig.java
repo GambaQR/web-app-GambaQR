@@ -101,7 +101,8 @@ public class SecurityConfig {
                                 "/api/payments/update/{id}",
                                 "/api/payments/create-payment-intent",
                                 "/api/payments/confirm-payment",
-                                "/api/qrcodes/create"
+                                "/api/qrcodes/create",
+                                "/api/qrcodes/lookup"
 
                         ).permitAll()
                         .anyRequest().authenticated()
