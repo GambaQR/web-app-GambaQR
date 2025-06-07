@@ -22,12 +22,9 @@ export interface QrCodeResponse {
   providedIn: 'root'
 })
 export class QrCodeService {
+  private apiUrl = 'http://localhost:8080/api/qrcodes';
 
-  private readonly apiUrl = 'http://localhost:8080/api/qrcodes';
-
-  constructor(
-    private readonly http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   createQrCode(request: QrCodeRequest): Observable<QrCodeResponse> {
     return this.http.post<QrCodeResponse>(`${this.apiUrl}/create`, request);
@@ -40,4 +37,6 @@ export class QrCodeService {
   getQrCodeByQrUrl(qrUrl: string): Observable<QrCodeResponse> {
     return this.http.get<QrCodeResponse>(`${this.apiUrl}/lookup?qrUrl=${qrUrl}`);
   }
+
+
 }
