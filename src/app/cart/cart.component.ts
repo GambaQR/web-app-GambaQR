@@ -28,10 +28,10 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.restaurantName = localStorage.getItem("restaurantName") ?? "Desconocido";
-    this.tableNumber = Number(localStorage.getItem("tableNumber")) || 0;
+    this.tableNumber = Number(localStorage.getItem("tableNumber")) || 1;
 
-    console.log("🛒 Carrito: Restaurante:", this.restaurantName);
-    console.log("🛒 Carrito: Mesa:", this.tableNumber);
+    console.log("Carrito: Restaurante:", this.restaurantName);
+    console.log("Carrito: Mesa:", this.tableNumber);
 
     // Suscribirse a los cambios del estado del carrito
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {

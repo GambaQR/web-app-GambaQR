@@ -48,22 +48,18 @@ export class MenuComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const qrUrl = window.location.href; // ✅ Obtener la URL actual
-    console.log("🔗 URL escaneada:", qrUrl);
+    const qrUrl = window.location.href;
+    console.log("URL escaneada:", qrUrl);
 
-    // ✅ Obtener datos del código QR desde el backend
     this.qrCodeService.getQrCodeByQrUrl(qrUrl).subscribe({
       next: (qrCode: QrCodeResponse) => {
-        console.log("✅ Datos del QR:", qrCode);
+        console.log("Datos del QR:", qrCode);
         const restaurantId = qrCode.restaurantId;
         const tableNumber = qrCode.tableNumber;
 
-        // ✅ Obtener el nombre del restaurante desde la BD
         this.restaurantService.getRestaurantById(restaurantId).subscribe({
           next: (restaurant: RestaurantResponse) => {
-            console.log("🏷️ Restaurante detectado:", restaurant.name);
-
-            // ✅ Guardar `restaurantName` y `tableNumber` en localStorage
+            console.log("Restaurante detectado:", restaurant.name);
             localStorage.setItem("restaurantName", restaurant.name);
             localStorage.setItem("tableNumber", tableNumber.toString());
           },
@@ -73,7 +69,7 @@ export class MenuComponent implements OnInit, OnDestroy {
         });
       },
       error: (err) => {
-        console.error("❌ Error al obtener el QR:", err);
+        console.error("Error al obtener el QR:", err);
       }
     });
 
