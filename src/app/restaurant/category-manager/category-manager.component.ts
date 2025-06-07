@@ -7,6 +7,7 @@ import { MenuCategory } from '../../restaurant-panel/restaurant-panel.component'
   standalone: true,
   imports: [CommonModule, NgIf, NgFor, NgClass, DatePipe],
   templateUrl: './category-manager.component.html',
+  styleUrls: ['./category-manager.component.css'] // Si tienes estilos específicos
 })
 export class CategoryManagerComponent {
   @Input() categories: MenuCategory[] = []; // Recibe la lista de categorías del padre

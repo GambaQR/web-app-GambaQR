@@ -1,11 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { QRCodeComponent } from '../../qrcode/qrcode.component';
-import { QrCodeService, QrCodeRequest } from '../../services/qr-code.service';
-
-
 
 @Component({
   selector: 'app-qr-generator',
@@ -22,39 +19,20 @@ export class QrGeneratorComponent {
   tableNumber: string = '';
   qrUrlSafe: SafeUrl | null = null; // Para el componente <qr>
   qrUrlString: string = ''; // Para el input de texto y copiar al portapapeles
-  restaurantId = 3; // ⚠️ Obtén el ID dinámicamente según el usuario
 
-
-  constructor(private readonly sanitizer: DomSanitizer, private qrCodeService: QrCodeService) { }
+  constructor(private readonly sanitizer: DomSanitizer) {}
 
   generateQR(): void {
     if (this.tableNumber) {
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:4200';
-      const rawUrl = `${baseUrl}/menu?table=${this.tableNumber}`;
-      this.qrUrlString = rawUrl;
-      this.qrUrlSafe = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
+      const rawUrl = `${baseUrl}/menu?table=${this.tableNumber}`; // Guarda la URL como string
+      this.qrUrlString = rawUrl; // Asigna el string a la nueva propiedad
+      console.log('URL generada:', rawUrl); // Para depuración
+      this.qrUrlSafe = this.sanitizer.bypassSecurityTrustUrl(rawUrl); // Sanea para el binding seguro
     } else {
       this.qrUrlSafe = null;
       this.qrUrlString = '';
     }
-  }
-
-  saveQrCode(): void {
-    const qrData: QrCodeRequest = {
-      restaurantId: this.restaurantId,
-      tableNumber: parseInt(this.tableNumber),
-      qrUrl: this.qrUrlString,
-      isGeneral: false
-    };
-
-    this.qrCodeService.createQrCode(qrData).subscribe({
-      next: (response) => {
-        console.log('QR guardado en la base de datos:', response);
-        alert('Código QR guardado correctamente. Descargando...');
-        this.downloadQR();
-      },
-      error: (err) => console.error('Error al guardar QR:', err)
-    });
   }
 
   copyToClipboard(): void {
@@ -68,9 +46,6 @@ export class QrGeneratorComponent {
   }
 
   downloadQR(): void {
-    console.log('Pendiente de implementar...');
-    alert('Pendiente de implementar...');
+    alert("Función no implementada aún.");
   }
-
-
 }

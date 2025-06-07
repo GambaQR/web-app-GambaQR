@@ -13,14 +13,14 @@ import { CategoryResponse, CategoryService } from '../services/category.service'
   standalone: true,
   imports: [MenuCardComponent, CommonModule, NgClass, NgIf, NgFor, RouterLink],
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, OnDestroy {
 
   activeCategory: number = 0;
-  tableNumber: number = 0;
+  tableNumber: string = 'Mesa'; // Inicializar con un valor por defecto o base
 
-  private readonly categoryIcons: { [key: string]: string } = {
+  private categoryIcons: { [key: string]: string } = {
     "Todos": "📦",
     "Ensaladas": "🥗",
     "Principales": "🍝",
@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     private readonly cartService: CartService,
     private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
     private readonly productService: ProductService,
-    private readonly categoryService: CategoryService
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
 
     this.routeSubscription = this.route.queryParams.subscribe(params => {
-      this.tableNumber = params['table'] ?? '';
+      this.tableNumber = params['table'] || 'N/A';
     });
   }
 
@@ -70,6 +70,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       error: (err) => console.error('Error cargando categorías:', err)
     });
   }
+
 
   loadProducts(): void {
     this.productService.getAllProducts().subscribe({
@@ -107,6 +108,8 @@ export class MenuComponent implements OnInit, OnDestroy {
       });
     }
     console.log("Productos filtrados:", this.filteredProducts);
+
+
   }
 
   // --- Métodos de interacción con el carrito ---
