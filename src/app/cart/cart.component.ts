@@ -14,6 +14,8 @@ export class CartComponent implements OnInit, OnDestroy {
   cartState!: CartState; // Usamos '!' porque se inicializa en ngOnInit
   private cartSubscription!: Subscription; // Para desuscribirse cuando el componente se destruye
 
+  restaurantName!: string;
+  tableNumber!: number;
   // Estado local para la edición de notas
   editingNotes: number | null = null;
   tempNotes: string = '';
@@ -22,9 +24,15 @@ export class CartComponent implements OnInit, OnDestroy {
   tax: number = 0;
   total: number = 0;
 
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService) { }
 
   ngOnInit() {
+    this.restaurantName = localStorage.getItem("restaurantName") || "Desconocido";
+    this.tableNumber = Number(localStorage.getItem("tableNumber")) || 0;
+
+    console.log("🛒 Carrito: Restaurante:", this.restaurantName);
+    console.log("🛒 Carrito: Mesa:", this.tableNumber);
+
     // Suscribirse a los cambios del estado del carrito
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;

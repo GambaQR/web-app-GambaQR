@@ -6,6 +6,10 @@ import { Subscription } from 'rxjs';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { ProductService, ProductResponse } from '../services/product.service';
 import { CategoryResponse, CategoryService } from '../services/category.service';
+import { QrCodeService, QrCodeResponse } from '../services/qr-code.service';
+import { RestaurantService, RestaurantResponse } from '../services/restaurant.service';
+
+
 
 
 @Component({
@@ -40,13 +44,44 @@ export class MenuComponent implements OnInit, OnDestroy {
     private readonly cartService: CartService,
     private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
     private readonly productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private qrCodeService: QrCodeService,
+    private restaurantService: RestaurantService
+
   ) { }
 
   ngOnInit(): void {
+    const qrUrl = window.location.href; // ✅ Obtener la URL actual
+    console.log("🔗 URL escaneada:", qrUrl);
+
+    // ✅ Obtener datos del código QR desde el backend
+    this.qrCodeService.getQrCodeByQrUrl(qrUrl).subscribe({
+      next: (qrCode: QrCodeResponse) => {
+        console.log("✅ Datos del QR:", qrCode);
+        const restaurantId = qrCode.restaurantId;
+        const tableNumber = qrCode.tableNumber;
+
+        // ✅ Obtener el nombre del restaurante desde la BD
+        this.restaurantService.getRestaurantById(restaurantId).subscribe({
+          next: (restaurant: RestaurantResponse) => {
+            console.log("🏷️ Restaurante detectado:", restaurant.name);
+
+            // ✅ Guardar `restaurantName` y `tableNumber` en localStorage
+            localStorage.setItem("restaurantName", restaurant.name);
+            localStorage.setItem("tableNumber", tableNumber.toString());
+          },
+          error: (err) => {
+            console.error("❌ Error al obtener el restaurante:", err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error("❌ Error al obtener el QR:", err);
+      }
+    });
+
     this.loadProducts();
     this.loadCategories();
-
 
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;
@@ -60,7 +95,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
-        this.categories = [{ id: 0, name: 'Todos', description: ''},
+        this.categories = [{ id: 0, name: 'Todos', description: '' },
         ...data.map(category => ({
           ...category,
           icon: this.categoryIcons[category.name] || "❓"
@@ -70,7 +105,6 @@ export class MenuComponent implements OnInit, OnDestroy {
       error: (err) => console.error('Error cargando categorías:', err)
     });
   }
-
 
   loadProducts(): void {
     this.productService.getAllProducts().subscribe({

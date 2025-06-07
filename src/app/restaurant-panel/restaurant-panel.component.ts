@@ -26,6 +26,8 @@ export interface MenuCategory {
   id: number;
   name: string;
   description: string;
+  icon?: string;
+  isActive?: boolean;
 }
 
 export interface MenuProduct {
@@ -73,7 +75,7 @@ export class RestaurantPanelComponent implements OnInit {
   editingCategory: MenuCategory | null = null;
   editingProduct: MenuProduct | null = null;
 
-  constructor(private productService: ProductService, private categoryService: CategoryService) {}
+  constructor(private productService: ProductService, private categoryService: CategoryService) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -103,7 +105,9 @@ export class RestaurantPanelComponent implements OnInit {
     this.categoryService.getAllCategories().subscribe(
       (categories: CategoryResponse[]) => {
         this.menuCategories = categories.map(category => ({
-          ...category
+          ...category,
+          icon: "🍽️",
+          isActive: false
         }));
       },
       (error) => {
@@ -164,7 +168,7 @@ export class RestaurantPanelComponent implements OnInit {
     this.editingCategory = null;
     this.showCategoryForm = true;
   }
-  
+
 
   handleEditCategory(category: MenuCategory): void {
     this.editingCategory = category;
@@ -223,5 +227,5 @@ export class RestaurantPanelComponent implements OnInit {
     this.showCategoryForm = false;
     this.editingCategory = null;
   }
-  
+
 }

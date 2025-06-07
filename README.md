@@ -33,3 +33,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## QRCode
 
 Usar `npm i qr-code-styling`
+User `npm install qrcode --save`

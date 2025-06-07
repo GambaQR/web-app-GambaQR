@@ -22,7 +22,7 @@ export interface QrCodeResponse {
   providedIn: 'root'
 })
 export class QrCodeService {
-  private apiUrl = 'http://localhost:8080/api/qrcodes'; // Ajustar según el backend
+  private apiUrl = 'http://localhost:8080/api/qrcodes';
 
   constructor(private http: HttpClient) { }
 

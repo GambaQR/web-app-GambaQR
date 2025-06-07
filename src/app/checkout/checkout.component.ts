@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule, NgIf, NgFor, NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidationErrors } from '@angular/forms'; // Importar para Reactive Forms
-import { Router, RouterLink } from '@angular/router'; // Para navegación
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // Para navegación
 import { CartService, CartState } from '../services/cart.service'; // Ajusta la ruta a tu servicio
 import { Subscription, firstValueFrom } from 'rxjs';
 import { loadStripe, StripeElements, StripeCardElement, Stripe, StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-js';
@@ -24,6 +24,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   isProcessing: boolean = false;
   cardComplete: boolean = false;
   tableNumber!: number;
+  restaurantName!: string;
+
 
 
   // Calculables del resumen del pedido
@@ -69,6 +71,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly cd: ChangeDetectorRef,
     private readonly ngZone: NgZone,
+    private route: ActivatedRoute
   ) {
     // Inicializar el formulario con Reactive Forms
     this.checkoutForm = this.fb.group({
@@ -118,6 +121,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.calculateOrderSummary();
     });
 
+    this.route.queryParams.subscribe(params => {
+      this.restaurantName = params['restaurant'] || "Desconocido";
+      this.tableNumber = Number(params['table']) || 0;
+
+      console.log("✅ Checkout: Restaurante:", this.restaurantName);
+      console.log("✅ Checkout: Mesa:", this.tableNumber);
+    });
+
 
     // Obtener la clave pública de Stripe directamente desde el servicio
     const publicKey = this.paymentService.getStripePublicKey();
@@ -163,7 +174,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       });
     });
 
-    console.log("✅ Tarjeta montada correctamente.");
+    console.log("Tarjeta montada correctamente.");
   }
 
 
@@ -181,7 +192,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       } else if (this.cardElement) {
         console.log("⚠ Eliminando tarjeta porque se cambió el método de pago...");
         this.cardElement.unmount();
-        this.cardElement.destroy(); // ✅ Asegura que se elimina completamente
+        this.cardElement.destroy();
         this.cardElement = null;
         this.cardComplete = false;
         this.checkoutForm.get('cardholderName')?.clearValidators();
@@ -207,9 +218,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:4200';
     const qrUrl = `${baseUrl}/menu?table=${this.tableNumber}`;
 
-    console.log("QR URL generada:", qrUrl); // ✅ Verifica que se genera correctamente
+    console.log(" QR URL generada para consulta: ", qrUrl);
 
-    // ✅ Usar qrUrl en la llamada al servicio de QR
+    console.log("QR URL generada:", qrUrl);
+
     const qrCodeResponse = await firstValueFrom(this.qrCodeService.getQrCodeByQrUrl(qrUrl));
 
     if (!qrCodeResponse || !qrCodeResponse.tableNumber) {
@@ -225,7 +237,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       }
 
       const orderData = {
-        userId: 1, // ⚠️ Ajusta con el usuario actual
+        userId: 1,
         restaurantId: qrCodeResponse.restaurantId,
         tableNumber: qrCodeResponse.tableNumber,
         orderDetails: this.cartState.items.map(item => ({

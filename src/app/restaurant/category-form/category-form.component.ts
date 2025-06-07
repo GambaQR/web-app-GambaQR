@@ -24,8 +24,12 @@ export class CategoryFormComponent implements OnInit {
     this.categoryForm = this.fb.group({
       name: [this.category?.name || '', Validators.required],
       description: [this.category?.description || '', Validators.required],
+      order: [0],
+      icon: [this.category?.icon || this.iconOptions[0]],
+      isActive: [this.category?.isActive || false],
     });
   }
+
 
   handleSubmit(): void {
     this.categoryForm.markAllAsTouched(); // Marcar todos los campos como tocados
