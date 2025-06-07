@@ -13,50 +13,19 @@
     </ng-container>
 
     <ng-container *ngFor="let category of sortedCategories">
-      <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md"
-           [ngClass]="{'opacity-60': !category.isActive, 'border border-gray-200 dark:border-gray-700': true}">
+      <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md">
         <div class="p-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <span class="text-2xl flex-shrink-0">{{ category.icon }}</span>
               <div>
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ category.name }}</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400">{{ category.description }}</p>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <span [ngClass]="category.isActive ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300'" class="px-2.5 py-0.5 rounded-full text-xs font-medium">
-                {{ category.isActive ? "Activa" : "Inactiva" }}
-              </span>
-              <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2.5 py-0.5 rounded-full text-xs font-medium">Orden: {{ category.order }}</span>
-            </div>
           </div>
         </div>
         <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-          <div class="text-sm text-gray-600 dark:text-gray-400">
-            Creada el {{ category.createdAt | date:'shortDate' }}
-          </div>
           <div class="flex gap-2">
-            <button
-              (click)="toggleCategoryStatus(category.id)"
-              class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
-              [title]="category.isActive ? 'Desactivar' : 'Activar'"
-            >
-              <ng-container *ngIf="category.isActive; else eyeIcon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                  <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                  <line x1="2" x2="22" y1="2" y2="22"></line>
-                </svg>
-              </ng-container>
-              <ng-template #eyeIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-              </ng-template>
-            </button>
             <button
               (click)="editCategory(category)"
               class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
