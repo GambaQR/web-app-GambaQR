@@ -7,9 +7,8 @@ import { CategoryManagerComponent } from '../restaurant/category-manager/categor
 import { ProductManagerComponent } from '../restaurant/product-manager/product-manager.component';
 import { CategoryFormComponent } from '../restaurant/category-form/category-form.component';
 import { ProductFormComponent } from '../restaurant/product-form/product-form.component';
-import { OverlayComponent } from "../overlay/overlay.component";
 
-// Interfaces (mantenidas de tu código original)
+// Interfaces (mantenidas de tu código original, eliminando isVeg si se había quitado antes)
 interface Order {
   id: string;
   table: string;
@@ -20,7 +19,7 @@ interface Order {
   customer: string;
 }
 
-export interface MenuCategory {
+export interface MenuCategory { // Exportar para que otros componentes puedan usarla
   id: number;
   name: string;
   description: string;
@@ -30,7 +29,7 @@ export interface MenuCategory {
   createdAt: string;
 }
 
-export interface MenuProduct {
+export interface MenuProduct { // Exportar para que otros componentes puedan usarla
   id: number;
   name: string;
   description: string;
@@ -38,6 +37,7 @@ export interface MenuProduct {
   categoryId: number;
   categoryName: string;
   image: string;
+  // isVeg: boolean; // Asegúrate de que esta propiedad esté eliminada si no la necesitas
   isActive: boolean;
   isAvailable: boolean;
   preparationTime: number;
@@ -58,12 +58,11 @@ export interface MenuProduct {
     NgIf,
     NgFor,
     NgClass,
-    CategoryManagerComponent,
-    ProductManagerComponent,
-    CategoryFormComponent,
-    ProductFormComponent,
-    OverlayComponent
-],
+    CategoryManagerComponent, // Importar CategoryManagerComponent
+    ProductManagerComponent,  // Importar ProductManagerComponent
+    CategoryFormComponent,    // Importar CategoryFormComponent
+    ProductFormComponent      // Importar ProductFormComponent
+  ],
   templateUrl: './restaurant-panel.component.html',
 })
 export class RestaurantPanelComponent {
@@ -82,11 +81,7 @@ export class RestaurantPanelComponent {
     activeCustomers: 12,
   };
 
-  // Main tabs
-  activeTab: 'dashboard' | 'orders' | 'menu' = 'dashboard';
-
-  // Nested tabs for menu management
-  activeMenuTab: 'categories' | 'products' = 'categories'; // Nueva propiedad para las sub-pestañas del menú
+  activeTab: 'dashboard' | 'orders' | 'menu' | 'analytics' = 'dashboard';
 
   menuCategories: MenuCategory[] = [
     { id: 1, name: "Entradas", description: "Aperitivos y entradas para comenzar", icon: "🥗", isActive: true, order: 1, createdAt: "2024-01-15" },
@@ -135,9 +130,9 @@ export class RestaurantPanelComponent {
     }
   }
 
-  // --- Métodos para la gestión de menú (mantienen su funcionalidad) ---
+  // --- Métodos para la gestión de menú (pasados a este componente) ---
   handleAddCategory(): void {
-    this.editingCategory = null;
+    this.editingCategory = null; // Para indicar que es una nueva categoría
     this.showCategoryForm = true;
   }
 
@@ -147,6 +142,7 @@ export class RestaurantPanelComponent {
   }
 
   handleDeleteCategory(categoryId: number): void {
+    // Implementar lógica de eliminación
     if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
       this.menuCategories = this.menuCategories.filter(cat => cat.id !== categoryId);
     }
@@ -160,29 +156,31 @@ export class RestaurantPanelComponent {
 
   onCategoryFormSave(categoryData: Omit<MenuCategory, 'id' | 'createdAt'>): void {
     if (this.editingCategory) {
+      // Editar categoría existente
       this.menuCategories = this.menuCategories.map(cat =>
         cat.id === this.editingCategory?.id ? { ...cat, ...categoryData } : cat
       );
     } else {
+      // Crear nueva categoría
       const newId = Math.max(...this.menuCategories.map(cat => cat.id), 0) + 1;
       const newCategory: MenuCategory = {
         ...categoryData,
         id: newId,
-        createdAt: new Date().toISOString().split('T')[0]
+        createdAt: new Date().toISOString().split('T')[0] // Formato YYYY-MM-DD
       };
       this.menuCategories = [...this.menuCategories, newCategory];
     }
-    this.showCategoryForm = false;
-    this.editingCategory = null;
+    this.showCategoryForm = false; // Cerrar modal
+    this.editingCategory = null; // Resetear
   }
 
   onCategoryFormCancel(): void {
-    this.showCategoryForm = false;
-    this.editingCategory = null;
+    this.showCategoryForm = false; // Cerrar modal
+    this.editingCategory = null; // Resetear
   }
 
   handleAddProduct(): void {
-    this.editingProduct = null;
+    this.editingProduct = null; // Para indicar que es un nuevo producto
     this.showProductForm = true;
   }
 
@@ -192,6 +190,7 @@ export class RestaurantPanelComponent {
   }
 
   handleDeleteProduct(productId: number): void {
+    // Implementar lógica de eliminación
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
       this.menuProducts = this.menuProducts.filter(prod => prod.id !== productId);
     }
@@ -210,14 +209,17 @@ export class RestaurantPanelComponent {
   }
 
   onProductFormSave(productData: Omit<MenuProduct, 'id' | 'createdAt' | 'categoryName'>): void {
+    // Encontrar el nombre de la categoría para asignarlo
     const category = this.menuCategories.find(cat => cat.id === productData.categoryId);
     const categoryName = category ? category.name : 'Desconocida';
 
     if (this.editingProduct) {
+      // Editar producto existente
       this.menuProducts = this.menuProducts.map(prod =>
         prod.id === this.editingProduct?.id ? { ...prod, ...productData, categoryName: categoryName } : prod
       );
     } else {
+      // Crear nuevo producto
       const newId = Math.max(...this.menuProducts.map(prod => prod.id), 0) + 1;
       const newProduct: MenuProduct = {
         ...productData,
@@ -227,22 +229,17 @@ export class RestaurantPanelComponent {
       };
       this.menuProducts = [...this.menuProducts, newProduct];
     }
-    this.showProductForm = false;
-    this.editingProduct = null;
+    this.showProductForm = false; // Cerrar modal
+    this.editingProduct = null; // Resetear
   }
 
   onProductFormCancel(): void {
-    this.showProductForm = false;
-    this.editingProduct = null;
+    this.showProductForm = false; // Cerrar modal
+    this.editingProduct = null; // Resetear
   }
 
-  // --- Métodos de pestañas principales ---
-  setActiveTab(tab: 'dashboard' | 'orders' | 'menu'): void {
+  // --- Métodos de pestañas ---
+  setActiveTab(tab: 'dashboard' | 'orders' | 'menu' | 'analytics'): void {
     this.activeTab = tab;
-  }
-
-  // --- ACTUALIZADO: Método para las pestañas anidadas de menú ---
-  setActiveMenuTab(tab: 'categories' | 'products'): void {
-    this.activeMenuTab = tab;
   }
 }

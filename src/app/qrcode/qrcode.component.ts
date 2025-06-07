@@ -10,6 +10,9 @@ import QRCodeStyling from 'qr-code-styling';
   template: `
     <div class="relative flex justify-center items-center m-5 group">
       <div #qrCodeContainer></div>
+      <div
+        class="absolute w-100 h-100 -z-10 bg-gradient-to-br from-pink-600 to-purple-600 opacity-15 group-hover:opacity-30 rounded-4xl blur-3xl transition duration-700"
+      ></div>
     </div>
   `,
 })
@@ -48,12 +51,12 @@ export class QRCodeComponent implements AfterViewInit, OnChanges {
   });
 
   // Inyectamos DomSanitizer para acceder a SafeUrl
-  constructor(private readonly sanitizer: DomSanitizer) { }
+  constructor(private readonly sanitizer: DomSanitizer) {}
 
   ngAfterViewInit(): void {
     if (this.qrCodeContainer) {
-      this.qrCodeContainer.nativeElement.innerHTML = '';
-      this.qrCode.append(this.qrCodeContainer.nativeElement);
+        this.qrCodeContainer.nativeElement.innerHTML = '';
+        this.qrCode.append(this.qrCodeContainer.nativeElement);
     }
     this.updateQrCodeData(); // Llama a la función de actualización inicial
   }
@@ -71,13 +74,13 @@ export class QRCodeComponent implements AfterViewInit, OnChanges {
     // Esta es la forma "hacky" pero a menudo efectiva de extraer el string de SafeUrl
     // si el SafeUrl fue creado con bypassSecurityTrustUrl.
     if (this.url && (this.url as any).changingThisBreaksApplicationSecurity) {
-      urlString = (this.url as any).changingThisBreaksApplicationSecurity;
+        urlString = (this.url as any).changingThisBreaksApplicationSecurity;
     } else if (typeof this.url === 'string') {
-      // En caso de que, por algún motivo, llegue como string directamente (aunque el input sea SafeUrl)
-      urlString = this.url;
+        // En caso de que, por algún motivo, llegue como string directamente (aunque el input sea SafeUrl)
+        urlString = this.url;
     } else {
-      // Fallback si no se puede obtener la URL, o es nula
-      console.warn('QRCodeComponent: URL input is not a SafeUrl or is empty.');
+        // Fallback si no se puede obtener la URL, o es nula
+        console.warn('QRCodeComponent: URL input is not a SafeUrl or is empty.');
     }
 
     // Aquí es donde se pasa el string a la librería

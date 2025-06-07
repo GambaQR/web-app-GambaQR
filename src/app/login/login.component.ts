@@ -1,41 +1,44 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core'; // Asegúrate de que EventEmitter y Output estén aquí
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router'; // Asegúrate de que RouterLink esté aquí si se usa en HTML
-import { AuthService } from '../services/auth/auth.service'; // Ajusta la ruta a tu AuthService
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // Importar ReactiveFormsModule y sus clases
+import { Router, RouterLink } from '@angular/router'; // Importar RouterLink para los enlaces de navegación
+import { AuthService } from '../services/auth/auth.service';
+
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // RouterLink debe estar aquí si se usa en el HTML del login
+  standalone: true, // Se recomienda usar 'standalone: true' en componentes nuevos de Angular
+  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Añadir ReactiveFormsModule y RouterLink
   templateUrl: './login.component.html',
+  // Si tienes un archivo de estilos específico para este componente, añádelo aquí:
   // styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  // Propiedad para controlar la visibilidad de la contraseña
   showPassword = false;
   errorMessage: string = '';
 
-  @Output() loggedIn = new EventEmitter<void>(); // Evento para notificar éxito de login al padre
-  @Output() cancel = new EventEmitter<void>(); // Evento para cerrar el modal/overlay (ej. por botón 'X')
-  @Output() goToRegister = new EventEmitter<void>(); // Evento para cambiar a registro
-
+  // FormGroup para manejar el estado y la validación del formulario de login
   loginForm: FormGroup;
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly authService: AuthService,
-    private readonly router: Router // Inyectar Router
+  constructor(private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
   ) {
+    // Inicialización del FormGroup con los controles y sus validadores
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', [Validators.required, Validators.email]], // Campo de email: requerido y formato de email
+      password: ['', [Validators.required, Validators.minLength(6)]], // Campo de contraseña: requerido y mínimo 6 caracteres
+      rememberMe: [false] // Checkbox "Recordarme": valor inicial falso
     });
   }
 
+  // Función para alternar la visibilidad de la contraseña
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
+  // Función que se ejecuta al enviar el formulario
   onSubmit() {
     this.loginForm.markAllAsTouched();
 
@@ -46,20 +49,17 @@ export class LoginComponent {
         next: (response) => {
           console.log('Login exitoso:', response);
 
-          // 1. Notificar al componente padre que el login fue exitoso.
-          // El padre se encargará de cerrar el overlay.
-          this.loggedIn.emit(); // ¡Emitir el evento aquí!
-
-          // 2. Redirigir según el rol
+          // Extrae el rol del usuario autenticado
           const role = response.role;
+
+          // Redirige según el rol
           if (role === 'CLIENT') {
-            this.router.navigate(['/menu']); // Ruta para cliente (Menú del cliente)
+            this.router.navigate(['/menu']);
           } else if (role === 'EMPLOYEE') {
-            this.router.navigate(['/kitchen-display']); // Ruta para empleado (Vista de cocina)
+            this.router.navigate(['/kitchen']);
           } else if (role === 'OWNER' || role === 'ADMIN') {
-            this.router.navigate(['/restaurant']); // Ruta para dueño/admin (Panel del restaurante)
+            this.router.navigate(['/restaurant']);
           } else {
-            console.warn('Rol no reconocido:', role);
             this.router.navigate(['/']); // Fallback si el rol no es reconocido
           }
         },
@@ -71,17 +71,11 @@ export class LoginComponent {
     }
   }
 
+  // Función auxiliar para verificar si un campo es inválido y ha sido tocado
+  // Esto es útil para mostrar mensajes de error solo después de que el usuario interactúa con el campo
   confirmarCampo(campo: string): boolean {
     const control = this.loginForm.get(campo);
+    // Devuelve true si el control existe, es inválido y ha sido tocado o modificado (dirty)
     return !!control && control.invalid && (control.touched || control.dirty);
-  }
-
-  onGoToRegisterClick(): void {
-    this.goToRegister.emit();
-  }
-
-  // Método opcional para el botón 'X' de cerrar en el propio modal
-  onCancelClick(): void {
-    this.cancel.emit();
   }
 }
