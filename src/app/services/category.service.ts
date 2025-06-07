@@ -7,6 +7,10 @@ export interface CategoryResponse {
   name: string;
   description: string;
 }
+export interface CategoryRequest {
+  name: string;
+  description: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +24,15 @@ export class CategoryService {
     return this.http.get<CategoryResponse[]>(`${this.apiUrl}/all`);
   }
 
-  createCategory(category: Omit<CategoryResponse, 'id'>): Observable<CategoryResponse> {
+  createCategory(category: CategoryRequest): Observable<CategoryResponse> {
     return this.http.post<CategoryResponse>(`${this.apiUrl}/create`, category);
+  }
+
+  updateCategory(category: CategoryResponse): Observable<CategoryResponse> {
+    return this.http.put<CategoryResponse>(`${this.apiUrl}/update/${category.id}`, category);
+  }
+  deleteCategory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 }
 
