@@ -60,7 +60,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
-        this.categories = [{ id: 0, name: 'Todos', description: '', icon: "📦" },
+        this.categories = [{ id: 0, name: 'Todos', description: ''},
         ...data.map(category => ({
           ...category,
           icon: this.categoryIcons[category.name] || "❓"

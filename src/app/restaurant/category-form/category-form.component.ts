@@ -24,9 +24,6 @@ export class CategoryFormComponent implements OnInit {
     this.categoryForm = this.fb.group({
       name: [this.category?.name || '', Validators.required],
       description: [this.category?.description || '', Validators.required],
-      icon: [this.category?.icon || '🍽️', Validators.required],
-      isActive: [this.category?.isActive ?? true], // Usar ?? true para valor por defecto
-      order: [this.category?.order || 1, [Validators.required, Validators.min(1)]]
     });
   }
 

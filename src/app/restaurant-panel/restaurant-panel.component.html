@@ -341,11 +341,11 @@
                     <span class="font-medium text-gray-900 dark:text-white">{{
                       order.id
                     }}</span>
-                    <span
+                    <!-- <span
                       [ngClass]="getStatusColor(order.status)"
                       class="px-2.5 py-0.5 rounded-full text-xs font-medium"
                       >{{ getStatusText(order.status) }}</span
-                    >
+                    > -->
                     <span class="text-sm text-gray-500 dark:text-gray-400">{{
                       order.table
                     }}</span>
@@ -388,10 +388,10 @@
                 <div class="flex items-center justify-between mb-1">
                   <div class="flex items-center gap-3">
                     <h3 class="text-lg font-bold">{{ order.id }}</h3>
-                    <span
+                    <!-- <span
                       [ngClass]="getStatusColor(order.status)"
                       class="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                      >{{ getStatusText(order.status) }}</span
+                      >{{ getStatusText(order.status) }}</span -->
                     >
                   </div>
                   <div class="text-right">
@@ -415,7 +415,7 @@
                   </p>
                 </div>
               </div>
-              <div class="flex flex-wrap gap-2 justify-end">
+              <!-- <div class="flex flex-wrap gap-2 justify-end">
                 <ng-container *ngIf="order.status === 'pending'">
                   <button
                     class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
@@ -440,7 +440,7 @@
                     Marcar como Entregado
                   </button>
                 </ng-container>
-              </div>
+              </div> -->
             </div>
           </ng-container>
         </div>
@@ -499,16 +499,14 @@
           [categories]="menuCategories"
           (onEdit)="handleEditCategory($event)"
           (onDelete)="handleDeleteCategory($event)"
-          (onToggleStatus)="handleToggleCategoryStatus($event)"
         ></app-category-manager>
 
         <app-product-manager
           [products]="menuProducts"
           [categories]="menuCategories"
           (onEdit)="handleEditProduct($event)"
-          (onDelete)="handleDeleteProduct($event)"
-          (onToggleStatus)="handleToggleProductStatus($event)"
-          (onToggleAvailability)="handleToggleProductAvailability($event)"
+          (onDelete)="handleProductDelete($event)"
+  
         ></app-product-manager>
       </div>
 
@@ -540,10 +538,10 @@
   ></app-category-form>
 
   <app-product-form
-    *ngIf="showProductForm"
-    [product]="editingProduct"
-    [categories]="menuCategories"
-    (onSave)="onProductFormSave($event)"
-    (onCancel)="onProductFormCancel()"
-  ></app-product-form>
+  *ngIf="showProductForm"
+  [product]="editingProduct"
+  [categories]="menuCategories" 
+  (onSave)="onProductFormSave($event)"
+  (onCancel)="onProductFormCancel()"
+></app-product-form>
 </div>

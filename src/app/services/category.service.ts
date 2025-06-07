@@ -6,7 +6,6 @@ export interface CategoryResponse {
   id: number;
   name: string;
   description: string;
-  icon?: string;
 }
 
 @Injectable({
@@ -19,6 +18,10 @@ export class CategoryService {
 
   getAllCategories(): Observable<CategoryResponse[]> {
     return this.http.get<CategoryResponse[]>(`${this.apiUrl}/all`);
+  }
+
+  createCategory(category: Omit<CategoryResponse, 'id'>): Observable<CategoryResponse> {
+    return this.http.post<CategoryResponse>(`${this.apiUrl}/create`, category);
   }
 }
 
