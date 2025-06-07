@@ -6,52 +6,93 @@ import { Subscription } from 'rxjs';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { ProductService, ProductResponse } from '../services/product.service';
 import { CategoryResponse, CategoryService } from '../services/category.service';
-
+import { QrCodeService, QrCodeResponse } from '../services/qr-code.service';
+import { RestaurantResponse, RestaurantService } from '../services/restautant.service';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [MenuCardComponent, CommonModule, NgClass, NgIf, NgFor, RouterLink],
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, OnDestroy {
 
   activeCategory: number = 0;
-  tableNumber: number = 0;
+  tableNumber: number = 0; // Inicializar con un valor por defecto o base
+
+  private readonly categoryIcons: { [key: string]: string } = {
+    "Todos": "📦",
+    "Ensaladas": "🥗",
+    "Principales": "🍝",
+    "Bebidas": "🥤",
+    "Sopas": "🍲"
+  };
 
   categories: CategoryResponse[] = [];
   products: ProductResponse[] = []; // Almacena todos los productos
   filteredProducts: ProductResponse[] = []; // Para mostrar en la vista
+  //activeCategory: string = 'all'; // Categoría activa (por defecto "all")
   cartState!: CartState;
   private cartSubscription!: Subscription;
-  private routeSubscription!: Subscription;
+  private routeSubscription!: Subscription; // ¡Nueva suscripción para los parámetros de ruta!
 
   constructor(
     private readonly cartService: CartService,
-    private readonly route: ActivatedRoute,
+    private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
     private readonly productService: ProductService,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly qrCodeService: QrCodeService,
+    private readonly restaurantService: RestaurantService
+
   ) { }
 
   ngOnInit(): void {
+    const qrUrl = window.location.href; // ✅ Obtener la URL actual
+    console.log("🔗 URL escaneada:", qrUrl);
+
+    // ✅ Obtener datos del código QR desde el backend
+    this.qrCodeService.getQrCodeByQrUrl(qrUrl).subscribe({
+      next: (qrCode: QrCodeResponse) => {
+        console.log("✅ Datos del QR:", qrCode);
+        const restaurantId = qrCode.restaurantId;
+        const tableNumber = qrCode.tableNumber;
+
+        // ✅ Obtener el nombre del restaurante desde la BD
+        this.restaurantService.getRestaurantById(restaurantId).subscribe({
+          next: (restaurant: RestaurantResponse) => {
+            console.log("🏷️ Restaurante detectado:", restaurant.name);
+
+            // ✅ Guardar `restaurantName` y `tableNumber` en localStorage
+            localStorage.setItem("restaurantName", restaurant.name);
+            localStorage.setItem("tableNumber", tableNumber.toString());
+          },
+          error: (err) => {
+            console.error("❌ Error al obtener el restaurante:", err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error("❌ Error al obtener el QR:", err);
+      }
+    });
+
     this.loadProducts();
     this.loadCategories();
-
 
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;
     });
 
     this.routeSubscription = this.route.queryParams.subscribe(params => {
-      this.tableNumber = params['table'] ?? 0;
+      this.tableNumber = params['table'] ?? 'N/A';
     });
   }
 
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
-        this.categories = [{ id: 0, name: 'Todos', description: ''},
+        this.categories = [{ id: 0, name: 'Todos', description: '' },
         ...data.map(category => ({
           ...category,
         }))
@@ -77,7 +118,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
-    if (this.routeSubscription) {
+    if (this.routeSubscription) { // ¡No olvides desuscribirte de los parámetros de ruta!
       this.routeSubscription.unsubscribe();
     }
   }

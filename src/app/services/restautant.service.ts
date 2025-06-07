@@ -20,9 +20,11 @@ export interface RestaurantResponse {
   providedIn: 'root'
 })
 export class RestaurantService {
-  private apiUrl = 'http://localhost:8080/api/restaurants'; // Ajusta si es necesario
+  private readonly apiUrl = 'http://localhost:8080/api/restaurants'; // Ajusta si es necesario
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private readonly http: HttpClient
+  ) { }
 
   createRestaurant(request: RestaurantRequest, username: string): Observable<RestaurantResponse> {
     return this.http.post<RestaurantResponse>(`${this.apiUrl}/create?username=${username}`, request);

@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, NgIf, NgFor, DatePipe } from '@angular/common'; // DatePipe para formatear fechas
+import { CommonModule, NgIf, NgFor } from '@angular/common'; // DatePipe para formatear fechas
 import { MenuCategory } from '../../restaurant-panel/restaurant-panel.component';
 
 @Component({
   selector: 'app-category-manager',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, DatePipe],
+  imports: [CommonModule, NgIf, NgFor],
   templateUrl: './category-manager.component.html',
 })
 export class CategoryManagerComponent {
@@ -18,7 +18,7 @@ export class CategoryManagerComponent {
 
   // Ordenar categorías por la propiedad 'order'
   get sortedCategories(): MenuCategory[] {
-    return [...this.categories].sort((a, b) => a.order - b.order);
+    return [...this.categories].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   // Métodos que emiten eventos

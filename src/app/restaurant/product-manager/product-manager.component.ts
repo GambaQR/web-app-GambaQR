@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, NgIf, NgFor, NgClass, DatePipe } from '@angular/common'; // DatePipe para formatear fechas
+import { CommonModule, NgIf, NgFor } from '@angular/common'; // DatePipe para formatear fechas
 import { FormsModule } from '@angular/forms'; // Para ngModel en los filtros de búsqueda
 import { MenuCategory, MenuProduct } from '../../restaurant-panel/restaurant-panel.component';
 
 @Component({
   selector: 'app-product-manager',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, NgClass, DatePipe, FormsModule], // Importar FormsModule
+  imports: [CommonModule, NgIf, NgFor, FormsModule], // Importar FormsModule
   templateUrl: './product-manager.component.html',
 })
 export class ProductManagerComponent {
@@ -23,9 +23,7 @@ export class ProductManagerComponent {
   selectedCategory: string = 'all'; // Usamos string para 'all' y categoryId.toString()
   statusFilter: string = 'all';
 
-  constructor() {}
-
-  // Getter para productos filtrados
+  constructor() { }
   get filteredProducts(): MenuProduct[] {
     return this.products.filter(product => {
       const matchesSearch =
@@ -35,14 +33,7 @@ export class ProductManagerComponent {
       const matchesCategory =
         this.selectedCategory === 'all' || product.categoryId.toString() === this.selectedCategory;
 
-      const matchesStatus =
-        this.statusFilter === 'all' ||
-        (this.statusFilter === 'active' && product.isActive) ||
-        (this.statusFilter === 'inactive' && !product.isActive) ||
-        (this.statusFilter === 'available' && product.isAvailable) ||
-        (this.statusFilter === 'unavailable' && !product.isAvailable);
-
-      return matchesSearch && matchesCategory && matchesStatus;
+      return matchesSearch && matchesCategory;
     });
   }
 
@@ -61,14 +52,5 @@ export class ProductManagerComponent {
 
   toggleProductAvailability(productId: number): void {
     this.onToggleAvailability.emit(productId);
-  }
-
-  // --- Funciones de utilidad para estilos de badges ---
-  getBadgeVariant(isActive: boolean, isAvailable?: boolean): string {
-    if (isAvailable !== undefined) { // Badge de Disponibilidad
-      return isAvailable ? 'bg-green-600 text-white' : 'bg-red-600 text-white';
-    }
-    // Badge de Activo/Inactivo
-    return isActive ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
   }
 }

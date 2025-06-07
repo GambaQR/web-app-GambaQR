@@ -1,11 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { QRCodeComponent } from '../../qrcode/qrcode.component';
-import { QrCodeService, QrCodeRequest } from '../../services/qr-code.service';
-
-
+import { QrCodeService, QrCodeRequest, QrCodeResponse } from '../../services/qr-code.service';
+import QRCode from 'qrcode';
 
 @Component({
   selector: 'app-qr-generator',
@@ -22,10 +21,11 @@ export class QrGeneratorComponent {
   tableNumber: string = '';
   qrUrlSafe: SafeUrl | null = null; // Para el componente <qr>
   qrUrlString: string = ''; // Para el input de texto y copiar al portapapeles
-  restaurantId = 3; // ⚠️ Obtén el ID dinámicamente según el usuario
 
-
-  constructor(private readonly sanitizer: DomSanitizer, private qrCodeService: QrCodeService) { }
+  constructor(
+    private readonly sanitizer: DomSanitizer, 
+    private readonly qrCodeService: QrCodeService
+  ) { }
 
   generateQR(): void {
     if (this.tableNumber) {
@@ -33,29 +33,30 @@ export class QrGeneratorComponent {
       const rawUrl = `${baseUrl}/menu?table=${this.tableNumber}`;
       this.qrUrlString = rawUrl;
       this.qrUrlSafe = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
+
+      // ✅ Guardar en la base de datos
+      const qrRequest: QrCodeRequest = {
+        restaurantId: 1, // ⚠️ Ajustar según el restaurante actual
+        tableNumber: Number(this.tableNumber), // Convertir a número
+        qrUrl: rawUrl,
+        isGeneral: false
+      };
+
+      this.qrCodeService.createQrCode(qrRequest).subscribe({
+        next: (response: QrCodeResponse) => {
+          console.log("QR guardado en la BD:", response);
+        },
+        error: (err) => {
+          console.error("Error al guardar el QR:", err);
+        }
+      });
+
     } else {
       this.qrUrlSafe = null;
       this.qrUrlString = '';
     }
   }
 
-  saveQrCode(): void {
-    const qrData: QrCodeRequest = {
-      restaurantId: this.restaurantId,
-      tableNumber: parseInt(this.tableNumber),
-      qrUrl: this.qrUrlString,
-      isGeneral: false
-    };
-
-    this.qrCodeService.createQrCode(qrData).subscribe({
-      next: (response) => {
-        console.log('QR guardado en la base de datos:', response);
-        alert('Código QR guardado correctamente. Descargando...');
-        this.downloadQR();
-      },
-      error: (err) => console.error('Error al guardar QR:', err)
-    });
-  }
 
   copyToClipboard(): void {
     if (this.qrUrlString && typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -68,9 +69,23 @@ export class QrGeneratorComponent {
   }
 
   downloadQR(): void {
-    console.log('Pendiente de implementar...');
-    alert('Pendiente de implementar...');
-  }
+    if (!this.qrUrlString) {
+      alert("No hay un QR generado.");
+      return;
+    }
 
+    QRCode.toDataURL(this.qrUrlString, { type: "image/png" })
+      .then((imgData) => {
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = `QR_Mesa_${this.tableNumber}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        console.log("QR descargado correctamente.");
+      })
+      .catch((err) => console.error("Error al generar la imagen del QR:", err));
+  }
 
 }
