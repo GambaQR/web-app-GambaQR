@@ -118,23 +118,37 @@ export class RestaurantPanelComponent implements OnInit {
     this.showProductForm = true;
   }
 
-  // *** CAMBIO CLAVE AQUÍ: Recibimos el objeto con productData y imageFile ***
+  // Recibe siempre { productData, imageFile } desde ProductFormComponent
   onProductFormSave(event: { productData: ProductRequest, imageFile: File | null }): void {
-    const { productData, imageFile } = event; // Desestructuramos el evento
+    const { productData, imageFile } = event;
 
-    // Llamada al servicio para crear el producto con los datos y la imagen real
-    this.productService.createProduct(productData, imageFile).subscribe(
-      (response) => {
-        console.log('Producto creado exitosamente:', response);
-        this.showProductForm = false; // *** CERRAR EL FORMULARIO ***
-        this.loadProducts(); // *** ACTUALIZAR LA LISTA DE PRODUCTOS ***
-      },
-      (error) => {
-        console.error('Error creando el producto:', error);
-      }
-    );
+    if (this.editingProduct) {
+      // ========== UPDATE ==========
+      this.productService
+        .updateProduct(this.editingProduct.id, productData, imageFile)
+        .subscribe(
+          (updated) => {
+            console.log('Producto actualizado:', updated);
+            this.showProductForm = false;
+            this.editingProduct = null;
+            this.loadProducts();
+          },
+          (err) => console.error('Error actualizando producto:', err)
+        );
+    } else {
+      // ========== CREATE ==========
+      this.productService
+        .createProduct(productData, imageFile)
+        .subscribe(
+          (created) => {
+            console.log('Producto creado:', created);
+            this.showProductForm = false;
+            this.loadProducts();
+          },
+          (err) => console.error('Error creando producto:', err)
+        );
+    }
   }
-
   onProductFormCancel(): void {
     this.showProductForm = false;
     this.editingProduct = null;
@@ -150,6 +164,7 @@ export class RestaurantPanelComponent implements OnInit {
     this.editingCategory = null;
     this.showCategoryForm = true;
   }
+  
 
   handleEditCategory(category: MenuCategory): void {
     this.editingCategory = category;
@@ -177,29 +192,36 @@ export class RestaurantPanelComponent implements OnInit {
   }
 
   handleDeleteCategory(categoryId: number): void {
-    if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
-      this.menuCategories = this.menuCategories.filter(cat => cat.id !== categoryId);
-    }
+    if (!confirm('¿Eliminar esta categoría?')) return;
+    this.categoryService.deleteCategory(categoryId).subscribe(
+      () => this.loadCategories(),
+      (err) => console.error('Error borrando categoría', err)
+    );
   }
-  onCategoryFormSave(categoryData: Omit<MenuCategory, 'id' | 'createdAt'>): void {
+  onCategoryFormSave(data: Omit<MenuCategory, 'id'>): void {
     if (this.editingCategory) {
-      this.menuCategories = this.menuCategories.map(cat =>
-        cat.id === this.editingCategory?.id ? { ...cat, ...categoryData } : cat
+      const updated: CategoryResponse = { id: this.editingCategory.id, ...data };
+      this.categoryService.updateCategory(updated).subscribe(
+        () => {
+          this.showCategoryForm = false;
+          this.loadCategories();
+        },
+        (err) => console.error('Error actualizando categoría', err)
       );
     } else {
-      const newId = Math.max(...this.menuCategories.map(cat => cat.id), 0) + 1;
-      const newCategory: MenuCategory = {
-        ...categoryData,
-        id: newId
-      };
-      this.menuCategories = [...this.menuCategories, newCategory];
+      this.categoryService.createCategory(data).subscribe(
+        () => {
+          this.showCategoryForm = false;
+          this.loadCategories();
+        },
+        (err) => console.error('Error creando categoría', err)
+      );
     }
-    this.showCategoryForm = false;
-    this.editingCategory = null;
   }
 
   onCategoryFormCancel(): void {
     this.showCategoryForm = false;
     this.editingCategory = null;
   }
+  
 }
