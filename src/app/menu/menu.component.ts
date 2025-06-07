@@ -20,25 +20,16 @@ export class MenuComponent implements OnInit, OnDestroy {
   activeCategory: number = 0;
   tableNumber: number = 0;
 
-  private readonly categoryIcons: { [key: string]: string } = {
-    "Todos": "📦",
-    "Ensaladas": "🥗",
-    "Principales": "🍝",
-    "Bebidas": "🥤",
-    "Sopas": "🍲"
-  };
-
   categories: CategoryResponse[] = [];
   products: ProductResponse[] = []; // Almacena todos los productos
   filteredProducts: ProductResponse[] = []; // Para mostrar en la vista
-  //activeCategory: string = 'all'; // Categoría activa (por defecto "all")
   cartState!: CartState;
   private cartSubscription!: Subscription;
-  private routeSubscription!: Subscription; // ¡Nueva suscripción para los parámetros de ruta!
+  private routeSubscription!: Subscription;
 
   constructor(
     private readonly cartService: CartService,
-    private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
+    private readonly route: ActivatedRoute,
     private readonly productService: ProductService,
     private readonly categoryService: CategoryService
   ) { }
@@ -53,17 +44,16 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
 
     this.routeSubscription = this.route.queryParams.subscribe(params => {
-      this.tableNumber = params['table'] ?? '';
+      this.tableNumber = params['table'] ?? 0;
     });
   }
 
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
-        this.categories = [{ id: 0, name: 'Todos', description: '', icon: "📦" },
+        this.categories = [{ id: 0, name: 'Todos', description: ''},
         ...data.map(category => ({
           ...category,
-          icon: this.categoryIcons[category.name] || "❓"
         }))
         ];
       },
@@ -87,7 +77,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
-    if (this.routeSubscription) { // ¡No olvides desuscribirte de los parámetros de ruta!
+    if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
   }

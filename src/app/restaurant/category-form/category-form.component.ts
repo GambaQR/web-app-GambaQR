@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule, NgIf, NgFor, NgClass } from '@angular/common';
+import { CommonModule, NgIf, NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Para Reactive Forms
 import { MenuCategory } from '../../restaurant-panel/restaurant-panel.component';
 
 @Component({
   selector: 'app-category-form',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, NgClass, ReactiveFormsModule],
+  imports: [CommonModule, NgIf, NgClass, ReactiveFormsModule],
   templateUrl: './category-form.component.html',
 })
 export class CategoryFormComponent implements OnInit {
@@ -15,7 +15,7 @@ export class CategoryFormComponent implements OnInit {
   @Output() onCancel = new EventEmitter<void>();
 
   categoryForm!: FormGroup;
-  iconOptions: string[] = ["🥗", "🍽️", "🥤", "🍔", "⭐", "🍕", "🍜", "🧁", "🍷", "☕", "🥘", "🍤"];
+  // iconOptions: string[] = [];
 
   constructor(
     private readonly fb: FormBuilder
@@ -25,9 +25,6 @@ export class CategoryFormComponent implements OnInit {
     this.categoryForm = this.fb.group({
       name: [this.category?.name || '', Validators.required],
       description: [this.category?.description || '', Validators.required],
-      icon: [this.category?.icon || '🍽️', Validators.required],
-      isActive: [this.category?.isActive ?? true], // Usar ?? true para valor por defecto
-      order: [this.category?.order || 1, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -45,10 +42,5 @@ export class CategoryFormComponent implements OnInit {
   confirmarCampo(controlName: string): boolean {
     const control = this.categoryForm.get(controlName);
     return !!control && control.invalid && (control.touched || control.dirty);
-  }
-
-  // Manejar la selección de iconos
-  selectIcon(icon: string): void {
-    this.categoryForm.get('icon')?.setValue(icon);
   }
 }
