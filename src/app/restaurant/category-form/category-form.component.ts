@@ -8,6 +8,7 @@ import { MenuCategory } from '../../restaurant-panel/restaurant-panel.component'
   standalone: true,
   imports: [CommonModule, NgIf, NgFor, NgClass, ReactiveFormsModule],
   templateUrl: './category-form.component.html',
+  styleUrls: ['./category-form.component.css'] // Si tienes estilos específicos
 })
 export class CategoryFormComponent implements OnInit {
   @Input() category: MenuCategory | null = null; // Si se pasa una categoría, es para editar
@@ -15,16 +16,14 @@ export class CategoryFormComponent implements OnInit {
   @Output() onCancel = new EventEmitter<void>();
 
   categoryForm!: FormGroup;
-  iconOptions: string[] = [];
+  iconOptions: string[] = ["🥗", "🍽️", "🥤", "🍔", "⭐", "🍕", "🍜", "🧁", "🍷", "☕", "🥘", "🍤"];
 
-  constructor(
-    private readonly fb: FormBuilder
-  ) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.categoryForm = this.fb.group({
-      name: [this.category?.name ?? '', Validators.required],
-      description: [this.category?.description ?? '', Validators.required],
+      name: [this.category?.name || '', Validators.required],
+      description: [this.category?.description || '', Validators.required],
     });
   }
 

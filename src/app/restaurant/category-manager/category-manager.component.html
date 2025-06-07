@@ -1,6 +1,6 @@
 <div class="space-y-4">
   <div class="flex items-center justify-between">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Categorías del Menú</h2>
+    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Categorías del Menú</h2>
     <p class="text-sm text-gray-600 dark:text-gray-400">{{ categories.length }} categorías total</p>
   </div>
 
@@ -22,10 +22,23 @@
                 <p class="text-sm text-gray-600 dark:text-gray-400">{{ category.description }}</p>
               </div>
             </div>
+            
           </div>
         </div>
         <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          
           <div class="flex gap-2">
+            <button
+              (click)="toggleCategoryStatus(category.id)"
+              class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"            >
+              
+              <ng-template #eyeIcon>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </ng-template>
+            </button>
             <button
               (click)="editCategory(category)"
               class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
