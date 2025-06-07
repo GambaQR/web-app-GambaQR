@@ -54,10 +54,6 @@
   @apply font-extrabold font-header text-gray-900 dark:text-white;
 }
 
-.body-text {
-  @apply font-sans text-gray-800 dark:text-gray-300;
-}
-
 .muted-text {
   @apply text-gray-700 dark:text-gray-300 opacity-60;
 }

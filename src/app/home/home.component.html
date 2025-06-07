@@ -1,5 +1,5 @@
 <div
-  class="flex flex-col items-center bg-[url(/bbblurry-6.svg)] bg-cover bg-center bg-no-repeat"
+  class="flex flex-col items-center  min-h-screen text-gray-900 dark:text-white"
 >
   <section
     class="min-h-screen flex flex-col items-center justify-center w-full px-4 lg:px-10 xl:px-20"
@@ -53,8 +53,6 @@
   <section
     class="min-h-screen flex flex-col justify-center items-center py-16 px-4 w-full max-w-7xl"
   >
-    ´
-
     <h2
       class="text-4xl font-bold text-center text-gray-900 dark:text-white mb-12"
     >
@@ -182,4 +180,12 @@
       ¡Regístrate y Empieza Ya!
     </button>
   </section>
+
+  <app-overlay [isOpen]="showLoginOverlay" (close)="onLoginOverlayClose()" maxWidthClass="max-w-5xl">
+    <app-login (loggedIn)="onLoginSuccess()"></app-login>
+  </app-overlay>
+
+  <app-overlay [isOpen]="showRegisterOverlay" (close)="onRegisterOverlayClose()" maxWidthClass="max-w-2xl">
+    <app-register (registered)="onRegisterSuccess()" (cancel)="onRegisterOverlayClose()"></app-register>
+  </app-overlay>
 </div>
