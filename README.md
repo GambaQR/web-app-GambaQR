@@ -37,3 +37,7 @@ Usar `npm i qr-code-styling`
 ## Download QR
 
 Usar `npm i qrcode`
+
+## Supabase
+
+Usar `npm install @supabase/supabase-js`

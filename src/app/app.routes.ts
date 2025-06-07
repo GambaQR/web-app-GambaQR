@@ -13,6 +13,7 @@ import { RestaurantPanelComponent } from './restaurant-panel/restaurant-panel.co
 import { QrGeneratorComponent } from './restaurant/qr-generator/qr-generator.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { RoleGuard } from './services/auth/role.guard';
+import { TestOrderCreatorComponent } from './test-order-creator/test-order-creator.component';
 
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
       // ZONA GENERAL
       { path: '', component: HomeComponent },
       { path: 'user', component: ProfileComponent },
+      { path: 'test-order-kitchen', component: TestOrderCreatorComponent },
 
 
       // ZONA ADMIN
