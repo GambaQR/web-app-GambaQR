@@ -13,7 +13,7 @@ import { CategoryResponse, CategoryService } from '../services/category.service'
   standalone: true,
   imports: [MenuCardComponent, CommonModule, NgClass, NgIf, NgFor, RouterLink],
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit, OnDestroy {
 

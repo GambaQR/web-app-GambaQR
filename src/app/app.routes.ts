@@ -3,7 +3,6 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { ExampleComponent } from './example/example.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MenuComponent } from './menu/menu.component';
 import { CartComponent } from './cart/cart.component';
@@ -22,7 +21,6 @@ export const routes: Routes = [
       // ZONA GENERAL
       { path: '', component: HomeComponent },
       { path: 'user', component: ProfileComponent },
-      { path: 'example', component: ExampleComponent }, // SOLO PARA PRUEBAS
 
 
       // ZONA ADMIN

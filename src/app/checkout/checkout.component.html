@@ -1,32 +1,46 @@
 <div class="min-h-screen text-gray-900 dark:text-white">
-  <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl shadow-sm p-4 sticky top-0 z-10">
+  <div class="p-4 sticky top-0 z-10">
     <div class="flex items-center max-w-md mx-auto">
       <a routerLink="/cart">
         <button
-          class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="h-5 w-5 text-gray-600 dark:text-gray-400">
+          class="flex items-center justify-center p-3 rounded-full group hover:bg-gray-200/50 dark:hover:bg-gray-900/40 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-5 w-5 text-gray-600 dark:text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400"
+          >
             <path d="m12 19-7-7 7-7"></path>
             <path d="M19 12H5"></path>
           </svg>
         </button>
       </a>
-      <h1 class="font-bold text-lg ml-4 text-gray-900 dark:text-white">
+      <h1 class="font-bold text-2xl ml-4 text-gray-900 dark:text-white">
         Checkout
       </h1>
     </div>
   </div>
 
   <div class="max-w-md mx-auto p-4 space-y-6">
-    <div *ngIf="cartState && cartState.items.length === 0" class="min-h-[60vh] flex items-center justify-center">
+    <div
+      *ngIf="cartState && cartState.items.length === 0"
+      class="min-h-[60vh] flex items-center justify-center"
+    >
       <div class="text-center">
         <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">
           No hay artículos en tu carrito
         </h2>
         <a routerLink="/menu">
           <button
-            class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+            class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+          >
             Volver al Menú
           </button>
         </a>
@@ -34,25 +48,48 @@
     </div>
 
     <ng-container *ngIf="cartState && cartState.items.length > 0">
-      <form [formGroup]="checkoutForm" (ngSubmit)="handlePlaceOrder()" class="space-y-6">
-        <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
-          <h2 class="text-lg font-bold flex items-center gap-2 text-gray-900 dark:text-white mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+      <form
+        [formGroup]="checkoutForm"
+        (ngSubmit)="handlePlaceOrder()"
+        class="space-y-6"
+      >
+        <div
+          class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+        >
+          <h2
+            class="text-lg font-bold flex items-center gap-2 text-gray-900 dark:text-white mb-4"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-5 w-5"
+            >
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
             Resumen del Pedido
           </h2>
           <div class="space-y-4 text-gray-700 dark:text-gray-300">
-            <div *ngFor="let item of cartState.items" class="flex justify-between items-start">
+            <div
+              *ngFor="let item of cartState.items"
+              class="flex justify-between items-start"
+            >
               <div class="flex-1">
                 <p class="font-medium text-sm">{{ item.name }}</p>
                 <p class="text-xs text-gray-600 dark:text-gray-400">
                   Cantidad: {{ item.quantity }}
                 </p>
-                <p *ngIf="item.notes"
-                  class="text-xs text-orange-600 dark:text-orange-300 bg-orange-50 dark:bg-orange-900/20 p-1 rounded mt-1">
+                <p
+                  *ngIf="item.notes"
+                  class="text-xs text-orange-600 dark:text-orange-300 bg-orange-50 dark:bg-orange-900/20 p-1 rounded mt-1"
+                >
                   Nota: {{ item.notes }}
                 </p>
               </div>
@@ -74,18 +111,36 @@
                 <span>Tarifa de servicio</span>
                 <span>${{ deliveryFee.toFixed(2) }}</span>
               </div>
-              <div class="flex justify-between font-bold text-lg border-t border-gray-200 dark:border-gray-700 pt-2">
+              <div
+                class="flex justify-between font-bold text-lg border-t border-gray-200 dark:border-gray-700 pt-2"
+              >
                 <span>Total</span>
-                <span class="text-purple-600 dark:text-purple-400">${{ total.toFixed(2) }}</span>
+                <span class="text-purple-600 dark:text-purple-400"
+                  >${{ total.toFixed(2) }}</span
+                >
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
-          <h2 class="text-lg font-bold flex items-center gap-2 text-gray-900 dark:text-white mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+        <div
+          class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+        >
+          <h2
+            class="text-lg font-bold flex items-center gap-2 text-gray-900 dark:text-white mb-4"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-5 w-5"
+            >
               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
@@ -93,57 +148,108 @@
           </h2>
           <div class="space-y-4">
             <div>
-              <label for="customerName" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Nombre
-                Completo *</label>
-              <input id="customerName" formControlName="customerName" placeholder="Juan Pérez"
-                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
-              <p *ngIf="confirmarCampo('customerName')" class="text-sm text-red-600 mt-1">
+              <label
+                for="customerName"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
+                >Nombre Completo *</label
+              >
+              <input
+                id="customerName"
+                formControlName="customerName"
+                placeholder="Juan Pérez"
+                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+              />
+              <p
+                *ngIf="confirmarCampo('customerName')"
+                class="text-sm text-red-600 mt-1"
+              >
                 El nombre es obligatorio.
               </p>
             </div>
             <div>
-              <label for="customerPhone" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Teléfono
-                *</label>
-              <input id="customerPhone" formControlName="customerPhone" placeholder="+1 234 567 8900" type="tel"
-                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
-              <p *ngIf="
+              <label
+                for="customerPhone"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
+                >Teléfono *</label
+              >
+              <input
+                id="customerPhone"
+                formControlName="customerPhone"
+                placeholder="+1 234 567 8900"
+                type="tel"
+                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+              />
+              <p
+                *ngIf="
                   confirmarCampo('customerPhone') &&
                   checkoutForm.get('customerPhone')?.hasError('required')
-                " class="text-sm text-red-600 mt-1">
+                "
+                class="text-sm text-red-600 mt-1"
+              >
                 El teléfono es obligatorio.
               </p>
-              <p *ngIf="
+              <p
+                *ngIf="
                   confirmarCampo('customerPhone') &&
                   checkoutForm.get('customerPhone')?.hasError('pattern')
-                " class="text-sm text-red-600 mt-1">
+                "
+                class="text-sm text-red-600 mt-1"
+              >
                 Ingresa un número de teléfono válido (9-10 dígitos).
               </p>
             </div>
             <div>
-              <label for="customerEmail" class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1">Email
-                (opcional)</label>
-              <input id="customerEmail" formControlName="customerEmail" type="email" placeholder="juan@ejemplo.com"
-                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600" />
-              <p *ngIf="
+              <label
+                for="customerEmail"
+                class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
+                >Email (opcional)</label
+              >
+              <input
+                id="customerEmail"
+                formControlName="customerEmail"
+                type="email"
+                placeholder="juan@ejemplo.com"
+                class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+              />
+              <p
+                *ngIf="
                   confirmarCampo('customerEmail') &&
                   checkoutForm.get('customerEmail')?.hasError('email')
-                " class="text-sm text-red-600 mt-1">
+                "
+                class="text-sm text-red-600 mt-1"
+              >
                 Ingresa un email válido.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
-          <h2 class="text-lg font-bold flex items-center gap-2 text-gray-900 dark:text-white mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+        <div
+          class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+        >
+          <h2
+            class="text-lg font-bold flex items-center gap-2 text-gray-900 dark:text-white mb-4"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-5 w-5"
+            >
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
               <path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
             </svg>
             Información de Entrega
           </h2>
-          <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-700">
+          <div
+            class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-700"
+          >
             <p class="text-sm font-medium text-blue-800 dark:text-blue-200">
               Mesa 4
             </p>
@@ -156,34 +262,60 @@
           </div>
         </div>
 
-        <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
+        <div
+          class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+        >
           <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
             Instrucciones Especiales
           </h2>
-          <textarea formControlName="specialInstructions"
+          <textarea
+            formControlName="specialInstructions"
             placeholder="¿Alguna preferencia especial o alergia que debamos conocer?"
-            class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 min-h-[80px]"></textarea>
+            class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600 min-h-[80px]"
+          ></textarea>
         </div>
 
-        <div class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4">
+        <div
+          class="bg-white/50 dark:bg-gray-800/40 backdrop-blur-xl rounded-xl shadow-md p-4"
+        >
           <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
             Método de Pago
           </h2>
           <div class="space-y-3">
-            <label for="card"
+            <label
+              for="card"
               class="relative flex items-center space-x-2 p-3 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
               [ngClass]="{
                 'border-purple-600 dark:border-purple-400':
                   checkoutForm.get('paymentMethod')?.value === 'card'
-              }">
-              <input type="radio" id="card" value="card" formControlName="paymentMethod"
+              }"
+            >
+              <input
+                type="radio"
+                id="card"
+                value="card"
+                formControlName="paymentMethod"
                 (change)="onPaymentMethodChange('card')"
-                class="appearance-none peer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all shrink-0" />
+                class="appearance-none peer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all shrink-0"
+              />
               <span
-                class="pointer-events-none absolute bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/19 -translate-x-1/2 -translate-y-1/2 transform"></span>
-              <span class="flex items-center gap-2 flex-1 text-gray-700 dark:text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                class="pointer-events-none absolute bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/19 -translate-x-1/2 -translate-y-1/2 transform"
+              ></span>
+              <span
+                class="flex items-center gap-2 flex-1 text-gray-700 dark:text-gray-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-5 w-5"
+                >
                   <rect x="2" y="5" width="20" height="14" rx="2"></rect>
                   <path d="M2 10h20"></path>
                 </svg>
@@ -191,21 +323,41 @@
               </span>
             </label>
 
-            <label for="mobile"
+            <label
+              for="mobile"
               class="relative flex items-center space-x-2 p-3 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
               [ngClass]="{
                 'border-purple-600 dark:border-purple-400':
                   checkoutForm.get('paymentMethod')?.value === 'mobile'
-              }">
-              <input type="radio" id="mobile" value="mobile" formControlName="paymentMethod"
+              }"
+            >
+              <input
+                type="radio"
+                id="mobile"
+                value="mobile"
+                formControlName="paymentMethod"
                 (change)="onPaymentMethodChange('mobile')"
-                class="appearance-none peer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all shrink-0" />
+                class="appearance-none peer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all shrink-0"
+              />
               <span
-                class="pointer-events-none absolute bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/19 -translate-x-1/2 -translate-y-1/2 transform"></span>
+                class="pointer-events-none absolute bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/19 -translate-x-1/2 -translate-y-1/2 transform"
+              ></span>
 
-              <span class="flex items-center gap-2 flex-1 text-gray-700 dark:text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+              <span
+                class="flex items-center gap-2 flex-1 text-gray-700 dark:text-gray-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-5 w-5"
+                >
                   <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
                   <path d="M12 18h.01"></path>
                 </svg>
@@ -213,22 +365,49 @@
               </span>
             </label>
 
-            <label for="cash"
+            <label
+              for="cash"
               class="relative flex items-center space-x-2 p-3 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
               [ngClass]="{
                 'border-purple-600 dark:border-purple-400':
                   checkoutForm.get('paymentMethod')?.value === 'cash'
-              }">
-              <input type="radio" id="cash" value="cash" formControlName="paymentMethod"
+              }"
+            >
+              <input
+                type="radio"
+                id="cash"
+                value="cash"
+                formControlName="paymentMethod"
                 (change)="onPaymentMethodChange('cash')"
-                class="appearance-none peer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all shrink-0" />
+                class="appearance-none peer h-4 w-4 text-purple-600 checked:border-purple-600 border rounded-full border-gray-600 dark:border-gray-400 transition-all shrink-0"
+              />
               <span
-                class="pointer-events-none absolute bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/19 -translate-x-1/2 -translate-y-1/2 transform"></span>
+                class="pointer-events-none absolute bg-purple-600 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/19 -translate-x-1/2 -translate-y-1/2 transform"
+              ></span>
 
-              <span class="flex items-center gap-2 flex-1 text-gray-700 dark:text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <span
+                class="flex items-center gap-2 flex-1 text-gray-700 dark:text-gray-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-5 w-5"
+                >
+                  <rect
+                    x="3"
+                    y="11"
+                    width="18"
+                    height="11"
+                    rx="2"
+                    ry="2"
+                  ></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
                 Efectivo (Pagar en mesa)
@@ -236,9 +415,12 @@
             </label>
           </div>
 
-
-          <ng-container *ngIf="checkoutForm.get('paymentMethod')?.value === 'mobile'">
-            <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+          <ng-container
+            *ngIf="checkoutForm.get('paymentMethod')?.value === 'mobile'"
+          >
+            <div
+              class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700"
+            >
               <p class="text-sm text-blue-800 dark:text-blue-200">
                 Serás redirigido a tu aplicación de pago móvil para completar la
                 transacción.
@@ -246,9 +428,12 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="checkoutForm.get('paymentMethod')?.value === 'cash'">
+          <ng-container
+            *ngIf="checkoutForm.get('paymentMethod')?.value === 'cash'"
+          >
             <div
-              class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+              class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700"
+            >
               <p class="text-sm text-green-800 dark:text-green-200">
                 Pagarás en efectivo cuando recibas tu pedido en la mesa.
                 Asegúrate de tener el monto exacto.
@@ -258,23 +443,36 @@
         </div>
 
         <!-- Tarjeta -->
-        <ng-container *ngIf="checkoutForm.get('paymentMethod')?.value === 'card'">
-          <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+        <ng-container
+          *ngIf="checkoutForm.get('paymentMethod')?.value === 'card'"
+        >
+          <div
+            class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700"
+          >
             <label for="cardholderName">Información de la tarjeta:</label>
             <!--Aca se monta el formulario de la tarjeta de Stripe-->
             <div id="card-element" class="form-control py-3"></div>
-            <input formControlName="cardholderName" id="cardholderName" type="text" class="w-75 fs-6"
-              placeholder=" Nombre titular" />
+            <input
+              formControlName="cardholderName"
+              id="cardholderName"
+              type="text"
+              class="w-75 fs-6"
+              placeholder=" Nombre titular"
+            />
           </div>
         </ng-container>
 
         <div class="pb-6">
-          <button (click)="handlePlaceOrder()" type="submit" [disabled]="!isFormValid()"
-            class="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white text-lg font-medium py-3 px-4 rounded-lg transition-colors shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed">
+          <button
+            (click)="handlePlaceOrder()"
+            type="submit"
+            [disabled]="!isFormValid()"
+            class="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white text-lg font-medium py-3 px-4 rounded-lg transition-colors shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             {{
-            isProcessing
-            ? "Procesando..."
-            : "Confirmar Pedido - $" + total.toFixed(2)
+              isProcessing
+                ? "Procesando..."
+                : "Confirmar Pedido - $" + total.toFixed(2)
             }}
           </button>
 

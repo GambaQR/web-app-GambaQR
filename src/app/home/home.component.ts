@@ -3,15 +3,16 @@ import { CommonModule } from '@angular/common';
 import { QRCodeComponent } from "../qrcode/qrcode.component";
 import { Router } from '@angular/router';
 
-import { OverlayComponent } from '../overlay/overlay.component'; // Asegúrate de que la ruta sea correcta
-import { LoginComponent } from '../login/login.component'; // Asegúrate de que la ruta sea correcta
-import { RegisterComponent } from '../register/register.component'; // ¡Importar RegisterComponent!
+import { OverlayComponent } from '../overlay/overlay.component'; 
+import { LoginComponent } from '../login/login.component';
+import { RegisterComponent } from '../register/register.component'; 
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, QRCodeComponent, OverlayComponent, LoginComponent, RegisterComponent], // ¡Añadir RegisterComponent a imports!
+  imports: [CommonModule, QRCodeComponent, OverlayComponent, LoginComponent, RegisterComponent, FooterComponent], 
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
@@ -19,7 +20,7 @@ export class HomeComponent implements OnInit {
   url!: SafeUrl;
 
   showLoginOverlay: boolean = false;
-  showRegisterOverlay: boolean = false; // ¡Nueva propiedad para el overlay de registro!
+  showRegisterOverlay: boolean = false; 
 
   constructor(
     private readonly router: Router,
@@ -53,7 +54,6 @@ export class HomeComponent implements OnInit {
   // ya que el login te podría redirigir directamente, pero es un ejemplo de cómo manejarlo
   onLoginSuccess(): void {
     this.showLoginOverlay = false;
-    // this.router.navigate(['/restaurante']); // Ejemplo: redirigir tras login exitoso
   }
 
   // Método opcional si el RegisterComponent emite registered.
@@ -62,5 +62,15 @@ export class HomeComponent implements OnInit {
     // Opcional: Podrías abrir el login después del registro, o redirigir
     // this.showLoginOverlay = true;
     // this.router.navigate(['/restaurante']);
+  }
+
+  onSwitchToRegister(): void {
+    this.showLoginOverlay = false; 
+    this.showRegisterOverlay = true;
+  }
+
+  onSwitchToLogin(): void {
+    this.showRegisterOverlay = false;
+    this.showLoginOverlay = true;  
   }
 }

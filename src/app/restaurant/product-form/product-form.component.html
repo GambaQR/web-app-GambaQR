@@ -12,6 +12,51 @@
       class="space-y-6"
     >
       <div class="space-y-4">
+        <h3 class="text-lg font-medium">Imagen del Producto</h3>
+        <div class="flex items-center gap-4">
+          <ng-container *ngIf="productForm.get('image')?.value">
+            <img
+              [src]="productForm.get('image')?.value || '/placeholder.svg'"
+              alt="Preview"
+              class="w-20 h-20 rounded-lg object-cover"
+            />
+          </ng-container>
+          <div class="w-full">
+            <label for="image" class="cursor-pointer inline-block w-full">
+              <div
+                class="w-full flex justify-center items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-900 dark:text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                Subir Imagen
+              </div>
+            </label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              (change)="handleImageUpload($event)"
+              class="hidden"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
         <h3 class="text-lg font-medium">Información Básica</h3>
 
         <div>
@@ -118,51 +163,6 @@
       </div>
 
       <div class="space-y-4">
-        <h3 class="text-lg font-medium">Imagen del Producto</h3>
-        <div class="flex items-center gap-4">
-          <ng-container *ngIf="productForm.get('image')?.value">
-            <img
-              [src]="productForm.get('image')?.value || '/placeholder.svg'"
-              alt="Preview"
-              class="w-20 h-20 rounded-lg object-cover"
-            />
-          </ng-container>
-          <div>
-            <label for="image" class="cursor-pointer inline-block">
-              <div
-                class="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-900 dark:text-white"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-4 w-4"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                Subir Imagen
-              </div>
-            </label>
-            <input
-              id="image"
-              type="file"
-              accept="image/*"
-              (change)="handleImageUpload($event)"
-              class="hidden"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="space-y-4">
         <h3 class="text-lg font-medium">Precios</h3>
         <div>
           <label
@@ -252,70 +252,6 @@
             </p>
           </div>
         </ng-container>
-      </div>
-
-      <div class="space-y-4">
-        <h3 class="text-lg font-medium">Ingredientes</h3>
-        <div class="flex gap-2">
-          <input
-            type="text"
-            [(ngModel)]="newIngredient"
-            [ngModelOptions]="{ standalone: true }"
-            placeholder="Agregar ingrediente..."
-            (keydown.enter)="addIngredient(); $event.preventDefault()"
-            class="flex-1 px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
-          />
-          <button
-            type="button"
-            (click)="addIngredient()"
-            class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-4 w-4"
-            >
-              <path d="M5 12h14"></path>
-              <path d="M12 5v14"></path>
-            </svg>
-          </button>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <span
-            *ngFor="let ingredient of productForm.get('ingredients')?.value"
-            class="inline-flex items-center bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 px-2.5 py-0.5 rounded-full text-xs font-medium gap-1"
-          >
-            {{ ingredient }}
-            <button
-              type="button"
-              (click)="removeIngredient(ingredient)"
-              class="ml-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="h-3 w-3"
-              >
-                <path d="M18 6 6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
-            </button>
-          </span>
-        </div>
       </div>
 
       <div class="space-y-4">
