@@ -1,10 +1,8 @@
-// src/app/restaurant/product-form/product-form.component.ts
-
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, NgIf, NgFor, NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MenuCategory, MenuProduct } from '../../restaurant-panel/restaurant-panel.component';
-import { ProductRequest, ProductResponse, ProductService } from '../../services/product.service';
+import { ProductRequest } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-form',
@@ -14,24 +12,25 @@ import { ProductRequest, ProductResponse, ProductService } from '../../services/
 })
 export class ProductFormComponent implements OnInit {
   @Input() product: MenuProduct | null = null;
-  @Input() categories: MenuCategory[] = [];
+  @Input() categories: MenuCategory[] = []; 
 
-  // *** CAMBIO CLAVE AQUÍ: onSave ahora emite un objeto con productData y imageFile ***
   @Output() onSave = new EventEmitter<{ productData: ProductRequest, imageFile: File | null }>();
   @Output() onCancel = new EventEmitter<void>();
 
   productForm!: FormGroup;
-  selectedImageFile: File | null = null; // Para guardar el archivo seleccionado
-  imagePreviewUrl: string | ArrayBuffer | null = null; // Para la vista previa de la imagen
+  selectedImageFile: File | null = null; 
+  imagePreviewUrl: string | ArrayBuffer | null = null;
 
-  constructor(private readonly fb: FormBuilder, private productService: ProductService) { }
+  constructor(
+    private readonly fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
-      name: [this.product?.name || '', Validators.required],
-      description: [this.product?.description || '', Validators.required],
-      price: [this.product?.price || 0, [Validators.required, Validators.min(0.01)]],
-      categoryId: [this.product?.categoryId || '', Validators.required],
+      name: [this.product?.name ?? '', Validators.required],
+      description: [this.product?.description ?? '', Validators.required],
+      price: [this.product?.price ?? 0, [Validators.required, Validators.min(0.01)]],
+      categoryId: [this.product?.categoryId ?? '', Validators.required], // Usar '' para el placeholder del select
       // 'image' no es un FormControl directo porque se envía como File
     });
 
@@ -56,7 +55,7 @@ export class ProductFormComponent implements OnInit {
         currency: 'EUR',
       };
 
-      // *** CAMBIO CLAVE: Emitimos el objeto con requestData y selectedImageFile ***
+      // CAMBIO CLAVE: Emitimos el objeto con requestData y selectedImageFile 
       this.onSave.emit({ productData: requestData, imageFile: this.selectedImageFile });
 
     } else {

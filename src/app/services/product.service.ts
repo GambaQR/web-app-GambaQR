@@ -21,13 +21,15 @@ export interface ProductRequest {
 }
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 export class ProductService {
 
-  private apiUrl = 'http://localhost:8080/api/products';
+  private readonly apiUrl = 'http://localhost:8080/api/products';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private readonly http: HttpClient
+  ) { }
 
   getAllProducts(): Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>(`${this.apiUrl}/all`);
@@ -66,4 +68,4 @@ export class ProductService {
     return this.http.delete<void>(`${this.apiUrl}/delete/${productId}`);
   }
 
-  }
+}
