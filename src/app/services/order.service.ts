@@ -38,8 +38,8 @@ export class OrderService {
     private readonly http: HttpClient
   ) { }
 
-  createOrder(order: any, userId: number): Observable<number> {
-    return this.http.post<number>(`${this.baseUrl}/create?userId=${userId}`, order);
+  createOrder(order: any, userId: number): Observable<OrderResponseDTO> {
+    return this.http.post<OrderResponseDTO>(`${this.baseUrl}/create?userId=${userId}`, order);
   }
 
   // ¡NUEVO MÉTODO! Agrega esto a OrderService

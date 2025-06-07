@@ -225,6 +225,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         throw new Error("No se encontró la mesa para el QR.");
       }
 
+      const userId = 1;
       const orderData = {
         userId: 1,
         restaurantId: qrCodeResponse.restaurantId,
@@ -236,7 +237,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         }))
       };
 
-      const orderResponse = await firstValueFrom(this.orderService.createOrder(orderData));
+      const orderResponse = await firstValueFrom(
+        this.orderService.createOrder(orderData, userId) // <- Aquí añadimos userId
+      );
       if (!orderResponse?.id) {
         throw new Error("Error al crear el pedido.");
       }
