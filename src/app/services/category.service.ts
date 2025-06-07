@@ -12,17 +12,15 @@ export interface CategoryResponse {
   providedIn: 'root'
 })
 export class CategoryService {
-  private readonly apiUrl = 'http://localhost:8080/api/categories';
+  private apiUrl = 'http://localhost:8080/api/categories';
 
-  constructor(
-    private readonly http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   getAllCategories(): Observable<CategoryResponse[]> {
     return this.http.get<CategoryResponse[]>(`${this.apiUrl}/all`);
   }
 
-   createCategory(category: Omit<CategoryResponse, 'id'>): Observable<CategoryResponse> {
+  createCategory(category: Omit<CategoryResponse, 'id'>): Observable<CategoryResponse> {
     return this.http.post<CategoryResponse>(`${this.apiUrl}/create`, category);
   }
 }
