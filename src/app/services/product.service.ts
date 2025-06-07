@@ -19,7 +19,6 @@ export interface ProductRequest {
   tax: number;
   currency: string;
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -34,7 +33,7 @@ export class ProductService {
   getAllProducts(): Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>(`${this.apiUrl}/all`);
   }
-  getProductByRestaurantId(restaurantId: number): Observable<ProductResponse[]> {
+    getProductByRestaurantId(restaurantId: number): Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>(`${this.apiUrl}/by-restaurant/${restaurantId}`);
   }
   createProduct(productData: ProductRequest, imageFile: File | null): Observable<ProductResponse> {

@@ -1,23 +1,24 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, NgIf, NgFor } from '@angular/common'; // DatePipe para formatear fechas
+import { CommonModule, NgIf, NgFor, DatePipe } from '@angular/common'; // DatePipe para formatear fechas
 import { MenuCategory } from '../../restaurant-panel/restaurant-panel.component';
 
 @Component({
   selector: 'app-category-manager',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor],
+  imports: [CommonModule, NgIf, NgFor, DatePipe],
   templateUrl: './category-manager.component.html',
 })
 export class CategoryManagerComponent {
-  @Input() categories: MenuCategory[] = []; 
+  @Input() categories: MenuCategory[] = []; // Recibe la lista de categorías del padre
 
   // Eventos de salida para comunicar acciones al componente padre
   @Output() onEdit = new EventEmitter<MenuCategory>();
-  @Output() onDelete = new EventEmitter<number>(); 
+  @Output() onDelete = new EventEmitter<number>(); // Emite el ID de la categoría a eliminar
+  @Output() onToggleStatus = new EventEmitter<number>(); // Emite el ID de la categoría para cambiar estado
 
   // Ordenar categorías por la propiedad 'order'
   get sortedCategories(): MenuCategory[] {
-    return [...this.categories].sort((a, b) => a.name.localeCompare(b.name));
+    return [...this.categories].sort((a, b) => a.order - b.order);
   }
 
   // Métodos que emiten eventos
@@ -27,5 +28,9 @@ export class CategoryManagerComponent {
 
   deleteCategory(categoryId: number): void {
     this.onDelete.emit(categoryId);
+  }
+
+  toggleCategoryStatus(categoryId: number): void {
+    this.onToggleStatus.emit(categoryId);
   }
 }

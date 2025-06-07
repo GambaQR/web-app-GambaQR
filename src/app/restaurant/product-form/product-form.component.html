@@ -14,9 +14,9 @@
       <div class="space-y-4">
         <h3 class="text-lg font-medium">Imagen del Producto</h3>
         <div class="flex items-center gap-4">
-          <ng-container *ngIf="imagePreviewUrl">
+          <ng-container *ngIf="productForm.get('image')?.value">
             <img
-              [src]="imagePreviewUrl"
+              [src]="productForm.get('image')?.value || '/placeholder.svg'"
               alt="Preview"
               class="w-20 h-20 rounded-lg object-cover"
             />
@@ -58,6 +58,7 @@
 
       <div class="space-y-4">
         <h3 class="text-lg font-medium">Información Básica</h3>
+
         <div>
           <label
             for="name"
@@ -121,9 +122,11 @@
               [ngClass]="{ 'border-red-500': confirmarCampo('categoryId') }"
             >
               <option value="" disabled selected>Seleccionar categoría</option>
-              <ng-container *ngFor="let category of categories">
+              <ng-container
+                *ngFor="let category of categories | filterActiveCategories"
+              >
                 <option [value]="category.id">
-                  {{ category.name }}
+                  {{ category.icon }} {{ category.name }}
                 </option>
               </ng-container>
             </select>
@@ -160,6 +163,7 @@
       </div>
 
       <div class="space-y-4">
+        <h3 class="text-lg font-medium">Precios</h3>
         <div>
           <label
             for="price"
@@ -172,6 +176,7 @@
             type="number"
             step="0.01"
             min="0"
+            (input)="onPriceChange($event)"
             class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
             [ngClass]="{ 'border-red-500': confirmarCampo('price') }"
           />
@@ -194,8 +199,94 @@
             El precio debe ser mayor a 0.
           </p>
         </div>
+        <div class="grid grid-cols-2 gap-4"></div>
+
+        <div class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="isPromotion"
+            formControlName="isPromotion"
+            class="rounded border-gray-300 dark:border-gray-600 text-purple-600 shadow-sm focus:ring-purple-500 bg-white dark:bg-gray-700"
+          />
+          <label
+            for="isPromotion"
+            class="text-sm font-light text-gray-600 dark:text-gray-400"
+            >Es una promoción</label
+          >
+        </div>
+
+        <ng-container *ngIf="productForm.get('isPromotion')?.value">
+          <div>
+            <label
+              for="originalPrice"
+              class="block text-sm font-light text-gray-600 dark:text-gray-400 mb-1"
+              >Precio Original *</label
+            >
+            <input
+              id="originalPrice"
+              formControlName="originalPrice"
+              type="number"
+              step="0.01"
+              min="0"
+              (input)="onOriginalPriceChange($event)"
+              class="w-full px-3 py-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 transition-colors outline outline-gray-600 dark:outline-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 focus:shadow-[0_0_3px_0px] focus:shadow-purple-600"
+              [ngClass]="{ 'border-red-500': confirmarCampo('originalPrice') }"
+            />
+            <p
+              *ngIf="
+                confirmarCampo('originalPrice') &&
+                productForm.get('originalPrice')?.hasError('required')
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              El precio original es obligatorio para promociones.
+            </p>
+            <p
+              *ngIf="
+                confirmarCampo('originalPrice') &&
+                productForm.get('originalPrice')?.hasError('min')
+              "
+              class="text-sm text-red-600 mt-1"
+            >
+              El precio original debe ser mayor al precio promocional.
+            </p>
+          </div>
+        </ng-container>
       </div>
-      <!-- Botones -->
+
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium">Estado del Producto</h3>
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="isActive"
+              formControlName="isActive"
+              class="rounded border-gray-300 dark:border-gray-600 text-purple-600 shadow-sm focus:ring-purple-500 bg-white dark:bg-gray-700"
+            />
+            <label
+              for="isActive"
+              class="text-sm font-light text-gray-600 dark:text-gray-400"
+              >Producto activo</label
+            >
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="isAvailable"
+              formControlName="isAvailable"
+              class="rounded border-gray-300 dark:border-gray-600 text-purple-600 shadow-sm focus:ring-purple-500 bg-white dark:bg-gray-700"
+            />
+            <label
+              for="isAvailable"
+              class="text-sm font-light text-gray-600 dark:text-gray-400"
+              >Disponible para venta</label
+            >
+          </div>
+        </div>
+      </div>
+
       <div class="flex gap-2 pt-4">
         <button
           type="submit"

@@ -444,6 +444,7 @@
             [categories]="menuCategories"
             (onEdit)="handleEditCategory($event)"
             (onDelete)="handleDeleteCategory($event)"
+            (onToggleStatus)="handleToggleCategoryStatus($event)"
           ></app-category-manager>
         </div>
 
@@ -475,7 +476,9 @@
             [products]="menuProducts"
             [categories]="menuCategories"
             (onEdit)="handleEditProduct($event)"
-            (onDelete)="handleProductDelete($event)"
+            (onDelete)="handleDeleteProduct($event)"
+            (onToggleStatus)="handleToggleProductStatus($event)"
+            (onToggleAvailability)="handleToggleProductAvailability($event)"
           ></app-product-manager>
         </div>
       </div>

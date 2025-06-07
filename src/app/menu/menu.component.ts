@@ -13,34 +13,25 @@ import { CategoryResponse, CategoryService } from '../services/category.service'
   standalone: true,
   imports: [MenuCardComponent, CommonModule, NgClass, NgIf, NgFor, RouterLink],
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit, OnDestroy {
 
   activeCategory: number = 0;
-  tableNumber: string = 'Mesa'; // Inicializar con un valor por defecto o base
-
-  private categoryIcons: { [key: string]: string } = {
-    "Todos": "📦",
-    "Ensaladas": "🥗",
-    "Principales": "🍝",
-    "Bebidas": "🥤",
-    "Sopas": "🍲"
-  };
+  tableNumber: number = 0;
 
   categories: CategoryResponse[] = [];
   products: ProductResponse[] = []; // Almacena todos los productos
   filteredProducts: ProductResponse[] = []; // Para mostrar en la vista
-  //activeCategory: string = 'all'; // Categoría activa (por defecto "all")
   cartState!: CartState;
   private cartSubscription!: Subscription;
-  private routeSubscription!: Subscription; // ¡Nueva suscripción para los parámetros de ruta!
+  private routeSubscription!: Subscription;
 
   constructor(
     private readonly cartService: CartService,
-    private readonly route: ActivatedRoute, // ¡Inyectar ActivatedRoute!
+    private readonly route: ActivatedRoute,
     private readonly productService: ProductService,
-    private categoryService: CategoryService
+    private readonly categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +44,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
 
     this.routeSubscription = this.route.queryParams.subscribe(params => {
-      this.tableNumber = params['table'] || 'N/A';
+      this.tableNumber = params['table'] ?? 0;
     });
   }
 
@@ -63,14 +54,12 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.categories = [{ id: 0, name: 'Todos', description: ''},
         ...data.map(category => ({
           ...category,
-          icon: this.categoryIcons[category.name] || "❓"
         }))
         ];
       },
       error: (err) => console.error('Error cargando categorías:', err)
     });
   }
-
 
   loadProducts(): void {
     this.productService.getAllProducts().subscribe({
@@ -88,7 +77,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
-    if (this.routeSubscription) { // ¡No olvides desuscribirte de los parámetros de ruta!
+    if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
   }
@@ -108,8 +97,6 @@ export class MenuComponent implements OnInit, OnDestroy {
       });
     }
     console.log("Productos filtrados:", this.filteredProducts);
-
-
   }
 
   // --- Métodos de interacción con el carrito ---
