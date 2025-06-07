@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
@@ -11,6 +11,9 @@ import { UserService } from '../services/user.service';
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
+
+  @Output() goToLogin = new EventEmitter<void>();
+  
   paso = 1;
   maxPaso = 3;
   showPassword = false;
@@ -19,8 +22,8 @@ export class RegisterComponent {
 
   constructor(
     private readonly fb: FormBuilder,
-    private user: UserService,
-    private router: Router
+    private readonly user: UserService,
+    private readonly router: Router
   ) {
     this.form = this.fb.group({
       // Paso 1: Información de cuenta
@@ -157,5 +160,9 @@ export class RegisterComponent {
   toggleConfirmPasswordVisibility() {
     // Esta función debe controlar showConfirmPassword
     this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  onGoToLoginClick(): void {
+    this.goToLogin.emit();
   }
 }

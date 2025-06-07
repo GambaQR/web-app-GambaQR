@@ -63,7 +63,7 @@ export class ProductManagerComponent {
     this.onToggleAvailability.emit(productId);
   }
 
-  // --- Funciones de utilidad para estilos de badges (similar a tu código original) ---
+  // --- Funciones de utilidad para estilos de badges ---
   getBadgeVariant(isActive: boolean, isAvailable?: boolean): string {
     if (isAvailable !== undefined) { // Badge de Disponibilidad
       return isAvailable ? 'bg-green-600 text-white' : 'bg-red-600 text-white';
