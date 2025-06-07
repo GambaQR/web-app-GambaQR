@@ -1,13 +1,23 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule, NgIf, NgFor, NgClass } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidationErrors } from '@angular/forms'; // Importar para Reactive Forms
-import { Router, RouterLink } from '@angular/router'; // Para navegación
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidationErrors, FormControl, ValidatorFn, AbstractControl } from '@angular/forms'; // Importar para Reactive Forms
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // Para navegación
 import { CartService, CartState } from '../services/cart.service'; // Ajusta la ruta a tu servicio
 import { Subscription, firstValueFrom } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { loadStripe, StripeElements, StripeCardElement, Stripe, StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-js';
 import { PaymentService } from '../services/payment.service';
+import { OrderService } from '../services/order.service';
+import { QrCodeService } from '../services/qr-code.service';
 
+interface CheckoutForm {
+  customerName: FormControl<string>;
+  customerPhone: FormControl<string>;
+  customerEmail: FormControl<string>;
+  orderId: FormControl<string>;
+  specialInstructions: FormControl<string>;
+  cardholderName: FormControl<string>;
+  paymentMethod: FormControl<'card' | 'cash' | 'mobile'>;
+}
 
 @Component({
   selector: 'app-checkout',
@@ -15,13 +25,16 @@ import { PaymentService } from '../services/payment.service';
   imports: [CommonModule, ReactiveFormsModule, RouterLink, NgIf, NgFor, NgClass], // Asegúrate de importar lo necesario
   templateUrl: './checkout.component.html',
 })
-export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
-  checkoutForm!: FormGroup; // Usaremos FormGroup para manejar los campos
+
+
+export class CheckoutComponent implements OnInit, OnDestroy {
+  checkoutForm!: FormGroup<CheckoutForm>;
   cartState!: CartState;
   private cartSubscription!: Subscription;
-
   isProcessing: boolean = false;
   cardComplete: boolean = false;
+  tableNumber!: number;
+  restaurantName!: string;
 
   // Calculables del resumen del pedido
   subtotal: number = 0;
@@ -30,19 +43,18 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
   total: number = 0;
 
   // Configuración de Stripe
-  stripePromise = loadStripe('pk_test_51RTm0rBMZ4jNGuBpQDbmO8w0gquvl2tO1JqtXoQk3MrrsQuy7W3GCAsfETVD69lsZ9S4OGNYsdyJUOlLcC3DiylI004CARHHM7'); // tu clave pública de Stripe
-  clientSecret: string | null = null;
   stripe: Stripe | null = null;
-  elements: StripeElements | null = null;
+  elements!: StripeElements;
+  stripePromise!: Promise<Stripe | null>;
   cardElement: StripeCardElement | null = null;
   cardOptions: StripeCardElementOptions = {
     style: {
       base: {
-        iconColor: '#666EE8',
-        color: '#31325F',
-        fontWeight: '400',
+        iconColor: 'white',
+        color: 'white',
+        fontWeight: '20px',
         fontFamily: 'Arial, sans-serif',
-        fontSize: '16px',
+        fontSize: '18px',
         '::placeholder': {
           color: '#aab7c4'
         }
@@ -60,136 +72,137 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private paymentService: PaymentService,
+    private orderService: OrderService,
+    private qrCodeService: QrCodeService,
     private readonly fb: FormBuilder,
     private readonly cartService: CartService,
     private readonly router: Router,
-    private readonly http: HttpClient,
-    private cd: ChangeDetectorRef,
-    private ngZone: NgZone
+    private readonly cd: ChangeDetectorRef,
+    private readonly ngZone: NgZone,
+    private route: ActivatedRoute
   ) {
-    // Inicializar el formulario con Reactive Forms
-    this.checkoutForm = this.fb.group({
-      // Información del Cliente
-      customerName: ['', Validators.required],
-      customerPhone: ['', [Validators.required, Validators.pattern(/^\d{9,10}$/)]], // Teléfono con 9-10 dígitos
-      customerEmail: ['', Validators.email], // Email opcional pero validado si se introduce
-
-      // Instrucciones Especiales
-      specialInstructions: [''],
-
-      // Información de la Tarjeta
-      cardholderName: [''],
-      paymentMethod: ['card', Validators.required],
+    this.checkoutForm = this.fb.group<CheckoutForm>({
+      customerName: this.fb.nonNullable.control('', Validators.required),
+      customerPhone: this.fb.nonNullable.control('', [
+        Validators.required,
+        Validators.pattern(/^\d{9,10}$/)
+      ]),
+      customerEmail: this.fb.nonNullable.control('', Validators.email),
+      orderId: this.fb.nonNullable.control(''),
+      specialInstructions: this.fb.nonNullable.control(''),
+      cardholderName: this.fb.nonNullable.control(''),
+      paymentMethod: this.fb.nonNullable.control<'card' | 'cash' | 'mobile'>('card', Validators.required)
     }, {
-      validators: this.paymentMethodValidator.bind(this)
+      validators: [this.paymentMethodValidator.bind(this)]
     });
   }
 
-  paymentMethodValidator(formGroup: FormGroup): ValidationErrors | null {
+  private paymentMethodValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const formGroup = control as FormGroup<CheckoutForm>;
     const method = formGroup.get('paymentMethod')?.value;
     const cardholderName = formGroup.get('cardholderName');
 
+    if (!cardholderName) return null;
+
     if (method === 'card') {
-      // Requerir nombre del titular
-      cardholderName?.setValidators([Validators.required]);
-
-      // Validar Stripe
-      if (!this.cardComplete) {
-        return { stripeCardIncomplete: true };
+      if (!cardholderName.hasValidator(Validators.required)) {
+        cardholderName.setValidators([Validators.required]);
       }
+      return !this.cardComplete ? { stripeCardIncomplete: true } : null;
     } else {
-      cardholderName?.clearValidators();
+      cardholderName.clearValidators();
+      return null;
     }
+  };
 
-    cardholderName?.updateValueAndValidity();
-    return null;
-  }
+  async ngOnInit() {
 
-
-
-  async ngAfterViewInit() {
-
-    this.stripe = await this.stripePromise;
-    if (!this.stripe) {
-      console.error('Stripe no pudo inicializarse');
+    if (this.cartService.currentCartState.items.length === 0) {
+      this.router.navigate(['/menu']);
       return;
     }
-
-    this.elements = this.stripe.elements();
-    const style = {
-      base: {
-        color: 'white',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: 'gray',
-        },
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
-      },
-    };
-
-    this.cardElement = this.elements.create('card', { style });
-
-    if (this.checkoutForm.get('paymentMethod')?.value === 'card') {
-      this.mountCardElement();
-    }
-
-    // Escuchar cambios en paymentMethod para montar o desmontar el cardElement
-    this.checkoutForm.get('paymentMethod')?.valueChanges.subscribe((method) => {
-      if (method === 'card') {
-        this.mountCardElement();
-      } else {
-        this.cardElement?.unmount();
-        this.cardComplete = false;
-        this.checkoutForm.get('cardholderName')?.clearValidators();
-        this.checkoutForm.get('cardholderName')?.updateValueAndValidity();
-      }
-      this.cd.detectChanges();
-    });
-  }
-
-
-  //Listener Cambio de estado
-  mountCardElement() {
-    setTimeout(() => {
-      if (document.getElementById('card-element')) {
-        this.cardElement?.mount('#card-element');
-        this.cardElement!.on('change', (event) => {
-          this.ngZone.run(() => {
-            this.cardComplete = event.complete;
-            this.checkoutForm.updateValueAndValidity();
-            this.cd.detectChanges();
-          });
-        });
-      }
-    }, 0);
-
-  }
-
-  ngOnInit() {
-
-    // Redirigir si el carrito está vacío al cargar la página
-    if (this.cartService.currentCartState.items.length === 0) {
-      this.router.navigate(['/menu']); // O a la ruta de menú principal
-    }
-
     this.cartSubscription = this.cartService.cartState$.subscribe(state => {
       this.cartState = state;
       this.calculateOrderSummary();
     });
 
-  }
+    this.route.queryParams.subscribe(params => {
+      this.restaurantName = params['restaurant'] || "Desconocido";
+      this.tableNumber = Number(params['table']) || 1;
+    });
 
-  ngOnDestroy() {
-    //this.cardElement?.unmount();
-    if (this.cartSubscription) {
-      this.cartSubscription.unsubscribe();
+    // Inicializar Stripe
+    const publicKey = this.paymentService.getStripePublicKey();
+    this.stripe = await loadStripe(publicKey);
+
+    if (this.stripe) {
+      this.elements = this.stripe.elements({ locale: 'auto' });
+
+      // Escuchar cambios en el método de pago
+      this.checkoutForm.get('paymentMethod')?.valueChanges.subscribe(method => {
+        this.onPaymentMethodChange(method);
+      });
+
+      // Montar inicialmente si es necesario
+      if (this.checkoutForm.get('paymentMethod')?.value === 'card') {
+        this.mountCardElement();
+      }
     }
   }
+  // Función para manejar el cambio en el RadioGroup (paymentMethod)
+  onPaymentMethodChange(value: 'card' | 'cash' | 'mobile'): void {
+    const currentMethod = this.checkoutForm.get('paymentMethod')?.value;
+
+    if (currentMethod === value) return;
+
+    this.checkoutForm.patchValue({ paymentMethod: value });
+    this.checkoutForm.updateValueAndValidity();
+
+    if (value === 'card') {
+      this.mountCardElement();
+    } else {
+      this.cleanupCardElement();
+    }
+
+    this.cd.detectChanges();
+  }
+
+  mountCardElement(): void {
+    if (!this.elements || this.cardElement) return;
+
+    const cardElementContainer = document.getElementById('card-element');
+    if (!cardElementContainer) {
+      console.error("Elemento del DOM no encontrado");
+      return;
+    }
+
+    this.cardElement = this.elements.create('card', this.cardOptions);
+    this.cardElement.mount('#card-element');
+
+    this.cardElement.on('change', (event) => {
+      this.ngZone.run(() => {
+        this.cardComplete = event.complete;
+        this.checkoutForm.updateValueAndValidity();
+        this.cd.detectChanges();
+      });
+    });
+  }
+
+  private cleanupCardElement(): void {
+    if (this.cardElement) {
+      try {
+        this.cardElement.unmount();
+        this.cardElement.destroy();
+      } catch (e) {
+        console.warn("Error al limpiar elemento de tarjeta:", e);
+      }
+      this.cardElement = null;
+      this.cardComplete = false;
+      this.checkoutForm.get('cardholderName')?.clearValidators();
+      this.checkoutForm.updateValueAndValidity();
+    }
+  }
+
 
   private calculateOrderSummary(): void {
     this.subtotal = this.cartState.total;
@@ -199,88 +212,88 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Función para manejar el pago del pedido
   async handlePlaceOrder(): Promise<void> {
-    if (!this.cardElement) {
-      console.error('El elemento de tarjeta no está inicializado');
-      return;
-    }
+    if (!this.isFormValid()) return;
 
-    if (this.checkoutForm.valid) {
-      this.isProcessing = true;
+    this.isProcessing = true;
 
-      const amountInCents = Math.round(this.total * 100); // Stripe usa centavos
-      const currency = 'eur';
+    try {
+      const baseUrl = window.location.origin;
+      const qrUrl = `${baseUrl}/menu?table=${this.tableNumber}`;
+      const qrCodeResponse = await firstValueFrom(this.qrCodeService.getQrCodeByQrUrl(qrUrl));
 
-      try {
-        // 1. Crear PaymentIntent
-        const clientSecret = await firstValueFrom(
-          this.paymentService.createPaymentIntent(amountInCents, currency)
-        );
-
-        this.clientSecret = clientSecret;
-
-        const stripe = await this.stripePromise;
-        if (!stripe || !this.clientSecret) {
-          throw new Error('Stripe no se inicializó correctamente.');
-        }
-
-        // 2. Confirmar pago
-        const { error, paymentIntent } = await stripe.confirmCardPayment(this.clientSecret, {
-          payment_method: {
-            card: this.cardElement!,
-            billing_details: {
-              name: this.checkoutForm.value.cardholderName,
-              email: this.checkoutForm.value.customerEmail,
-            }
-          }
-        });
-
-        if (error) {
-          console.error('Error en el pago:', error.message);
-          return;
-        }
-
-        if (paymentIntent && paymentIntent.status === 'succeeded') {
-          console.log('Pago exitoso:', paymentIntent);
-
-          // 3. Guardar el pago en la base de datos
-          await firstValueFrom(
-            this.paymentService.savePayment({
-              amount: amountInCents,
-              currency,
-              paymentMethod: 'card',
-              paymentStatus: paymentIntent.status,
-              orderId: this.checkoutForm.value.orderId // debe existir en tu form
-            })
-          );
-
-          // 4. Finalizar
-          this.cartService.clearCart();
-          this.router.navigate(['/order-confirmation']);
-        }
-      } catch (err) {
-        console.error('Error al procesar el pago:', err);
-      } finally {
-        this.isProcessing = false;
+      if (!qrCodeResponse?.tableNumber) {
+        throw new Error("No se encontró la mesa para el QR.");
       }
+
+      const orderData = {
+        userId: 1,
+        restaurantId: qrCodeResponse.restaurantId,
+        tableNumber: qrCodeResponse.tableNumber,
+        paymentMethod: this.checkoutForm.get('paymentMethod')?.value,
+        orderDetails: this.cartState.items.map(item => ({
+          productId: item.id,
+          quantity: item.quantity
+        }))
+      };
+
+      const orderResponse = await firstValueFrom(this.orderService.createOrder(orderData));
+      if (!orderResponse?.id) {
+        throw new Error("Error al crear el pedido.");
+      }
+
+      this.checkoutForm.patchValue({ orderId: orderResponse.id.toString() });
+
+      // Manejo diferente según método de pago
+      const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
+
+      if (paymentMethod === 'card') {
+        const paymentResponse = await firstValueFrom(
+          this.paymentService.createCheckoutSession(orderResponse.id)
+        );
+        window.location.href = paymentResponse.url;
+      } else {
+        // Para cash o mobile, redirigir a confirmación
+        this.cartService.clearCart();
+        this.router.navigate(['/order-confirmation']);
+      }
+    } catch (err) {
+      console.error("Error en el proceso de pago:", err);
+    } finally {
+      this.isProcessing = false;
     }
   }
 
   // Función auxiliar para verificar si un campo es inválido y ha sido tocado
   confirmarCampo(controlName: string): boolean {
+    if (!this.checkoutForm) return false;
+
     const control = this.checkoutForm.get(controlName);
     return !!control && control.invalid && (control.touched || control.dirty);
   }
 
-  // Función para manejar el cambio en el RadioGroup (paymentMethod)
-  onPaymentMethodChange(value: string): void {
-    this.checkoutForm.get('paymentMethod')?.setValue(value);
+  isFormValid(): boolean {
+    if (!this.checkoutForm.valid || this.isProcessing) {
+      return false;
+    }
+
+    const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
+
+    switch (paymentMethod) {
+      case 'card':
+        return this.cardComplete; // Requiere tarjeta completa
+      case 'mobile':
+        return true; // Pago móvil siempre válido (si el formulario general es válido)
+      case 'cash':
+        return true; // Pago en efectivo siempre válido (si el formulario general es válido)
+      default:
+        return false;
+    }
   }
 
-  isFormValid(): boolean {
-    if (this.checkoutForm.get('paymentMethod')?.value === 'card') {
-      return this.checkoutForm.valid && this.cardComplete && !this.isProcessing;
+  ngOnDestroy() {
+    //this.cardElement?.unmount();
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
     }
-    return this.checkoutForm.valid && !this.isProcessing;
   }
 }
-
