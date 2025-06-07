@@ -272,19 +272,38 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   isFormValid(): boolean {
-    if (!this.checkoutForm.valid || this.isProcessing) {
+    // Verificación básica del formulario
+    if (!this.checkoutForm || this.isProcessing) {
       return false;
     }
 
-    const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
+    // Obtener controles de forma segura
+    const customerName = this.checkoutForm.get('customerName');
+    const customerPhone = this.checkoutForm.get('customerPhone');
+    const customerEmail = this.checkoutForm.get('customerEmail');
+    const paymentMethod = this.checkoutForm.get('paymentMethod');
 
-    switch (paymentMethod) {
+    // Verificar que todos los controles existan
+    if (!customerName || !customerPhone || !customerEmail || !paymentMethod) {
+      return false;
+    }
+
+    // Validar campos obligatorios
+    const basicInfoValid =
+      customerName.valid &&
+      customerPhone.valid &&
+      (customerEmail.valid || customerEmail.value === '');
+
+    // Validación según método de pago
+    switch (paymentMethod.value) {
       case 'card':
-        return this.cardComplete; // Requiere tarjeta completa
+        const cardholderName = this.checkoutForm.get('cardholderName');
+        return basicInfoValid &&
+          this.cardComplete &&
+          !!cardholderName?.valid;
       case 'mobile':
-        return true; // Pago móvil siempre válido (si el formulario general es válido)
       case 'cash':
-        return true; // Pago en efectivo siempre válido (si el formulario general es válido)
+        return basicInfoValid;
       default:
         return false;
     }
