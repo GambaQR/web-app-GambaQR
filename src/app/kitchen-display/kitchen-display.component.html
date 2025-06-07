@@ -49,7 +49,7 @@
         <div class="flex items-center gap-2">
           <h2 class="text-xl font-bold">Nuevos Pedidos</h2>
           <span
-            [ngClass]="getStatusColor('new')"
+            [ngClass]="getStatusColor('PENDING')"
             class="px-2.5 py-0.5 rounded-full text-xs font-medium"
             >{{ newOrders.length }}</span
           >
@@ -67,12 +67,7 @@
               class="pb-3 border-b border-gray-200 dark:border-gray-700 mb-4"
             >
               <div class="flex items-center justify-between mb-1">
-                <h3 class="text-lg font-bold">{{ order.id }}</h3>
-                <span
-                  [ngClass]="getPriorityColor(order.priority)"
-                  class="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >{{ getPriorityText(order.priority) }}</span
-                >
+                <h3 class="text-lg font-bold">Orden #{{ order.id }}</h3>
               </div>
               <div
                 class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
@@ -92,13 +87,16 @@
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                <span>{{ order.table }} • {{ order.orderTime }}</span>
-                <span>• Est. {{ order.estimatedTime }} min</span>
+                <span
+                  >Mesa {{ order.tableNumber }} •
+                  {{ order.createdAt | date : "shortTime" }}</span
+                >
+                <span>• Est. XX min</span>
               </div>
             </div>
             <div class="space-y-2 text-gray-900 dark:text-gray-300">
               <div
-                *ngFor="let item of order.items; let i = index"
+                *ngFor="let item of order.products; let i = index"
                 class="flex justify-between items-start"
               >
                 <div>
@@ -134,7 +132,7 @@
             </div>
             <button
               class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-4"
-              (click)="updateOrderStatus(order.id, 'preparing')"
+              (click)="updateOrderStatus(order.id, 'PREPARING')"
             >
               Iniciar Preparación
             </button>
@@ -146,7 +144,7 @@
         <div class="flex items-center gap-2">
           <h2 class="text-xl font-bold">En Preparación</h2>
           <span
-            [ngClass]="getStatusColor('preparing')"
+            [ngClass]="getStatusColor('PREPARING')"
             class="px-2.5 py-0.5 rounded-full text-xs font-medium"
             >{{ preparingOrders.length }}</span
           >
@@ -164,11 +162,11 @@
               class="pb-3 border-b border-gray-200 dark:border-gray-700 mb-4"
             >
               <div class="flex items-center justify-between mb-1">
-                <h3 class="text-lg font-bold">{{ order.id }}</h3>
+                <h3 class="text-lg font-bold">Orden #{{ order.id }}</h3>
                 <span
-                  [ngClass]="getPriorityColor(order.priority)"
+                  [ngClass]="getPriorityColor('high')"
                   class="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >{{ getPriorityText(order.priority) }}</span
+                  >{{ getPriorityText("high") }}</span
                 >
               </div>
               <div
@@ -189,18 +187,24 @@
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                <span>{{ order.table }} • {{ order.orderTime }}</span>
+                <span
+                  >Mesa {{ order.tableNumber }} •
+                  {{ order.createdAt | date : "shortTime" }}</span
+                >
                 <ng-container
                   *ngIf="
-                    order.timeRemaining !== undefined &&
-                    order.timeRemaining >= 0
+                    calculateTimeRemaining(order) !== undefined &&
+                    calculateTimeRemaining(order)! >= 0
                   "
                 >
-                  <span>• {{ order.timeRemaining }} min restantes</span>
+                  <span
+                    >• {{ calculateTimeRemaining(order) }} min restantes</span
+                  >
                 </ng-container>
                 <ng-container
                   *ngIf="
-                    order.timeRemaining !== undefined && order.timeRemaining < 0
+                    calculateTimeRemaining(order) !== undefined &&
+                    calculateTimeRemaining(order)! < 0
                   "
                 >
                   <span class="text-red-500">• ¡Tiempo excedido!</span>
@@ -209,7 +213,7 @@
             </div>
             <div class="space-y-2 text-gray-900 dark:text-gray-300">
               <div
-                *ngFor="let item of order.items; let i = index"
+                *ngFor="let item of order.products; let i = index"
                 class="flex justify-between items-start"
               >
                 <div>
@@ -245,7 +249,7 @@
             </div>
             <button
               class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-4 inline-flex items-center justify-center"
-              (click)="updateOrderStatus(order.id, 'ready')"
+              (click)="updateOrderStatus(order.id, 'COMPLETED')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +275,7 @@
         <div class="flex items-center gap-2">
           <h2 class="text-xl font-bold">Listos para Servir</h2>
           <span
-            [ngClass]="getStatusColor('ready')"
+            [ngClass]="getStatusColor('COMPLETED')"
             class="px-2.5 py-0.5 rounded-full text-xs font-medium"
             >{{ readyOrders.length }}</span
           >
@@ -289,12 +293,7 @@
               class="pb-3 border-b border-gray-200 dark:border-gray-700 mb-4"
             >
               <div class="flex items-center justify-between mb-1">
-                <h3 class="text-lg font-bold">{{ order.id }}</h3>
-                <span
-                  [ngClass]="getPriorityColor(order.priority)"
-                  class="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >{{ getPriorityText(order.priority) }}</span
-                >
+                <h3 class="text-lg font-bold">Orden #{{ order.id }}</h3>
               </div>
               <div
                 class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
@@ -314,13 +313,14 @@
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
                 <span
-                  >{{ order.table }} • Listo desde {{ order.orderTime }}</span
+                  >Mesa {{ order.tableNumber }} • Listo desde
+                  {{ order.createdAt | date : "shortTime" }}</span
                 >
               </div>
             </div>
             <div class="space-y-2 text-gray-900 dark:text-gray-300">
               <div
-                *ngFor="let item of order.items; let i = index"
+                *ngFor="let item of order.products; let i = index"
                 class="flex justify-between items-start"
               >
                 <span class="font-medium">

@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export interface OrderDetailDTO {
-  productId?: number;
-  comboId?: number;
+export interface OrderDetailSimplifiedDTO {
+  productId: number;
   quantity: number;
+  name?: string; // Add if used in HTML
+  notes?: string; // Add if used in HTML
 }
 
 export interface OrderRequestDTO {
-  userId: number;
-  restaurantId: number;
-  tableNumber: number;
-  orderDetails: OrderDetailDTO[];
+  status: string;
+  // Add any other fields your backend expects for an order update
+  // e.g., products?: OrderDetailSimplifiedDTO[];
 }
 
 export interface OrderResponseDTO {
@@ -24,27 +24,27 @@ export interface OrderResponseDTO {
   createdAt: string;
   updatedAt: string;
   totalAmount: number;
-  products: any[];
-  combos: any[];
+  products: OrderDetailSimplifiedDTO[];
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:8080/api/orders';
 
-  constructor(private http: HttpClient) { }
+  private readonly baseUrl = 'http://localhost:8080/orders';
 
-  createOrder(orderData: OrderRequestDTO): Observable<OrderResponseDTO> {
-    return this.http.post<OrderResponseDTO>(`${this.apiUrl}/create`, orderData);
+  constructor(
+    private readonly http: HttpClient
+  ) { }
+
+  createOrder(order: any, userId: number): Observable<number> {
+    return this.http.post<number>(`${this.baseUrl}/create?userId=${userId}`, order);
   }
 
-  getOrderById(orderId: number): Observable<OrderResponseDTO> {
-    return this.http.get<OrderResponseDTO>(`${this.apiUrl}/${orderId}`);
-  }
-
-  getOrdersByUser(userId: number): Observable<OrderResponseDTO[]> {
-    return this.http.get<OrderResponseDTO[]>(`${this.apiUrl}/user/${userId}`);
+  // ¡NUEVO MÉTODO! Agrega esto a OrderService
+  updateOrder(orderId: number, request: OrderRequestDTO): Observable<OrderResponseDTO> {
+    // Assuming your backend endpoint for updating an order is PUT /orders/update/{orderId}
+    return this.http.put<OrderResponseDTO>(`${this.baseUrl}/update/${orderId}`, request);
   }
 }
