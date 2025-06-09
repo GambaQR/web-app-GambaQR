@@ -27,15 +27,15 @@ export const routes: Routes = [
 
       // ZONA ADMIN
       { path: 'app', component: DashboardComponent },
-      
+
       // ZONA CLIENTE
       { path: 'menu', component: MenuComponent },
       { path: 'cart', component: CartComponent },
       { path: 'checkout', component: CheckoutComponent },
       { path: 'order-confirmation', component: OrderConfirmationComponent },
-      
+
       // EMPLOYEE, ADMIN, OWNER
-      { path: 'kitchen', component: KitchenDisplayComponent, canActivate: [RoleGuard], data: { roles: ['EMPLOYEE', 'ADMIN', 'OWNER'] } },
+      { path: 'kitchen-display', component: KitchenDisplayComponent, canActivate: [RoleGuard], data: { roles: ['EMPLOYEE', 'ADMIN', 'OWNER'] } },
 
       // OWNER, ADMIN
       { path: 'restaurant', component: RestaurantPanelComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN', 'OWNER'] } },
